@@ -416,17 +416,31 @@ window.onload = () => {
     });
 
     // Populare listă bibliotecă
-    bibliotecaCompleta.forEach((l, idx) => {
-        const list = document.getElementById('library-list');
-        if(list) {
-            list.innerHTML += `
-                <div class='chapter-card glass' onclick='openLibraryItem(${idx})'>
-                    <h3>RESURSA ${idx + 1}</h3>
-                    <p>${l.titlu}</p>
-                    <small style='color: var(--accent)'>Click pentru detalii →</small>
-                </div>`;
-        }
-    });
+    const libraryList = document.getElementById('library-list');
+    if (libraryList) {
+        const fragment = document.createDocumentFragment();
+        bibliotecaCompleta.forEach((l, idx) => {
+            const div = document.createElement('div');
+            div.className = 'chapter-card glass';
+            div.onclick = () => openLibraryItem(idx);
+
+            const h3 = document.createElement('h3');
+            h3.textContent = `RESURSA ${idx + 1}`;
+
+            const p = document.createElement('p');
+            p.textContent = l.titlu;
+
+            const small = document.createElement('small');
+            small.style.color = 'var(--accent)';
+            small.textContent = 'Click pentru detalii →';
+
+            div.appendChild(h3);
+            div.appendChild(p);
+            div.appendChild(small);
+            fragment.appendChild(div);
+        });
+        libraryList.appendChild(fragment);
+    }
     
     // Setăm starea inițială în istoric
     history.replaceState({ pageId: 'home' }, "", "#home");
