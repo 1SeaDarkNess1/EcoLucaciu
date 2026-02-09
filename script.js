@@ -1,5 +1,8 @@
 // --- NAVIGARE CU BROWSER BACK FIX ---
 function showPage(id, saveHistory = true) {
+    // Stop timer if navigating away from quiz
+    if (typeof timer !== 'undefined') clearInterval(timer);
+
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     const target = document.getElementById(id);
     if(target) {
@@ -23,63 +26,49 @@ window.onpopstate = function(event) {
 
 // --- DATA: LECTII COMPLETE (EXTRASE DIN PPT-URILE TALE) ---
 const lectiiCompleta = [
-    { 
-        id: 0, 
-        titlu: "Nevoile și Resursele", 
-        slides: [
-            { t: "Conceptul de Nevoie", c: "Nevoile umane reprezintă cerințele obiectiv necesare ale vieții, fiind nelimitate și în continuă diversificare. Clasificare: Primare (biologice), Secundare (sociale), Superioare (spirituale)." },
-            { t: "Resursele și Raritatea", c: "Resursele sunt elementele utilizate pentru a produce bunuri. Problema fundamentală a economiei este <b>raritatea</b>: resursele sunt limitate, în timp ce nevoile sunt nelimitate." },
-            { t: "Legea Raritǎții", c: "Resursele și bunurile sunt limitate în raport cu nevoile umane. Această tensiune obligă agenții economici la ALEGERI raționale." }
-        ]
-    },
-    { 
-        id: 1, 
-        titlu: "Costul de Oportunitate", 
-        slides: [
-            { t: "Definiție", c: "Costul de oportunitate (Cop) reprezintă valoarea celei mai bune alternative la care se renunță în favoarea alegerii făcute. Este un cost al 'șansei sacrificate'." },
-            { t: "Formula de Calcul", c: "Formula standard: $$Cop = - \\frac{\\Delta Y}{\\Delta X}$$ Unde $\\Delta Y$ este cantitatea la care se renunță și $\\Delta X$ este cantitatea câștigată." }
-        ]
-    },
-    {
-        id: 2,
-        titlu: "Utilitatea Economică",
-        slides: [
-            { t: "Utilitatea Individuală", c: "Satisfacția resimțită prin consumarea unei unități dintr-un bun." },
-            { t: "Legea lui Gossen", c: "Legea utilității marginale descrescânde: pe măsură ce se consumă unități succesive dintr-un bun, satisfacția suplimentară (Umg) scade până la zero (pragul de saturație)." }
-        ]
-    }
-    // ... aici pot fi adăugate toate cele 12 module similare
+    { id: 0, titlu: "Lecția 1: Nevoi și Resurse", file: "Materiale/Lectia 1-Nevoi_si_resurse.ppt", type: "ppt" },
+    { id: 1, titlu: "Capitolul 2: Costul de Oportunitate", file: "Materiale/2-Costul_de_oportunitate.ppt", type: "ppt" },
+    { id: 2, titlu: "Capitolul 2.1-2.2: Oferta", file: "Materiale/2.1.-2.2-Oferta.ppt", type: "ppt" },
+    { id: 3, titlu: "Capitolul 2.3: Factori de Producție (1)", file: "Materiale/2.3-Factori_de_productie-_partea_1 (1).ppt", type: "ppt" },
+    { id: 4, titlu: "Capitolul 2.4: Factori de Producție (2)", file: "Materiale/2.4-Factori_de_productie-_partea_2.ppt", type: "ppt" },
+    { id: 5, titlu: "Capitolul 2.5: Costuri de Producție", file: "Materiale/2.5-Costuri_de_productie-_partea_1 (1).ppt", type: "ppt" },
+    { id: 6, titlu: "Capitolul 2.6: Productivitatea", file: "Materiale/2.6-Productivitatea.ppt", type: "ppt" },
+    { id: 7, titlu: "Capitolul 2.7: Profitul", file: "Materiale/2.7-Profitul.ppt", type: "ppt" },
+    { id: 8, titlu: "Capitolul 3: Utilitatea Economică", file: "Materiale/3-Utilitatea_economica.ppt", type: "ppt" },
+    { id: 9, titlu: "Capitolul 3.1: Piața - Relația Cerere-Ofertă", file: "Materiale/Capitolul 3-3.1-Piata_Relatia_cerere-oferta-pret_in_economia_de_piata.ppt", type: "ppt" },
+    { id: 10, titlu: "Capitolul 3.2: Mecanismul Concurențial", file: "Materiale/3.2-Mecanismul_concurential.ppt", type: "ppt" },
+    { id: 11, titlu: "Capitolul 3.3: Piața Capitalurilor", file: "Materiale/3.3-Piata_capitalurilor (1).ppt", type: "ppt" },
+    { id: 12, titlu: "Capitolul 3.4: Piața Muncii", file: "Materiale/3.4. - Piața muncii_.ppt", type: "ppt" },
+    { id: 13, titlu: "Capitolul 3.5: Piața Monetară", file: "Materiale/3.5.-Piata monetară.ppt", type: "ppt" },
+    { id: 14, titlu: "Capitolul 4: Cererea (Partea 1)", file: "Materiale/4-Cererea_partea_1.ppt", type: "ppt" },
+    { id: 15, titlu: "Capitolul 5: Cererea (Partea 2)", file: "Materiale/5-Cererea_partea_2.ppt", type: "ppt" },
+    { id: 16, titlu: "Capitolul 6: Proprietatea și Libera Inițiativă", file: "Materiale/6-Proprietatea_si_propria_initiativa.ppt", type: "ppt" },
+    { id: 17, titlu: "Factorii de Producție și Combinarea Acestora", file: "Materiale/Factorii de productie si combinarea acestora.ppt", type: "ppt" }
 ];
 
-// --- DATA: BIBLIOTECA (PLACEHOLDER) ---
+// --- DATA: BIBLIOTECA ---
 const bibliotecaCompleta = [
-    {
-        id: 0,
-        titlu: "Ghid de Studiu Economie",
-        slides: [
-            { t: "Introducere", c: "Acest ghid oferă o privire de ansamblu asupra conceptelor economice fundamentale." },
-            { t: "Microeconomie vs Macroeconomie", c: "Microeconomia studiază comportamentul agenților individuali, în timp ce macroeconomia analizează economia ca un întreg." }
-        ]
-    },
-    {
-        id: 1,
-        titlu: "Mic Dicționar Economic",
-        slides: [
-            { t: "A - Active", c: "Bunuri sau drepturi deținute de o companie care au valoare economică." },
-            { t: "B - Buget", c: "Plan financiar care estimează veniturile și cheltuielile pe o anumită perioadă." }
-        ]
-    },
-    {
-        id: 2,
-        titlu: "Resurse Tehnice & Verificare",
-        slides: [
-            { t: "Verificare Automată", c: "Acest modul demonstrează procesul de verificare automată a funcționalității site-ului folosind Playwright. Testele asigură că navigarea și accesibilitatea sunt corecte." },
-            { t: "Script de Testare (Python)", c: "<pre><code class='language-python'>from playwright.sync_api import sync_playwright\nimport time\n\ndef run(playwright):\n    browser = playwright.chromium.launch(headless=True)\n    page = browser.new_page()\n    page.goto('http://localhost:8000/index.html')\n\n    # Wait for page load\n    time.sleep(1)\n    page.click('text=Admitere')\n    page.wait_for_selector('#admitere.active')\n\n    # ... logică de testare ...\n\n    browser.close()\n\nwith sync_playwright() as playwright:\n    run(playwright)</code></pre>" },
-            { t: "Focus Card", c: "<div class='img-container'><img src='verification_card_focus.png' alt='Focus on Card' /></div><p>Verificarea focusului pe cardurile de admitere.</p>" },
-            { t: "Modal Deschis", c: "<div class='img-container'><img src='verification_modal_open.png' alt='Modal Open' /></div><p>Verificarea deschiderii modalei și a focusului pe butonul de închidere.</p>" },
-            { t: "Modal Închis", c: "<div class='img-container'><img src='verification_modal_closed.png' alt='Modal Closed' /></div><p>Verificarea închiderii modalei și restaurarea focusului.</p>" }
-        ]
-    }
+    { id: 0, titlu: "Consumatorul și Utilitatea Economică", file: "Bibliotecă/03 Consumatorul si utilitatea economica.pdf", type: "pdf" },
+    { id: 1, titlu: "Piața (Test 1)", file: "Bibliotecă/05t Piata. Test 1.pdf", type: "pdf" },
+    { id: 2, titlu: "Agenții Economici", file: "Bibliotecă/Agentii economici.pdf", type: "pdf" },
+    { id: 3, titlu: "Banii", file: "Bibliotecă/Banii.pdf", type: "pdf" },
+    { id: 4, titlu: "Cererea", file: "Bibliotecă/CEREREA.pdf", type: "pdf" },
+    { id: 5, titlu: "Ce este Economia?", file: "Bibliotecă/Ce este economia.pdf", type: "pdf" },
+    { id: 6, titlu: "Concurența", file: "Bibliotecă/Concurenta.pdf", type: "pdf" },
+    { id: 7, titlu: "Consumatorul", file: "Bibliotecă/Consumatorul.pdf", type: "pdf" },
+    { id: 8, titlu: "Inflația", file: "Bibliotecă/Inflatia.pdf", type: "pdf" },
+    { id: 9, titlu: "Oferta", file: "Bibliotecă/OFERTA.pdf", type: "pdf" },
+    { id: 10, titlu: "Piața: Cererea", file: "Bibliotecă/Piata - Cererea.pdf", type: "pdf" },
+    { id: 11, titlu: "Piața: Oferta și Prețul", file: "Bibliotecă/Piata - Oferta. Pretul.pdf", type: "pdf" },
+    { id: 12, titlu: "Piața Capitalurilor", file: "Bibliotecă/Piata capitalurilor.pdf", type: "pdf" },
+    { id: 13, titlu: "Piața Monetară", file: "Bibliotecă/Piata monetara.pdf", type: "pdf" },
+    { id: 14, titlu: "Piața Muncii", file: "Bibliotecă/Piata muncii.pdf", type: "pdf" },
+    { id: 15, titlu: "Piața Valutară", file: "Bibliotecă/Piata valutara.pdf", type: "pdf" },
+    { id: 16, titlu: "Profitul", file: "Bibliotecă/Profitul.pdf", type: "pdf" },
+    { id: 17, titlu: "Proprietatea și Libera Inițiativă", file: "Bibliotecă/Proprietatea si libera initiativa.pdf", type: "pdf" },
+    { id: 18, titlu: "Rezumat: Concurența", file: "Bibliotecă/Rezumat_Concurenta.pdf", type: "pdf" },
+    { id: 19, titlu: "Șomajul", file: "Bibliotecă/Somajul.pdf", type: "pdf" },
+    { id: 20, titlu: "Venit, Consum, Investiții", file: "Bibliotecă/Venit consum investitii.pdf", type: "pdf" }
 ];
 
 const unis = [
@@ -146,6 +135,12 @@ const masterBank = [
     { q: "Cererea este inelastică dacă:", o: ["Coeficientul elasticității < 1", "Coeficientul elasticității > 1", "Coeficientul elasticității = 1"], c: 0 }
 ];
 
+const simulari = [
+    { titlu: "Simulare Bacalaureat 2020 (Varianta 5)", file: "Teste de Antrenament/E_d_economie_2020_var_05_LRO.pdf" },
+    { titlu: "Barem Corectare 2020 (Varianta 5)", file: "Teste de Antrenament/E_d_economie_2020_bar_05_LRO.pdf" },
+    { titlu: "Recapitulare - Pregătire Bacalaureat", file: "Teste de Antrenament/Economie_Recapitulare_Pregatire pentru bacalaureat.pdf" }
+];
+
 // --- LOGICA SUBPAGINI LECTII ---
 let currentSlideIndex = 0;
 let currentLessonSlides = [];
@@ -155,11 +150,29 @@ function openLesson(index) {
     if(!lectie) return;
     
     document.getElementById('lesson-title').innerText = lectie.titlu;
-    currentLessonSlides = lectie.slides;
-    currentSlideIndex = 0;
+    const body = document.getElementById('lesson-body');
+    const nav = document.querySelector("#lectie-detaliu .slide-navigation");
+
+    if (lectie.type === 'ppt') {
+        // Manipulate innerHTML safely or use specific elements
+        body.innerHTML = `
+            <div style="text-align:center; padding: 40px;">
+                <div style="font-size: 4rem; margin-bottom: 20px;">📊</div>
+                <h3>Material PowerPoint</h3>
+                <p style="color: #64748b; margin-bottom: 30px;">Acest curs este disponibil ca prezentare PowerPoint.</p>
+                <a href="${lectie.file}" class="btn-start" style="text-decoration: none; display: inline-block;" download>
+                    📥 Descarcă Prezentarea
+                </a>
+            </div>`;
+        if(nav) nav.style.display = 'none';
+    } else {
+        currentLessonSlides = lectie.slides;
+        currentSlideIndex = 0;
+        if(nav) nav.style.display = 'flex';
+        renderSlide();
+    }
 
     showPage('lectie-detaliu');
-    renderSlide();
 }
 
 function renderSlide() {
@@ -207,11 +220,29 @@ function openLibraryItem(index) {
     if(!item) return;
 
     document.getElementById('library-title').innerText = item.titlu;
-    currentLibrarySlides = item.slides;
-    currentLibrarySlideIndex = 0;
+    const body = document.getElementById('library-body');
+    const nav = document.querySelector("#biblioteca-detaliu .slide-navigation");
+
+    if (item.type === 'pdf') {
+        body.innerHTML = `
+            <iframe src="${item.file}" width="100%" height="600px" style="border:none; border-radius: 12px;">
+                Browserul tău nu suportă iframes.
+            </iframe>
+            <div style="text-align:center; margin-top: 10px;">
+                <a href="${item.file}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 700;">
+                    Deschide PDF în fereastră nouă ↗
+                </a>
+            </div>
+        `;
+        if(nav) nav.style.display = 'none';
+    } else {
+        currentLibrarySlides = item.slides;
+        currentLibrarySlideIndex = 0;
+        if(nav) nav.style.display = 'flex';
+        renderLibrarySlide();
+    }
 
     showPage('biblioteca-detaliu');
-    renderLibrarySlide();
 }
 
 function renderLibrarySlide() {
@@ -427,6 +458,19 @@ window.onload = () => {
                 </div>`;
         }
     });
+
+    // Populare listă simulări
+    const simulariList = document.getElementById('simulari-list');
+    if(simulariList && typeof simulari !== 'undefined') {
+        simulari.forEach(s => {
+            simulariList.innerHTML += `
+                <div class='chapter-card glass' onclick='window.open("${s.file}", "_blank")'>
+                    <h3>📄 PDF</h3>
+                    <p>${s.titlu}</p>
+                    <small style='color: var(--accent)'>Deschide Fișier →</small>
+                </div>`;
+        });
+    }
     
     // Setăm starea inițială în istoric
     history.replaceState({ pageId: 'home' }, "", "#home");
