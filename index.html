@@ -7,6 +7,7 @@
     <title>EcoLucaciu | Proiect Bogdan Bontoș</title>
     <link href='https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap' rel='stylesheet'>
     <link rel='stylesheet' href='style.css'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
 </head>
 <body>
@@ -232,6 +233,26 @@
         </div>
     </div>
 
+    <!-- MODALA SLIDE VIEWER -->
+    <div id='slide-viewer-modal' class='modal slide-viewer-modal hidden' role='dialog' aria-modal='true'>
+        <div class='slide-viewer-container glass'>
+            <button class='close-btn viewer-close' onclick='closeSlideViewer()' aria-label='Închide'>&times;</button>
+            <button class='fullscreen-btn' onclick='toggleFullScreen()' title='Full Screen'>⛶</button>
+
+            <div class='swiper mySwiper'>
+                <div class='swiper-wrapper' id='swiper-wrapper'>
+                    <!-- Slides injected via JS -->
+                </div>
+                <!-- Navigation buttons -->
+                <div class='swiper-button-next custom-nav'></div>
+                <div class='swiper-button-prev custom-nav'></div>
+                <!-- Pagination -->
+                <div class='swiper-pagination'></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src='script.js'></script>
 </body>
 </html>
