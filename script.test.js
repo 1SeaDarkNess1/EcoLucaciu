@@ -29,18 +29,29 @@ const mockElements = {
         classes: new Set(['hidden']),
         focus: jest.fn()
     },
-    'modal-close-btn': { focus: jest.fn() }
+    'modal-close-btn': { focus: jest.fn() },
+    'home': { id: 'home', classList: { add: jest.fn(), remove: jest.fn() } },
+    'about': { id: 'about', classList: { add: jest.fn(), remove: jest.fn() } }
 };
 
 global.document = {
     getElementById: jest.fn((id) => {
-        if (!mockElements[id]) {
-             // Return a generic mock if not found, to avoid crashes
-             return { focus: jest.fn(), classList: { add: jest.fn(), remove: jest.fn() } };
-        }
-        return mockElements[id];
+        if (mockElements[id]) return mockElements[id];
+        if (id === 'non-existent') return null;
+        // Return a generic mock if not found, to avoid crashes in other parts of the script
+        return {
+            focus: jest.fn(),
+            classList: { add: jest.fn(), remove: jest.fn() },
+            style: {},
+            innerText: ''
+        };
     }),
-    querySelectorAll: jest.fn(() => []),
+    querySelectorAll: jest.fn((selector) => {
+        if (selector === '.view') {
+            return [mockElements['home'], mockElements['about']];
+        }
+        return [];
+    }),
     activeElement: { className: '', id: '', focus: jest.fn() },
     createElement: jest.fn((tag) => {
         return {
@@ -77,10 +88,11 @@ const scriptPath = path.resolve(__dirname, 'script.js');
 const scriptContent = fs.readFileSync(scriptPath, 'utf8');
 
 // We need to execute the script in the global context
-const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 'clearInterval', scriptContent + '\n return { openUni, closeModal, unis };');
-const { openUni, closeModal, unis } = scriptFunc(global.window, global.document, global.history, global.setInterval, global.clearInterval);
+const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 'clearInterval', scriptContent + '\n return { showPage, openUni, closeModal, unis };');
+const { showPage, openUni, closeModal, unis } = scriptFunc(global.window, global.document, global.history, global.setInterval, global.clearInterval);
 
 // Expose them to the test context
+global.showPage = showPage;
 global.openUni = openUni;
 global.closeModal = closeModal;
 global.unis = unis;
@@ -122,5 +134,47 @@ describe('University Modal', () => {
         expect(() => openUni(999)).not.toThrow();
         expect(mockElements['modal-body'].innerHTML).toBe(initialHTML);
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(true);
+    });
+});
+
+describe('Navigation (showPage)', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    test('showPage should remove active class from all views and add it to the target', () => {
+        showPage('home');
+
+        expect(mockElements['home'].classList.remove).toHaveBeenCalledWith('active');
+        expect(mockElements['about'].classList.remove).toHaveBeenCalledWith('active');
+        expect(mockElements['home'].classList.add).toHaveBeenCalledWith('active');
+        expect(mockElements['about'].classList.add).not.toHaveBeenCalled();
+    });
+
+    test('showPage should scroll to top', () => {
+        showPage('home');
+        expect(global.window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+    });
+
+    test('showPage should push to history by default', () => {
+        showPage('about');
+        expect(global.history.pushState).toHaveBeenCalledWith({ pageId: 'about' }, "", "#about");
+    });
+
+    test('showPage should NOT push to history if saveHistory is false', () => {
+        showPage('about', false);
+        expect(global.history.pushState).not.toHaveBeenCalled();
+    });
+
+    test('showPage should do nothing if target element does not exist', () => {
+        showPage('non-existent');
+
+        // It still removes active from all views
+        expect(mockElements['home'].classList.remove).toHaveBeenCalledWith('active');
+        expect(mockElements['about'].classList.remove).toHaveBeenCalledWith('active');
+
+        // But it doesn't add active to anything or scroll/pushState
+        expect(global.window.scrollTo).not.toHaveBeenCalled();
+        expect(global.history.pushState).not.toHaveBeenCalled();
     });
 });
