@@ -68,6 +68,17 @@ const bibliotecaCompleta = [
             { t: "A - Active", c: "Bunuri sau drepturi deținute de o companie care au valoare economică." },
             { t: "B - Buget", c: "Plan financiar care estimează veniturile și cheltuielile pe o anumită perioadă." }
         ]
+    },
+    {
+        id: 2,
+        titlu: "Resurse Tehnice & Verificare",
+        slides: [
+            { t: "Verificare Automată", c: "Acest modul demonstrează procesul de verificare automată a funcționalității site-ului folosind Playwright. Testele asigură că navigarea și accesibilitatea sunt corecte." },
+            { t: "Script de Testare (Python)", c: "<pre><code class='language-python'>from playwright.sync_api import sync_playwright\nimport time\n\ndef run(playwright):\n    browser = playwright.chromium.launch(headless=True)\n    page = browser.new_page()\n    page.goto('http://localhost:8000/index.html')\n\n    # Wait for page load\n    time.sleep(1)\n    page.click('text=Admitere')\n    page.wait_for_selector('#admitere.active')\n\n    # ... logică de testare ...\n\n    browser.close()\n\nwith sync_playwright() as playwright:\n    run(playwright)</code></pre>" },
+            { t: "Focus Card", c: "<div class='img-container'><img src='verification_card_focus.png' alt='Focus on Card' /></div><p>Verificarea focusului pe cardurile de admitere.</p>" },
+            { t: "Modal Deschis", c: "<div class='img-container'><img src='verification_modal_open.png' alt='Modal Open' /></div><p>Verificarea deschiderii modalei și a focusului pe butonul de închidere.</p>" },
+            { t: "Modal Închis", c: "<div class='img-container'><img src='verification_modal_closed.png' alt='Modal Closed' /></div><p>Verificarea închiderii modalei și restaurarea focusului.</p>" }
+        ]
     }
 ];
 
@@ -153,24 +164,8 @@ function openLesson(index) {
 
 function renderSlide() {
     const body = document.getElementById('lesson-body');
-    
-fix-xss-university-grid-13260253321983992451
-    lectie.slides.forEach(s => {
-    const slideDiv = document.createElement('div');
-    slideDiv.className = 'ppt-slide';
-
-    const titleSpan = document.createElement('span');
-    titleSpan.className = 'slide-title';
-    titleSpan.textContent = s.t; // Sigur împotriva XSS
-
-    const textDiv = document.createElement('div');
-    textDiv.className = 'slide-text';
-    textDiv.innerHTML = s.c; // Păstrat innerHTML doar dacă s.c conține HTML intenționat (ex: bold, italic)
-
-    slideDiv.appendChild(titleSpan);
-    slideDiv.appendChild(textDiv);
-    body.appendChild(slideDiv);
-    });
+    const slide = currentLessonSlides[currentSlideIndex];
+    if(!slide) return;
 
     body.innerHTML = `
         <div class='ppt-slide'>
@@ -179,10 +174,9 @@ fix-xss-university-grid-13260253321983992451
         </div>`;
 
     document.getElementById('slide-counter').innerText = `Slide ${currentSlideIndex + 1} / ${currentLessonSlides.length}`;
- main
     
-    const prevBtn = document.querySelector("button[onclick='prevSlide()']");
-    const nextBtn = document.querySelector("button[onclick='nextSlide()']");
+    const prevBtn = document.querySelector("#lectie-detaliu .slide-navigation button:first-child");
+    const nextBtn = document.querySelector("#lectie-detaliu .slide-navigation button:last-child");
 
     if(prevBtn) prevBtn.disabled = currentSlideIndex === 0;
     if(nextBtn) nextBtn.disabled = currentSlideIndex === currentLessonSlides.length - 1;
@@ -333,6 +327,8 @@ let lastFocusedElement = null;
 
 function openUni(id) {
     const u = unis.find(x => x.id === id);
+    if (!u) return;
+
     const modalBody = document.getElementById('modal-body');
     modalBody.innerHTML = "";
 
@@ -353,8 +349,6 @@ function openUni(id) {
     details.innerHTML = u.d;
     modalBody.appendChild(details);
 
-    if (!u) return;
-    document.getElementById('modal-body').innerHTML = `<h1>${u.n}</h1><p>Medie: <b>${u.m}</b></p><hr>${u.d}`;
     document.getElementById('uni-modal').classList.remove('hidden');
 
     lastFocusedElement = document.activeElement;
@@ -394,7 +388,6 @@ window.onload = () => {
         div.appendChild(small);
         chaptersList.appendChild(div);
     });
-    document.getElementById('chapters-list').innerHTML = chaptersHTML;
 
     // Populare universități
     const uniGrid = document.getElementById('uni-grid');
@@ -434,7 +427,6 @@ window.onload = () => {
                 </div>`;
         }
     });
-    document.getElementById('uni-grid').innerHTML = unisHTML;
     
     // Setăm starea inițială în istoric
     history.replaceState({ pageId: 'home' }, "", "#home");
