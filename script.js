@@ -72,20 +72,67 @@ const bibliotecaCompleta = [
 ];
 
 const unis = [
-    { id: 1, n: "ASE București - Cibernetică", m: "9.85", d: "<h3>Admitere</h3><p>Examen grilă la Matematică/Economie. Hub de elită pentru IT Economic.</p>" },
-    { id: 2, n: "FSEGA Cluj (UBB)", m: "9.65", d: "<h3>Viziune</h3><p>Cel mai mare centru de business din Ardeal. Programe multilingve.</p>" },
-    { id: 3, n: "UAIC Iași - FEAA", m: "9.45", d: "<h3>Tradiție</h3><p>Facultatea de Economie și Administrarea Afacerilor, lider în regiunea Moldovei.</p>" },
-    { id: 4, n: "UVT Timișoara - FEAA", m: "9.30", d: "<h3>Inovație</h3><p>Focus pe antreprenoriat și conexiuni puternice cu mediul de afaceri vestic.</p>" },
-    { id: 5, n: "UBB Cluj - Facultatea de Business", m: "9.50", d: "<h3>Business</h3><p>Prima facultate de profil din România. Abordare practică și internațională.</p>" },
-    { id: 6, n: "Politehnica București - FAIMA", m: "9.10", d: "<h3>Inginerie & Management</h3><p>Combinația ideală între competențe tehnice și economice.</p>" },
-    { id: 7, n: "Transilvania Brașov - SEAA", m: "9.25", d: "<h3>Turism & Comerț</h3><p>Excelență în domeniul serviciilor și economiei montane.</p>" },
-    { id: 8, n: "Universitatea din București - FAA", m: "9.40", d: "<h3>Administrație</h3><p>Facultatea de Administrație și Afaceri, în inima capitalei.</p>" }
+    {
+        id: 1,
+        n: "ASE București - Cibernetică",
+        m: "9.85",
+        d: "<h3>Cibernetică, Statistică și Informatică Economică</h3><p>Cea mai prestigioasă facultate din cadrul ASE. Programul de licență îmbină economia cu tehnologia informației.</p><h4>Admitere</h4><ul><li>Examen scris la Matematică sau Economie (60-70% din medie)</li><li>Media Bacalaureat (30-40%)</li></ul><h4>Oportunități</h4><p>Data Scientist, Business Analyst, Developer în Fintech.</p><a href='https://csie.ase.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+    },
+    {
+        id: 2,
+        n: "FSEGA Cluj (UBB)",
+        m: "9.65",
+        d: "<h3>Facultatea de Științe Economice și Gestiunea Afacerilor</h3><p>Parte a Universității Babeș-Bolyai, FSEGA este cea mai mare facultate din România ca număr de studenți.</p><h4>Admitere</h4><ul><li>Concurs de dosare (media Bacalaureat + nota la disciplină relevantă)</li></ul><h4>Specializări Top</h4><p>Informatică Economică, Finanțe-Bănci, Marketing (linii de studiu în RO, EN, DE, FR, HU).</p><a href='https://econ.ubbcluj.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+    },
+    {
+        id: 3,
+        n: "UAIC Iași - FEAA",
+        m: "9.45",
+        d: "<h3>Facultatea de Economie și Administrarea Afacerilor</h3><p>Polul educației economice din Moldova, cu o tradiție academică puternică și campus modern.</p><h4>Admitere</h4><p>Media de la Bacalaureat (100% sau ponderată cu nota la diverse discipline).</p><h4>Facilități</h4><p>Acces la baze de date internaționale, stagii de practică la multinaționale din Iași.</p><a href='https://www.feaa.uaic.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+    },
+    {
+        id: 4,
+        n: "UVT Timișoara - FEAA",
+        m: "9.30",
+        d: "<h3>Facultatea de Economie și de Administrare a Afacerilor</h3><p>Orientare vestică, focalizată pe nevoile pieței muncii și antreprenoriat.</p><h4>Admitere</h4><p>Concurs de dosare. Media generală de la bacalaureat.</p><h4>Puncte forte</h4><p>Parteneriate solide cu mediul de afaceri din Timișoara (Continental, Nokia, etc.).</p><a href='https://feaa.uvt.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+    },
+    {
+        id: 5,
+        n: "UBB Cluj - Facultatea de Business",
+        m: "9.50",
+        d: "<h3>Facultatea de Business</h3><p>Prima facultate de profil din România, cu o abordare unică, practică și orientată spre leadership.</p><h4>Admitere</h4><p>Eseu motivațional + Media Bacalaureat.</p><h4>Viziune</h4><p>Pregătirea viitorilor antreprenori și manageri prin simulări de business și proiecte reale.</p><a href='https://tbs.ubbcluj.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+    },
+    {
+        id: 6,
+        n: "Politehnica București - FAIMA",
+        m: "9.10",
+        d: "<h3>Facultatea de Antreprenoriat, Ingineria și Managementul Afacerilor</h3><p>Îmbină rigoarea ingineriei cu flexibilitatea economică.</p><h4>Admitere</h4><p>Examen scris tip grilă (Matematică + Economie/Fizică).</p><h4>Carieră</h4><p>Manageri tehnici, Consultanță în producție, Project Management.</p><a href='https://faima.upb.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+    },
+    {
+        id: 7,
+        n: "Transilvania Brașov - SEAA",
+        m: "9.25",
+        d: "<h3>Științe Economice și Administrarea Afacerilor</h3><p>Excelență în turism, comerț și servicii, profitând de poziția strategică a Brașovului.</p><h4>Admitere</h4><p>Concurs de dosare.</p><h4>Specializări unice</h4><p>Economia Comerțului, Turismului și Serviciilor.</p><a href='https://economice.unitbv.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+    },
+    {
+        id: 8,
+        n: "Universitatea din București - FAA",
+        m: "9.40",
+        d: "<h3>Facultatea de Administrație și Afaceri</h3><p>O facultate tânără și dinamică în cadrul celei mai vechi universități din București.</p><h4>Admitere</h4><p>Examen scris (50%) + Media Bacalaureat (50%).</p><h4>Focus</h4><p>Administrarea afacerilor, Marketing, Administrație publică.</p><a href='https://faa.unibuc.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+    }
 ];
 
 const masterBank = [
     { q: "Nevoile umane sunt, în raport cu resursele:", o: ["Limitate", "Nelimitate", "Statice"], c: 1 },
     { q: "Costul de oportunitate reprezintă:", o: ["Costul banilor", "Cea mai bună alternativă sacrificată", "Profitul net"], c: 1 },
-    { q: "Utilitatea marginală este zero când utilitatea totală este:", o: ["Minimă", "Maximă", "Negativă"], c: 1 }
+    { q: "Utilitatea marginală este zero când utilitatea totală este:", o: ["Minimă", "Maximă", "Negativă"], c: 1 },
+    { q: "Salariul este prețul plătit pentru:", o: ["Capital", "Pământ", "Muncă"], c: 2 },
+    { q: "Care dintre următoarele este un bun liber?", o: ["Aerul", "Haina", "Autobuzul"], c: 0 },
+    { q: "Piața cu concurență perfectă presupune:", o: ["Produse diferențiate", "Atomicitatea participanților", "Bariere la intrare"], c: 1 },
+    { q: "Inflația se manifestă prin:", o: ["Scăderea prețurilor", "Creșterea puterii de cumpărare", "Creșterea generalizată a prețurilor"], c: 2 },
+    { q: "Dobânda este prețul:", o: ["Muncii", "Capitalului împrumutat", "Pământului"], c: 1 },
+    { q: "Produsul Intern Brut (PIB) măsoară:", o: ["Bogăția totală", "Valoarea bunurilor finale produse într-un an", "Exporturile nete"], c: 1 },
+    { q: "Cererea este inelastică dacă:", o: ["Coeficientul elasticității < 1", "Coeficientul elasticității > 1", "Coeficientul elasticității = 1"], c: 0 }
 ];
 
 // --- LOGICA SUBPAGINI LECTII ---
@@ -212,17 +259,33 @@ function prevLibrarySlide() {
 // --- LOGICA QUIZ ---
 let currentQuestions = [];
 let currentIdx = 0, score = 0, timer, secs = 0, correct = 0, wrong = 0;
+let currentQuizType = "";
 
-function startQuiz() {
-    currentQuestions = [...masterBank].sort(() => 0.5 - Math.random()).slice(0, 20);
+function startQuiz(type = "general") {
+    currentQuizType = type;
+    // Aici am putea filtra masterBank în funcție de tip, momentan folosim toate întrebările
+    let bank = [...masterBank];
+    if(type === 'micro') bank = bank.filter((_, i) => i % 2 === 0); // Exemplu filtrare
+    if(type === 'macro') bank = bank.filter((_, i) => i % 2 !== 0);
+
+    currentQuestions = bank.sort(() => 0.5 - Math.random()).slice(0, 20);
+
+    // Resetare stare
     currentIdx = 0; score = 0; secs = 0; correct = 0; wrong = 0;
     document.getElementById('correct-count').innerText = 0;
     document.getElementById('wrong-count').innerText = 0;
+
     showPage('quiz');
+
+    // Timer
     clearInterval(timer);
     timer = setInterval(() => {
-        secs++; document.getElementById('timer').innerText = `${Math.floor(secs / 60)}:${secs % 60 < 10 ? '0' : ''}${secs % 60}`;
+        secs++;
+        const min = Math.floor(secs / 60);
+        const sec = secs % 60;
+        document.getElementById('timer').innerText = `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
     }, 1000);
+
     renderQ();
 }
 

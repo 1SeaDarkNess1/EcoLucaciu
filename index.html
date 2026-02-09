@@ -122,11 +122,39 @@
 
     <!-- Secțiunea GRILE -->
     <section id='grila' class='view'>
-        <div class='standalone-quiz-intro glass animate-in'>
-            <div class='icon-main'>📝</div>
-            <h2>Centru de <span class='gradient-text'>Evaluare</span></h2>
-            <p>Sistemul generează grile din toată materia. Gata de antrenament?</p>
-            <button class='btn-premium-large' onclick='startQuiz()'>Începe Simulararea</button>
+        <div class='quiz-dashboard animate-in'>
+            <div class='dashboard-header'>
+                <div class='icon-main'>📝</div>
+                <h2>Centru de <span class='gradient-text'>Evaluare</span></h2>
+                <p>Alege un test pentru a-ți verifica cunoștințele.</p>
+            </div>
+
+            <div class='quiz-grid'>
+                <div class='quiz-card glass' onclick='startQuiz("general")'>
+                    <div class='quiz-icon'>🌍</div>
+                    <h3>Economie Generală</h3>
+                    <p>20 Întrebări • Dificultate Medie</p>
+                    <button class='btn-start'>Începe Testul</button>
+                </div>
+                <div class='quiz-card glass' onclick='startQuiz("micro")'>
+                    <div class='quiz-icon'>💼</div>
+                    <h3>Microeconomie</h3>
+                    <p>15 Întrebări • Dificultate Ridicată</p>
+                    <button class='btn-start'>Începe Testul</button>
+                </div>
+                <div class='quiz-card glass' onclick='startQuiz("macro")'>
+                    <div class='quiz-icon'>📈</div>
+                    <h3>Macroeconomie</h3>
+                    <p>15 Întrebări • Dificultate Ridicată</p>
+                    <button class='btn-start'>Începe Testul</button>
+                </div>
+                <div class='quiz-card glass' onclick='startQuiz("admitere")'>
+                    <div class='quiz-icon'>🎓</div>
+                    <h3>Simulare Admitere</h3>
+                    <p>30 Întrebări • Tip Examen</p>
+                    <button class='btn-start'>Începe Testul</button>
+                </div>
+            </div>
         </div>
     </section>
 
