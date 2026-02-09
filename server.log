@@ -1,0 +1,16 @@
+127.0.0.1 - - [09/Feb/2026 21:37:09] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:37:10] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:37:10] "GET /script.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:37:17] "GET /Bibliotec%C4%83/03%20Consumatorul%20si%20utilitatea%20economica.pdf HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:37:54] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:37:54] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:37:54] "GET /script.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:38:31] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:38:31] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:38:31] "GET /script.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:39:12] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:39:12] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:39:12] "GET /script.js HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:39:45] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:39:45] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [09/Feb/2026 21:39:45] "GET /script.js HTTP/1.1" 200 -
