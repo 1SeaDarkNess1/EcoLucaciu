@@ -3,12 +3,28 @@ const path = require('path');
 
 // Mock DOM elements
 const mockElements = {
-    'modal-body': { innerHTML: '', focus: jest.fn() },
+    'modal-body': {
+        innerHTML: '',
+        focus: jest.fn(),
+        appendChild: jest.fn(function(child) {
+            // Simplified simulation of appendChild for text checks
+            if (child.textContent) this.innerHTML += child.textContent;
+            if (child.innerHTML) this.innerHTML += child.innerHTML;
+            if (child.tagName === 'HR') this.innerHTML += '<hr>';
+        })
+    },
     'uni-modal': {
         classList: {
-            add: jest.fn((cls) => mockElements['uni-modal'].classes.add(cls)),
-            remove: jest.fn((cls) => mockElements['uni-modal'].classes.delete(cls)),
-            contains: jest.fn((cls) => mockElements['uni-modal'].classes.has(cls))
+            add: jest.fn((cls) => {
+                if(mockElements['uni-modal'].classes) mockElements['uni-modal'].classes.add(cls);
+            }),
+            remove: jest.fn((cls) => {
+                 if(mockElements['uni-modal'].classes) mockElements['uni-modal'].classes.delete(cls);
+            }),
+            contains: jest.fn((cls) => {
+                 if(mockElements['uni-modal'].classes) return mockElements['uni-modal'].classes.has(cls);
+                 return false;
+            })
         },
         classes: new Set(['hidden']),
         focus: jest.fn()
@@ -17,8 +33,30 @@ const mockElements = {
 };
 
 global.document = {
-    getElementById: jest.fn((id) => mockElements[id]),
+    getElementById: jest.fn((id) => {
+        if (!mockElements[id]) {
+             // Return a generic mock if not found, to avoid crashes
+             return { focus: jest.fn(), classList: { add: jest.fn(), remove: jest.fn() } };
+        }
+        return mockElements[id];
+    }),
     querySelectorAll: jest.fn(() => []),
+    activeElement: { className: '', id: '', focus: jest.fn() },
+    createElement: jest.fn((tag) => {
+        return {
+            tagName: tag.toUpperCase(),
+            textContent: '',
+            innerHTML: '',
+            style: {},
+            className: '',
+            appendChild: jest.fn(function(child) {
+                 if (child.textContent) this.textContent += child.textContent;
+                 if (child.innerHTML) this.innerHTML += child.innerHTML;
+            }),
+            setAttribute: jest.fn(),
+            focus: jest.fn()
+        };
+    })
 };
 
 global.window = {

@@ -201,3 +201,67 @@ body {
 .close-btn { background: transparent; border: none; padding: 0; }
 .close-btn:focus-visible { outline: 2px solid var(--accent); border-radius: 4px; }
 .nav-card:focus-visible { outline: 2px solid var(--accent); border-color: var(--accent); transform: translateY(-5px); }
+
+/* Library Slide Styles */
+.ppt-slide img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    margin: 20px 0;
+    transition: transform 0.3s ease;
+}
+
+.ppt-slide img:hover {
+    transform: scale(1.02);
+}
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+/* Code Block Styles */
+.ppt-slide pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    margin: 20px 0;
+}
+
+.ppt-slide code {
+    font-family: inherit;
+    color: #38bdf8; /* Light blue for code */
+}
+
+.language-python {
+    color: #e2e8f0;
+}
+
+/* Scrollbar for pre */
+.ppt-slide pre::-webkit-scrollbar {
+    height: 8px;
+}
+
+.ppt-slide pre::-webkit-scrollbar-track {
+    background: #0f172a;
+    border-radius: 4px;
+}
+
+.ppt-slide pre::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 4px;
+}
+
+.ppt-slide pre::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
