@@ -69,15 +69,16 @@ function openLesson(index) {
     
     document.getElementById('lesson-title').innerText = lectie.titlu;
     const body = document.getElementById('lesson-body');
-    body.innerHTML = "";
     
+    let htmlContent = "";
     lectie.slides.forEach(s => {
-        body.innerHTML += `
+        htmlContent += `
             <div class='ppt-slide'>
                 <span class='slide-title'>${s.t}</span>
                 <div class='slide-text'>${s.c}</div>
             </div>`;
     });
+    body.innerHTML = htmlContent;
     
     showPage('lectie-detaliu');
     if (window.MathJax) MathJax.typeset();
@@ -150,18 +151,23 @@ function closeModal() { document.getElementById('uni-modal').classList.add('hidd
 // --- INITIALIZARE ---
 window.onload = () => {
     // Populare listă capitole
+    let chaptersHtml = "";
     lectiiCompleta.forEach((l, idx) => {
-        document.getElementById('chapters-list').innerHTML += `
+        chaptersHtml += `
             <div class='chapter-card glass' onclick='openLesson(${idx})'>
                 <h3>CAPITOLUL ${idx + 1}</h3>
                 <p>${l.titlu}</p>
                 <small style='color: var(--accent)'>Click pentru lecție →</small>
             </div>`;
     });
+    document.getElementById('chapters-list').innerHTML = chaptersHtml;
+
     // Populare universități
+    let unisHtml = "";
     unis.forEach(u => {
-        document.getElementById('uni-grid').innerHTML += `<div class='nav-card glass' onclick='openUni(${u.id})'><h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p></div>`;
+        unisHtml += `<div class='nav-card glass' onclick='openUni(${u.id})'><h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p></div>`;
     });
+    document.getElementById('uni-grid').innerHTML = unisHtml;
     
     // Setăm starea inițială în istoric
     history.replaceState({ pageId: 'home' }, "", "#home");
