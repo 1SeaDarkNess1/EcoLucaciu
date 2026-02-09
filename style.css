@@ -1,3 +1,5 @@
+* { box-sizing: border-box; }
+
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap');
 
 :root {
@@ -22,7 +24,17 @@ body {
     background: var(--bg);
     color: var(--text);
     overflow-x: hidden;
+    width: 100%;
     line-height: 1.6;
+}
+
+.ppt-slide img, .ppt-slide video, .ppt-slide iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+.ppt-slide iframe {
+    min-height: 400px;
 }
 
 .bg-visuals {
@@ -143,12 +155,12 @@ body {
 /* Hero - Compact Grid */
 .home-grid-compact {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     align-items: stretch;
     max-width: 1200px;
     margin: 0 auto;
-    height: calc(100vh - 140px);
+    min-height: calc(100vh - 140px);
     align-content: center;
 }
 
@@ -160,7 +172,14 @@ body {
 }
 
 /* Chapters List Styles */
-.chapters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; }
+.chapters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 40px; }
+
+.uni-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
 .chapter-card { padding: 30px; cursor: pointer; border: 1px solid var(--border); border-radius: 20px; transition: 0.3s; background: white; }
 .chapter-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: var(--shadow); }
 .chapter-card h3 { margin: 0 0 10px 0; color: var(--accent); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -253,7 +272,7 @@ body {
 /* Quiz Dashboard */
 .quiz-dashboard { text-align: center; padding-top: 20px; }
 .dashboard-header { margin-bottom: 50px; }
-.quiz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+.quiz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
 .quiz-card { padding: 30px 20px; text-align: center; transition: 0.3s; position: relative; background: white; border-radius: 20px; border: 1px solid var(--border); }
 .quiz-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--shadow); }
 .quiz-icon { font-size: 3rem; margin-bottom: 15px; display: inline-block; }
@@ -319,7 +338,7 @@ body {
 /* Reader View (New) */
 .reader-view { padding: 0 !important; flex-direction: column; height: 100vh; overflow: hidden; background: #fff; }
 .view.reader-view.active { display: flex; }
-.reader-header { height: 60px; background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 10; }
+.reader-header { min-height: 60px; height: auto; background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; z-index: 10; flex-wrap: wrap; gap: 10px; }
 .reader-title { font-size: 1.1rem; font-weight: 700; margin: 0; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .reader-layout { display: flex; flex: 1; overflow: hidden; position: relative; }
 .reader-toc { width: 250px; background: #fafafa; border-right: 1px solid var(--border); overflow-y: auto; transition: margin-left 0.3s ease; margin-left: 0; flex-shrink: 0; }
@@ -368,7 +387,7 @@ body {
 @media (max-width: 768px) {
     .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
     .sidebar.open { transform: translateX(0); }
-    .main-content { margin-left: 0; }
+    .main-content { margin-left: 0 !important; }
     .view { padding: 30px 20px; }
 
     .home-grid-compact {
@@ -385,9 +404,9 @@ body {
     }
 
     .paper-sheet {
-        padding: 20px;
-        width: calc(100% - 20px);
-        margin: 10px auto;
+        padding: 20px !important;
+        width: 95% !important;
+        margin: 10px auto !important;
     }
 
     /* Add hamburger menu if needed, or rely on content structure */
@@ -411,4 +430,27 @@ body {
 }
 @media (max-width: 768px) {
     #mobile-toggle { display: block; }
+}
+
+/* Intermediate screens - Adjusting main content to prevent cramped layout */
+@media (min-width: 769px) and (max-width: 1100px) {
+    .sidebar {
+        width: 240px;
+        padding: 30px 20px;
+    }
+    .main-content {
+        margin-left: 240px;
+    }
+    .view {
+        padding: 40px 30px;
+    }
+}
+
+/* Modal Responsiveness */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95% !important;
+        padding: 20px !important;
+        margin: 10px;
+    }
 }
