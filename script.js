@@ -23,7 +23,14 @@ window.onpopstate = function(event) {
 
 // --- DATA: LECTII COMPLETE (EXTRASE DIN PPT-URILE TALE) ---
 const lectiiCompleta = [
-    { id: 0, titlu: "Nevoile și Resursele", file: "Materiale/Lectia 1-Nevoi_si_resurse.ppt", type: "ppt" },
+    { id: 0, titlu: "Nevoile și Resursele", file: "Materiale/Lectia 1-Nevoi_si_resurse.ppt", type: "ppt",
+        slides: [
+            { t: "Introducere", c: "Economia studiază modul în care societatea gestionează resursele limitate pentru a satisface nevoi nelimitate.", img: "home_page.png" },
+            { t: "Nevoile Umane", c: "Nevoile reprezintă cerințe sau dorințe ale oamenilor, care pot fi fiziologice, sociale sau spirituale." },
+            { t: "Resursele", c: "Resursele sunt elementele utilizate pentru producerea bunurilor și serviciilor. Ele sunt limitate în raport cu nevoile." },
+            { t: "Tensiunea Nevoi-Resurse", c: "Raritatea este problema fundamentală a economiei. Trebuie să alegem ce să producem și ce să consumăm." }
+        ]
+    },
     { id: 1, titlu: "Costul de Oportunitate", file: "Materiale/2-Costul_de_oportunitate.ppt", type: "ppt" },
     { id: 2, titlu: "Oferta", file: "Materiale/2.1.-2.2-Oferta.ppt", type: "ppt" },
     { id: 3, titlu: "Factori de Producție (1)", file: "Materiale/2.3-Factori_de_productie-_partea_1 (1).ppt", type: "ppt" },
@@ -172,9 +179,98 @@ function updateActiveTOC(tocId, idx) {
     if(items[idx]) items[idx].classList.add('active');
 }
 
+// --- LOGICA MODERN SLIDE VIEWER (SWIPER) ---
+let swiperInstance = null;
+
+function openSlideViewer(type, index) {
+    let slides = [];
+    let title = '';
+
+    if (type === 'lesson') {
+        const lectie = lectiiCompleta[index];
+        slides = lectie.slides || [];
+        title = lectie.titlu;
+    } else if (type === 'library') {
+        const item = bibliotecaCompleta[index];
+        slides = item.slides || [];
+        title = item.titlu;
+    }
+
+    if (slides.length === 0) {
+        slides = [{ t: title, c: '<p>Acest material este disponibil momentan doar pentru descărcare.</p>' }];
+    }
+
+    const wrapper = document.getElementById('swiper-wrapper');
+    wrapper.innerHTML = '';
+
+    slides.forEach(slide => {
+        const swiperSlide = document.createElement('div');
+        swiperSlide.className = 'swiper-slide';
+
+        let contentHtml = '<div class="slide-content-wrapper">';
+        contentHtml += '<h2 class="slide-title-modern">' + slide.t + '</h2>';
+        contentHtml += '<div class="slide-text-modern">' + slide.c + '</div>';
+
+        if (slide.img) {
+            contentHtml += '<img src="' + slide.img + '" alt="' + slide.t + '" class="slide-image-modern">';
+        }
+
+        contentHtml += '</div>';
+        swiperSlide.innerHTML = contentHtml;
+        wrapper.appendChild(swiperSlide);
+    });
+
+    document.getElementById('slide-viewer-modal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    if (swiperInstance) swiperInstance.destroy();
+
+    swiperInstance = new Swiper('.mySwiper', {
+        speed: 800,
+        loop: false,
+        effect: 'fade',
+        fadeEffect: { crossFade: true },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        keyboard: {
+            enabled: true,
+            onlyInViewport: true,
+        },
+        mousewheel: true,
+    });
+}
+
+function closeSlideViewer() {
+    document.getElementById('slide-viewer-modal').classList.add('hidden');
+    document.body.style.overflow = '';
+    if (swiperInstance) swiperInstance.destroy();
+}
+
+function toggleFullScreen() {
+    const elem = document.getElementById('slide-viewer-modal');
+    if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => {
+            console.error('Full screen error:', err);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
 function openLesson(index) {
     const lectie = lectiiCompleta[index];
     if(!lectie) return;
+
+    if (lectie.slides || lectie.type === 'ppt') {
+        openSlideViewer('lesson', index);
+        return;
+    }
     
     document.getElementById('lesson-title').innerText = lectie.titlu;
 
@@ -252,6 +348,11 @@ let currentLibrarySlides = [];
 function openLibraryItem(index) {
     const item = bibliotecaCompleta[index];
     if(!item) return;
+
+    if (item.slides) {
+        openSlideViewer('library', index);
+        return;
+    }
 
     document.getElementById('library-title').innerText = item.titlu;
 
@@ -489,7 +590,7 @@ window.onload = () => {
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Escape') { closeModal(); closeSlideViewer(); }
     });
 
     // Populare listă bibliotecă
