@@ -249,13 +249,26 @@ function finish() {
     document.getElementById('performance-msg').innerText = score >= 85 ? "Excelent! Pregătit de succes." : "Continuă studiul pentru rezultate mai bune.";
 }
 
+let lastFocusedElement = null;
+
 function openUni(id) {
     const u = unis.find(x => x.id === id);
     if (!u) return;
     document.getElementById('modal-body').innerHTML = `<h1>${u.n}</h1><p>Medie: <b>${u.m}</b></p><hr>${u.d}`;
     document.getElementById('uni-modal').classList.remove('hidden');
+
+    lastFocusedElement = document.activeElement;
+    const closeBtn = document.getElementById('modal-close-btn');
+    if (closeBtn) closeBtn.focus();
 }
-function closeModal() { document.getElementById('uni-modal').classList.add('hidden'); }
+
+function closeModal() {
+    document.getElementById('uni-modal').classList.add('hidden');
+    if (lastFocusedElement) {
+        lastFocusedElement.focus();
+        lastFocusedElement = null;
+    }
+}
 
 // --- INITIALIZARE ---
 window.onload = () => {
@@ -269,8 +282,29 @@ window.onload = () => {
             </div>`;
     });
     // Populare universități
+    const uniGrid = document.getElementById('uni-grid');
     unis.forEach(u => {
-        document.getElementById('uni-grid').innerHTML += `<div class='nav-card glass' onclick='openUni(${u.id})'><h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p></div>`;
+        const card = document.createElement('div');
+        card.className = 'nav-card glass';
+        card.onclick = () => openUni(u.id);
+
+        // Accessibility
+        card.tabIndex = 0;
+        card.role = 'button';
+        card.setAttribute('aria-label', `Vezi detalii despre ${u.n}`);
+        card.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openUni(u.id);
+            }
+        };
+
+        card.innerHTML = `<h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p>`;
+        uniGrid.appendChild(card);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
     });
 
     // Populare listă bibliotecă

@@ -171,9 +171,9 @@
     </section>
 
     <!-- MODALA UNIVERSITATI -->
-    <div id='uni-modal' class='modal hidden' onclick='closeModal()'>
+    <div id='uni-modal' class='modal hidden' onclick='closeModal()' role='dialog' aria-modal='true'>
         <div class='modal-content glass' onclick='event.stopPropagation()'>
-            <span class='close-btn' onclick='closeModal()'>&times;</span>
+            <button id='modal-close-btn' class='close-btn' onclick='closeModal()' aria-label='Închide'>&times;</button>
             <div id='modal-body'></div>
         </div>
     </div>

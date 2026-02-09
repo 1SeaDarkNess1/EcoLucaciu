@@ -3,15 +3,17 @@ const path = require('path');
 
 // Mock DOM elements
 const mockElements = {
-    'modal-body': { innerHTML: '' },
+    'modal-body': { innerHTML: '', focus: jest.fn() },
     'uni-modal': {
         classList: {
             add: jest.fn((cls) => mockElements['uni-modal'].classes.add(cls)),
             remove: jest.fn((cls) => mockElements['uni-modal'].classes.delete(cls)),
             contains: jest.fn((cls) => mockElements['uni-modal'].classes.has(cls))
         },
-        classes: new Set(['hidden'])
-    }
+        classes: new Set(['hidden']),
+        focus: jest.fn()
+    },
+    'modal-close-btn': { focus: jest.fn() }
 };
 
 global.document = {
