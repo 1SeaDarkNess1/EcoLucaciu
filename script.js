@@ -107,15 +107,32 @@ function openLesson(index) {
 function renderSlide() {
     const body = document.getElementById('lesson-body');
     
-    let slidesHTML = "";
+fix-xss-university-grid-13260253321983992451
     lectie.slides.forEach(s => {
-        slidesHTML += `
-            <div class='ppt-slide'>
-                <span class='slide-title'>${s.t}</span>
-                <div class='slide-text'>${s.c}</div>
-            </div>`;
+    const slideDiv = document.createElement('div');
+    slideDiv.className = 'ppt-slide';
+
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'slide-title';
+    titleSpan.textContent = s.t; // Sigur împotriva XSS
+
+    const textDiv = document.createElement('div');
+    textDiv.className = 'slide-text';
+    textDiv.innerHTML = s.c; // Păstrat innerHTML doar dacă s.c conține HTML intenționat (ex: bold, italic)
+
+    slideDiv.appendChild(titleSpan);
+    slideDiv.appendChild(textDiv);
+    body.appendChild(slideDiv);
     });
-    body.innerHTML = slidesHTML;
+
+    body.innerHTML = `
+        <div class='ppt-slide'>
+            <span class='slide-title'>${slide.t}</span>
+            <div class='slide-text'>${slide.c}</div>
+        </div>`;
+
+    document.getElementById('slide-counter').innerText = `Slide ${currentSlideIndex + 1} / ${currentLessonSlides.length}`;
+ main
     
     const prevBtn = document.querySelector("button[onclick='prevSlide()']");
     const nextBtn = document.querySelector("button[onclick='nextSlide()']");
@@ -251,6 +268,26 @@ function finish() {
 
 function openUni(id) {
     const u = unis.find(x => x.id === id);
+    const modalBody = document.getElementById('modal-body');
+    modalBody.innerHTML = "";
+
+    const h1 = document.createElement('h1');
+    h1.textContent = u.n;
+    modalBody.appendChild(h1);
+
+    const p = document.createElement('p');
+    p.textContent = 'Medie: ';
+    const b = document.createElement('b');
+    b.textContent = u.m;
+    p.appendChild(b);
+    modalBody.appendChild(p);
+
+    modalBody.appendChild(document.createElement('hr'));
+
+    const details = document.createElement('div');
+    details.innerHTML = u.d;
+    modalBody.appendChild(details);
+
     if (!u) return;
     document.getElementById('modal-body').innerHTML = `<h1>${u.n}</h1><p>Medie: <b>${u.m}</b></p><hr>${u.d}`;
     document.getElementById('uni-modal').classList.remove('hidden');
@@ -260,21 +297,61 @@ function closeModal() { document.getElementById('uni-modal').classList.add('hidd
 // --- INITIALIZARE ---
 window.onload = () => {
     // Populare listă capitole
-    let chaptersHTML = "";
+    const chaptersList = document.getElementById('chapters-list');
     lectiiCompleta.forEach((l, idx) => {
-        chaptersHTML += `
-            <div class='chapter-card glass' onclick='openLesson(${idx})'>
-                <h3>CAPITOLUL ${idx + 1}</h3>
-                <p>${l.titlu}</p>
-                <small style='color: var(--accent)'>Click pentru lecție →</small>
-            </div>`;
+        const div = document.createElement('div');
+        div.className = 'chapter-card glass';
+        div.onclick = () => openLesson(idx);
+
+        const h3 = document.createElement('h3');
+        h3.textContent = `CAPITOLUL ${idx + 1}`;
+
+        const p = document.createElement('p');
+        p.textContent = l.titlu;
+
+        const small = document.createElement('small');
+        small.style.color = 'var(--accent)';
+        small.textContent = 'Click pentru lecție →';
+
+        div.appendChild(h3);
+        div.appendChild(p);
+        div.appendChild(small);
+        chaptersList.appendChild(div);
     });
     document.getElementById('chapters-list').innerHTML = chaptersHTML;
 
     // Populare universități
-    let unisHTML = "";
+    const uniGrid = document.getElementById('uni-grid');
     unis.forEach(u => {
-        unisHTML += `<div class='nav-card glass' onclick='openUni(${u.id})'><h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p></div>`;
+        const div = document.createElement('div');
+        div.className = 'nav-card glass';
+        div.onclick = () => openUni(u.id);
+
+        const h3 = document.createElement('h3');
+        h3.textContent = u.n;
+
+        const p = document.createElement('p');
+        p.textContent = 'Medie: ';
+        const b = document.createElement('b');
+        b.textContent = u.m;
+
+        p.appendChild(b);
+        div.appendChild(h3);
+        div.appendChild(p);
+        uniGrid.appendChild(div);
+    });
+
+    // Populare listă bibliotecă
+    bibliotecaCompleta.forEach((l, idx) => {
+        const list = document.getElementById('library-list');
+        if(list) {
+            list.innerHTML += `
+                <div class='chapter-card glass' onclick='openLibraryItem(${idx})'>
+                    <h3>RESURSA ${idx + 1}</h3>
+                    <p>${l.titlu}</p>
+                    <small style='color: var(--accent)'>Click pentru detalii →</small>
+                </div>`;
+        }
     });
     document.getElementById('uni-grid').innerHTML = unisHTML;
     
