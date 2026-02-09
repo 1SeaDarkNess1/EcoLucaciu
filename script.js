@@ -228,7 +228,7 @@ function renderSlide() {
 
     updateActiveTOC('lesson-toc', currentSlideIndex);
 
-    if (window.MathJax) MathJax.typeset();
+    if (window.MathJax) MathJax.typesetPromise();
 }
 
 function nextSlide() {
@@ -307,7 +307,7 @@ function renderLibrarySlide() {
 
     updateActiveTOC('library-toc', currentLibrarySlideIndex);
 
-    if (window.MathJax) MathJax.typeset();
+    if (window.MathJax) MathJax.typesetPromise();
 }
 
 function nextLibrarySlide() {
