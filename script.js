@@ -106,16 +106,16 @@ function openLesson(index) {
 
 function renderSlide() {
     const body = document.getElementById('lesson-body');
-    const slide = currentLessonSlides[currentSlideIndex];
-    if(!slide) return;
     
-    body.innerHTML = `
-        <div class='ppt-slide'>
-            <span class='slide-title'>${slide.t}</span>
-            <div class='slide-text'>${slide.c}</div>
-        </div>`;
-
-    document.getElementById('slide-counter').innerText = `Slide ${currentSlideIndex + 1} / ${currentLessonSlides.length}`;
+    let htmlContent = "";
+    lectie.slides.forEach(s => {
+        htmlContent += `
+            <div class='ppt-slide'>
+                <span class='slide-title'>${s.t}</span>
+                <div class='slide-text'>${s.c}</div>
+            </div>`;
+    });
+    body.innerHTML = htmlContent;
     
     const prevBtn = document.querySelector("button[onclick='prevSlide()']");
     const nextBtn = document.querySelector("button[onclick='nextSlide()']");
@@ -260,31 +260,23 @@ function closeModal() { document.getElementById('uni-modal').classList.add('hidd
 // --- INITIALIZARE ---
 window.onload = () => {
     // Populare listă capitole
+    let chaptersHtml = "";
     lectiiCompleta.forEach((l, idx) => {
-        document.getElementById('chapters-list').innerHTML += `
+        chaptersHtml += `
             <div class='chapter-card glass' onclick='openLesson(${idx})'>
                 <h3>CAPITOLUL ${idx + 1}</h3>
                 <p>${l.titlu}</p>
                 <small style='color: var(--accent)'>Click pentru lecție →</small>
             </div>`;
     });
-    // Populare universități
-    unis.forEach(u => {
-        document.getElementById('uni-grid').innerHTML += `<div class='nav-card glass' onclick='openUni(${u.id})'><h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p></div>`;
-    });
+    document.getElementById('chapters-list').innerHTML = chaptersHtml;
 
-    // Populare listă bibliotecă
-    bibliotecaCompleta.forEach((l, idx) => {
-        const list = document.getElementById('library-list');
-        if(list) {
-            list.innerHTML += `
-                <div class='chapter-card glass' onclick='openLibraryItem(${idx})'>
-                    <h3>RESURSA ${idx + 1}</h3>
-                    <p>${l.titlu}</p>
-                    <small style='color: var(--accent)'>Click pentru detalii →</small>
-                </div>`;
-        }
+    // Populare universități
+    let unisHtml = "";
+    unis.forEach(u => {
+        unisHtml += `<div class='nav-card glass' onclick='openUni(${u.id})'><h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p></div>`;
     });
+    document.getElementById('uni-grid').innerHTML = unisHtml;
     
     // Setăm starea inițială în istoric
     history.replaceState({ pageId: 'home' }, "", "#home");
