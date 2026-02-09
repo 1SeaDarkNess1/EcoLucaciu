@@ -454,3 +454,72 @@ body {
         margin: 10px;
     }
 }
+
+/* --- GLOBAL RESPONSIVE FIXES --- */
+img, video, iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        z-index: 1000;
+        height: 100%;
+        top: 0;
+        left: 0;
+        /* existing styles handle transform */
+    }
+
+    /* Ensure quiz layout stacks vertically */
+    .quiz-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        width: 100%;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    /* Prevent overflow on small screens */
+    .view {
+        padding: 20px 15px;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Ensure grids wrap correctly */
+    .quiz-grid, .chapters-grid, .uni-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Reader view adjustments */
+    .reader-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .reader-toolbar {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* Small screen adjustments */
+@media (max-width: 400px) {
+    .nav-card {
+        min-height: 180px;
+        padding: 20px;
+    }
+
+    h1, h2, .section-title {
+        font-size: 1.5rem;
+    }
+
+    .card-icon {
+        font-size: 2rem;
+    }
+}
