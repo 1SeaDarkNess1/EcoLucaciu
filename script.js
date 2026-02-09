@@ -154,14 +154,21 @@ function openLesson(index) {
     const nav = document.querySelector("#lectie-detaliu .slide-navigation");
 
     if (lectie.type === 'ppt') {
-        // Manipulate innerHTML safely or use specific elements
+        const fullUrl = window.location.origin + window.location.pathname.replace('index.html', '') + lectie.file;
+        const viewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fullUrl)}`;
+
         body.innerHTML = `
-            <div style="text-align:center; padding: 40px;">
-                <div style="font-size: 4rem; margin-bottom: 20px;">📊</div>
-                <h3>Material PowerPoint</h3>
-                <p style="color: #64748b; margin-bottom: 30px;">Acest curs este disponibil ca prezentare PowerPoint.</p>
-                <a href="${lectie.file}" class="btn-start" style="text-decoration: none; display: inline-block;" download>
-                    📥 Descarcă Prezentarea
+            <div style="width: 100%; height: 500px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px;">
+                <iframe src="${viewerUrl}" width="100%" height="100%" frameborder="0">
+                    Acest browser nu suportă iframe-uri.
+                </iframe>
+            </div>
+            <div style="text-align:center; padding: 10px;">
+                <p style="color: #64748b; font-size: 0.9rem;">
+                    <em>Notă: Vizualizatorul funcționează doar dacă site-ul este online. Pe localhost, folosește butonul de mai jos.</em>
+                </p>
+                <a href="${lectie.file}" class="btn-start" style="text-decoration: none; display: inline-block; padding: 10px 20px; font-size: 0.9rem;" download>
+                    📥 Descarcă / Vizualizează Offline
                 </a>
             </div>`;
         if(nav) nav.style.display = 'none';
@@ -447,28 +454,52 @@ window.onload = () => {
     });
 
     // Populare listă bibliotecă
-    bibliotecaCompleta.forEach((l, idx) => {
-        const list = document.getElementById('library-list');
-        if(list) {
-            list.innerHTML += `
-                <div class='chapter-card glass' onclick='openLibraryItem(${idx})'>
-                    <h3>RESURSA ${idx + 1}</h3>
-                    <p>${l.titlu}</p>
-                    <small style='color: var(--accent)'>Click pentru detalii →</small>
-                </div>`;
-        }
-    });
+    const libraryList = document.getElementById('library-list');
+    if (libraryList) {
+        bibliotecaCompleta.forEach((l, idx) => {
+            const div = document.createElement('div');
+            div.className = 'chapter-card glass';
+            div.onclick = () => openLibraryItem(idx);
+
+            const h3 = document.createElement('h3');
+            h3.textContent = `RESURSA ${idx + 1}`;
+
+            const p = document.createElement('p');
+            p.textContent = l.titlu;
+
+            const small = document.createElement('small');
+            small.style.color = 'var(--accent)';
+            small.textContent = 'Click pentru detalii →';
+
+            div.appendChild(h3);
+            div.appendChild(p);
+            div.appendChild(small);
+            libraryList.appendChild(div);
+        });
+    }
 
     // Populare listă simulări
     const simulariList = document.getElementById('simulari-list');
-    if(simulariList && typeof simulari !== 'undefined') {
+    if (simulariList && typeof simulari !== 'undefined') {
         simulari.forEach(s => {
-            simulariList.innerHTML += `
-                <div class='chapter-card glass' onclick='window.open("${s.file}", "_blank")'>
-                    <h3>📄 PDF</h3>
-                    <p>${s.titlu}</p>
-                    <small style='color: var(--accent)'>Deschide Fișier →</small>
-                </div>`;
+            const div = document.createElement('div');
+            div.className = 'chapter-card glass';
+            div.onclick = () => window.open(s.file, "_blank");
+
+            const h3 = document.createElement('h3');
+            h3.textContent = '📄 PDF';
+
+            const p = document.createElement('p');
+            p.textContent = s.titlu;
+
+            const small = document.createElement('small');
+            small.style.color = 'var(--accent)';
+            small.textContent = 'Deschide Fișier →';
+
+            div.appendChild(h3);
+            div.appendChild(p);
+            div.appendChild(small);
+            simulariList.appendChild(div);
         });
     }
     
