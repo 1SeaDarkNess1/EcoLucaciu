@@ -251,6 +251,7 @@ function finish() {
 
 function openUni(id) {
     const u = unis.find(x => x.id === id);
+    if (!u) return;
     document.getElementById('modal-body').innerHTML = `<h1>${u.n}</h1><p>Medie: <b>${u.m}</b></p><hr>${u.d}`;
     document.getElementById('uni-modal').classList.remove('hidden');
 }
