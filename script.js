@@ -329,6 +329,8 @@ function finish() {
     document.getElementById('performance-msg').innerText = score >= 85 ? "Excelent! Pregătit de succes." : "Continuă studiul pentru rezultate mai bune.";
 }
 
+let lastFocusedElement = null;
+
 function openUni(id) {
     const u = unis.find(x => x.id === id);
     const modalBody = document.getElementById('modal-body');
@@ -354,8 +356,19 @@ function openUni(id) {
     if (!u) return;
     document.getElementById('modal-body').innerHTML = `<h1>${u.n}</h1><p>Medie: <b>${u.m}</b></p><hr>${u.d}`;
     document.getElementById('uni-modal').classList.remove('hidden');
+
+    lastFocusedElement = document.activeElement;
+    const closeBtn = document.getElementById('modal-close-btn');
+    if (closeBtn) closeBtn.focus();
 }
-function closeModal() { document.getElementById('uni-modal').classList.add('hidden'); }
+
+function closeModal() {
+    document.getElementById('uni-modal').classList.add('hidden');
+    if (lastFocusedElement) {
+        lastFocusedElement.focus();
+        lastFocusedElement = null;
+    }
+}
 
 // --- INITIALIZARE ---
 window.onload = () => {
@@ -386,22 +399,27 @@ window.onload = () => {
     // Populare universități
     const uniGrid = document.getElementById('uni-grid');
     unis.forEach(u => {
-        const div = document.createElement('div');
-        div.className = 'nav-card glass';
-        div.onclick = () => openUni(u.id);
+        const card = document.createElement('div');
+        card.className = 'nav-card glass';
+        card.onclick = () => openUni(u.id);
 
-        const h3 = document.createElement('h3');
-        h3.textContent = u.n;
+        // Accessibility
+        card.tabIndex = 0;
+        card.role = 'button';
+        card.setAttribute('aria-label', `Vezi detalii despre ${u.n}`);
+        card.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openUni(u.id);
+            }
+        };
 
-        const p = document.createElement('p');
-        p.textContent = 'Medie: ';
-        const b = document.createElement('b');
-        b.textContent = u.m;
+        card.innerHTML = `<h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p>`;
+        uniGrid.appendChild(card);
+    });
 
-        p.appendChild(b);
-        div.appendChild(h3);
-        div.appendChild(p);
-        uniGrid.appendChild(div);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
     });
 
     // Populare listă bibliotecă
