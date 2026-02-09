@@ -106,8 +106,6 @@ function openLesson(index) {
 
 function renderSlide() {
     const body = document.getElementById('lesson-body');
-    const slide = currentLessonSlides[currentSlideIndex];
-    if(!slide) return;
     
 fix-xss-university-grid-13260253321983992451
     lectie.slides.forEach(s => {
@@ -320,6 +318,8 @@ window.onload = () => {
         div.appendChild(small);
         chaptersList.appendChild(div);
     });
+    document.getElementById('chapters-list').innerHTML = chaptersHTML;
+
     // Populare universități
     const uniGrid = document.getElementById('uni-grid');
     unis.forEach(u => {
@@ -353,6 +353,7 @@ window.onload = () => {
                 </div>`;
         }
     });
+    document.getElementById('uni-grid').innerHTML = unisHTML;
     
     // Setăm starea inițială în istoric
     history.replaceState({ pageId: 'home' }, "", "#home");
