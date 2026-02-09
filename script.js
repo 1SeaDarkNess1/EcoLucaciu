@@ -72,11 +72,20 @@ function openLesson(index) {
     body.innerHTML = "";
     
     lectie.slides.forEach(s => {
-        body.innerHTML += `
-            <div class='ppt-slide'>
-                <span class='slide-title'>${s.t}</span>
-                <div class='slide-text'>${s.c}</div>
-            </div>`;
+        const slideDiv = document.createElement('div');
+        slideDiv.className = 'ppt-slide';
+
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'slide-title';
+        titleSpan.textContent = s.t;
+
+        const textDiv = document.createElement('div');
+        textDiv.className = 'slide-text';
+        textDiv.innerHTML = s.c;
+
+        slideDiv.appendChild(titleSpan);
+        slideDiv.appendChild(textDiv);
+        body.appendChild(slideDiv);
     });
     
     showPage('lectie-detaliu');
@@ -142,7 +151,26 @@ function finish() {
 
 function openUni(id) {
     const u = unis.find(x => x.id === id);
-    document.getElementById('modal-body').innerHTML = `<h1>${u.n}</h1><p>Medie: <b>${u.m}</b></p><hr>${u.d}`;
+    const modalBody = document.getElementById('modal-body');
+    modalBody.innerHTML = "";
+
+    const h1 = document.createElement('h1');
+    h1.textContent = u.n;
+    modalBody.appendChild(h1);
+
+    const p = document.createElement('p');
+    p.textContent = 'Medie: ';
+    const b = document.createElement('b');
+    b.textContent = u.m;
+    p.appendChild(b);
+    modalBody.appendChild(p);
+
+    modalBody.appendChild(document.createElement('hr'));
+
+    const details = document.createElement('div');
+    details.innerHTML = u.d;
+    modalBody.appendChild(details);
+
     document.getElementById('uni-modal').classList.remove('hidden');
 }
 function closeModal() { document.getElementById('uni-modal').classList.add('hidden'); }
@@ -150,17 +178,46 @@ function closeModal() { document.getElementById('uni-modal').classList.add('hidd
 // --- INITIALIZARE ---
 window.onload = () => {
     // Populare listă capitole
+    const chaptersList = document.getElementById('chapters-list');
     lectiiCompleta.forEach((l, idx) => {
-        document.getElementById('chapters-list').innerHTML += `
-            <div class='chapter-card glass' onclick='openLesson(${idx})'>
-                <h3>CAPITOLUL ${idx + 1}</h3>
-                <p>${l.titlu}</p>
-                <small style='color: var(--accent)'>Click pentru lecție →</small>
-            </div>`;
+        const div = document.createElement('div');
+        div.className = 'chapter-card glass';
+        div.onclick = () => openLesson(idx);
+
+        const h3 = document.createElement('h3');
+        h3.textContent = `CAPITOLUL ${idx + 1}`;
+
+        const p = document.createElement('p');
+        p.textContent = l.titlu;
+
+        const small = document.createElement('small');
+        small.style.color = 'var(--accent)';
+        small.textContent = 'Click pentru lecție →';
+
+        div.appendChild(h3);
+        div.appendChild(p);
+        div.appendChild(small);
+        chaptersList.appendChild(div);
     });
     // Populare universități
+    const uniGrid = document.getElementById('uni-grid');
     unis.forEach(u => {
-        document.getElementById('uni-grid').innerHTML += `<div class='nav-card glass' onclick='openUni(${u.id})'><h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p></div>`;
+        const div = document.createElement('div');
+        div.className = 'nav-card glass';
+        div.onclick = () => openUni(u.id);
+
+        const h3 = document.createElement('h3');
+        h3.textContent = u.n;
+
+        const p = document.createElement('p');
+        p.textContent = 'Medie: ';
+        const b = document.createElement('b');
+        b.textContent = u.m;
+
+        p.appendChild(b);
+        div.appendChild(h3);
+        div.appendChild(p);
+        uniGrid.appendChild(div);
     });
     
     // Setăm starea inițială în istoric
