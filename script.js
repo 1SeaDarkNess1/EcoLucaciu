@@ -150,6 +150,34 @@ const masterBank = [
 let currentSlideIndex = 0;
 let currentLessonSlides = [];
 
+function toggleTOC(id) {
+    const el = document.getElementById(id);
+    if(el) el.classList.toggle('collapsed');
+}
+
+function generateTOC(tocId, slides, setIndexCallback) {
+    const container = document.getElementById(tocId);
+    if(!container) return;
+    container.innerHTML = '';
+
+    slides.forEach((slide, idx) => {
+        const item = document.createElement('div');
+        item.className = 'toc-item';
+        item.dataset.idx = idx;
+        item.textContent = `${idx + 1}. ${slide.t}`;
+        item.onclick = () => setIndexCallback(idx);
+        container.appendChild(item);
+    });
+}
+
+function updateActiveTOC(tocId, idx) {
+    const container = document.getElementById(tocId);
+    if(!container) return;
+    const items = container.querySelectorAll('.toc-item');
+    items.forEach(item => item.classList.remove('active'));
+    if(items[idx]) items[idx].classList.add('active');
+}
+
 function openLesson(index) {
     const lectie = lectiiCompleta[index];
     if(!lectie) return;
@@ -159,6 +187,10 @@ function openLesson(index) {
     currentSlideIndex = 0;
 
     showPage('lectie-detaliu');
+    generateTOC('lesson-toc', currentLessonSlides, (idx) => {
+        currentSlideIndex = idx;
+        renderSlide();
+    });
     renderSlide();
 }
 
@@ -175,11 +207,14 @@ function renderSlide() {
 
     document.getElementById('slide-counter').innerText = `Slide ${currentSlideIndex + 1} / ${currentLessonSlides.length}`;
     
-    const prevBtn = document.querySelector("#lectie-detaliu .slide-navigation button:first-child");
-    const nextBtn = document.querySelector("#lectie-detaliu .slide-navigation button:last-child");
+    // Update toolbar buttons (new selector)
+    const prevBtn = document.querySelector("#lectie-detaliu .reader-toolbar button:first-child");
+    const nextBtn = document.querySelector("#lectie-detaliu .reader-toolbar button:last-child");
 
     if(prevBtn) prevBtn.disabled = currentSlideIndex === 0;
     if(nextBtn) nextBtn.disabled = currentSlideIndex === currentLessonSlides.length - 1;
+
+    updateActiveTOC('lesson-toc', currentSlideIndex);
 
     if (window.MathJax) MathJax.typeset();
 }
@@ -211,6 +246,10 @@ function openLibraryItem(index) {
     currentLibrarySlideIndex = 0;
 
     showPage('biblioteca-detaliu');
+    generateTOC('library-toc', currentLibrarySlides, (idx) => {
+        currentLibrarySlideIndex = idx;
+        renderLibrarySlide();
+    });
     renderLibrarySlide();
 }
 
@@ -227,11 +266,14 @@ function renderLibrarySlide() {
 
     document.getElementById('library-slide-counter').innerText = `Slide ${currentLibrarySlideIndex + 1} / ${currentLibrarySlides.length}`;
 
-    const prevBtn = document.querySelector("#biblioteca-detaliu .slide-navigation button:first-child");
-    const nextBtn = document.querySelector("#biblioteca-detaliu .slide-navigation button:last-child");
+    // Update toolbar buttons
+    const prevBtn = document.querySelector("#biblioteca-detaliu .reader-toolbar button:first-child");
+    const nextBtn = document.querySelector("#biblioteca-detaliu .reader-toolbar button:last-child");
 
     if(prevBtn) prevBtn.disabled = currentLibrarySlideIndex === 0;
     if(nextBtn) nextBtn.disabled = currentLibrarySlideIndex === currentLibrarySlides.length - 1;
+
+    updateActiveTOC('library-toc', currentLibrarySlideIndex);
 
     if (window.MathJax) MathJax.typeset();
 }
