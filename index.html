@@ -20,6 +20,7 @@
                 <li><a href='javascript:void(0)' onclick="showPage('home')">Acasă</a></li>
                 <li><a href='javascript:void(0)' onclick="showPage('materiale')">Materiale</a></li>
                 <li><a href='javascript:void(0)' onclick="showPage('admitere')">Admitere</a></li>
+                <li><a href='javascript:void(0)' onclick="showPage('biblioteca')">Biblioteca</a></li>
                 <li><a href='javascript:void(0)' onclick="showPage('grila')">Grile</a></li>
             </ul>
         </div>
@@ -53,6 +54,11 @@
                     <h3>Ghid Admitere</h3>
                     <p>Facultăți de top și detalii.</p>
                 </div>
+                <div class='nav-card glass' onclick="showPage('biblioteca')">
+                    <span class='card-icon'>📖</span>
+                    <h3>Biblioteca</h3>
+                    <p>Resurse suplimentare de studiu.</p>
+                </div>
                 <div class='nav-card glass accent-glow' onclick='startQuiz()'>
                     <span class='card-icon'>⚡</span>
                     <h3>Simulator Grile</h3>
@@ -77,6 +83,34 @@
         </div>
         <div class='lesson-content glass' id='lesson-body'>
             <!-- Aici se încarcă slide-urile PPT -->
+        </div>
+        <div class='slide-navigation'>
+            <button class='btn-nav' onclick='prevSlide()'>&#8592; Anterior</button>
+            <span id='slide-counter'>Slide 0 / 0</span>
+            <button class='btn-nav' onclick='nextSlide()'>Următor &#8594;</button>
+        </div>
+    </section>
+
+    <!-- Secțiunea BIBLIOTECA (Lista de materiale) -->
+    <section id='biblioteca' class='view'>
+        <h2 class='section-title'>Biblioteca <span class='gradient-text'>Virtuală</span></h2>
+        <p class='section-subtitle'>Resurse suplimentare pentru aprofundarea cunoștințelor.</p>
+        <div class='chapters-grid' id='library-list'></div>
+    </section>
+
+    <!-- Subpagina BIBLIOTECA DETALII -->
+    <section id='biblioteca-detaliu' class='view'>
+        <div class='lesson-header'>
+            <button class='btn-back' onclick="showPage('biblioteca')">← Înapoi la Bibliotecă</button>
+            <h1 id='library-title' class='gradient-text'>Titlu Material</h1>
+        </div>
+        <div class='lesson-content glass' id='library-body'>
+            <!-- Aici se încarcă slide-urile bibliotecii -->
+        </div>
+        <div class='slide-navigation'>
+            <button class='btn-nav' onclick='prevLibrarySlide()'>&#8592; Anterior</button>
+            <span id='library-slide-counter'>Slide 0 / 0</span>
+            <button class='btn-nav' onclick='nextLibrarySlide()'>Următor &#8594;</button>
         </div>
     </section>
 

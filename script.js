@@ -51,9 +51,35 @@ const lectiiCompleta = [
     // ... aici pot fi adăugate toate cele 12 module similare
 ];
 
+// --- DATA: BIBLIOTECA (PLACEHOLDER) ---
+const bibliotecaCompleta = [
+    {
+        id: 0,
+        titlu: "Ghid de Studiu Economie",
+        slides: [
+            { t: "Introducere", c: "Acest ghid oferă o privire de ansamblu asupra conceptelor economice fundamentale." },
+            { t: "Microeconomie vs Macroeconomie", c: "Microeconomia studiază comportamentul agenților individuali, în timp ce macroeconomia analizează economia ca un întreg." }
+        ]
+    },
+    {
+        id: 1,
+        titlu: "Mic Dicționar Economic",
+        slides: [
+            { t: "A - Active", c: "Bunuri sau drepturi deținute de o companie care au valoare economică." },
+            { t: "B - Buget", c: "Plan financiar care estimează veniturile și cheltuielile pe o anumită perioadă." }
+        ]
+    }
+];
+
 const unis = [
     { id: 1, n: "ASE București - Cibernetică", m: "9.85", d: "<h3>Admitere</h3><p>Examen grilă la Matematică/Economie. Hub de elită pentru IT Economic.</p>" },
-    { id: 2, n: "FSEGA Cluj (UBB)", m: "9.65", d: "<h3>Viziune</h3><p>Cel mai mare centru de business din Ardeal. Programe multilingve.</p>" }
+    { id: 2, n: "FSEGA Cluj (UBB)", m: "9.65", d: "<h3>Viziune</h3><p>Cel mai mare centru de business din Ardeal. Programe multilingve.</p>" },
+    { id: 3, n: "UAIC Iași - FEAA", m: "9.45", d: "<h3>Tradiție</h3><p>Facultatea de Economie și Administrarea Afacerilor, lider în regiunea Moldovei.</p>" },
+    { id: 4, n: "UVT Timișoara - FEAA", m: "9.30", d: "<h3>Inovație</h3><p>Focus pe antreprenoriat și conexiuni puternice cu mediul de afaceri vestic.</p>" },
+    { id: 5, n: "UBB Cluj - Facultatea de Business", m: "9.50", d: "<h3>Business</h3><p>Prima facultate de profil din România. Abordare practică și internațională.</p>" },
+    { id: 6, n: "Politehnica București - FAIMA", m: "9.10", d: "<h3>Inginerie & Management</h3><p>Combinația ideală între competențe tehnice și economice.</p>" },
+    { id: 7, n: "Transilvania Brașov - SEAA", m: "9.25", d: "<h3>Turism & Comerț</h3><p>Excelență în domeniul serviciilor și economiei montane.</p>" },
+    { id: 8, n: "Universitatea din București - FAA", m: "9.40", d: "<h3>Administrație</h3><p>Facultatea de Administrație și Afaceri, în inima capitalei.</p>" }
 ];
 
 const masterBank = [
@@ -63,33 +89,126 @@ const masterBank = [
 ];
 
 // --- LOGICA SUBPAGINI LECTII ---
+let currentSlideIndex = 0;
+let currentLessonSlides = [];
+
 function openLesson(index) {
     const lectie = lectiiCompleta[index];
     if(!lectie) return;
     
     document.getElementById('lesson-title').innerText = lectie.titlu;
-    const body = document.getElementById('lesson-body');
-    body.innerHTML = "";
-    
-    lectie.slides.forEach(s => {
-        const slideDiv = document.createElement('div');
-        slideDiv.className = 'ppt-slide';
+    currentLessonSlides = lectie.slides;
+    currentSlideIndex = 0;
 
-        const titleSpan = document.createElement('span');
-        titleSpan.className = 'slide-title';
-        titleSpan.textContent = s.t;
-
-        const textDiv = document.createElement('div');
-        textDiv.className = 'slide-text';
-        textDiv.innerHTML = s.c;
-
-        slideDiv.appendChild(titleSpan);
-        slideDiv.appendChild(textDiv);
-        body.appendChild(slideDiv);
-    });
-    
     showPage('lectie-detaliu');
+    renderSlide();
+}
+
+function renderSlide() {
+    const body = document.getElementById('lesson-body');
+    const slide = currentLessonSlides[currentSlideIndex];
+    if(!slide) return;
+    
+fix-xss-university-grid-13260253321983992451
+    lectie.slides.forEach(s => {
+    const slideDiv = document.createElement('div');
+    slideDiv.className = 'ppt-slide';
+
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'slide-title';
+    titleSpan.textContent = s.t; // Sigur împotriva XSS
+
+    const textDiv = document.createElement('div');
+    textDiv.className = 'slide-text';
+    textDiv.innerHTML = s.c; // Păstrat innerHTML doar dacă s.c conține HTML intenționat (ex: bold, italic)
+
+    slideDiv.appendChild(titleSpan);
+    slideDiv.appendChild(textDiv);
+    body.appendChild(slideDiv);
+    });
+
+    body.innerHTML = `
+        <div class='ppt-slide'>
+            <span class='slide-title'>${slide.t}</span>
+            <div class='slide-text'>${slide.c}</div>
+        </div>`;
+
+    document.getElementById('slide-counter').innerText = `Slide ${currentSlideIndex + 1} / ${currentLessonSlides.length}`;
+ main
+    
+    const prevBtn = document.querySelector("button[onclick='prevSlide()']");
+    const nextBtn = document.querySelector("button[onclick='nextSlide()']");
+
+    if(prevBtn) prevBtn.disabled = currentSlideIndex === 0;
+    if(nextBtn) nextBtn.disabled = currentSlideIndex === currentLessonSlides.length - 1;
+
     if (window.MathJax) MathJax.typeset();
+}
+
+function nextSlide() {
+    if (currentSlideIndex < currentLessonSlides.length - 1) {
+        currentSlideIndex++;
+        renderSlide();
+    }
+}
+
+function prevSlide() {
+    if (currentSlideIndex > 0) {
+        currentSlideIndex--;
+        renderSlide();
+    }
+}
+
+// --- LOGICA SUBPAGINI BIBLIOTECA ---
+let currentLibrarySlideIndex = 0;
+let currentLibrarySlides = [];
+
+function openLibraryItem(index) {
+    const item = bibliotecaCompleta[index];
+    if(!item) return;
+
+    document.getElementById('library-title').innerText = item.titlu;
+    currentLibrarySlides = item.slides;
+    currentLibrarySlideIndex = 0;
+
+    showPage('biblioteca-detaliu');
+    renderLibrarySlide();
+}
+
+function renderLibrarySlide() {
+    const body = document.getElementById('library-body');
+    const slide = currentLibrarySlides[currentLibrarySlideIndex];
+    if(!slide) return;
+
+    body.innerHTML = `
+        <div class='ppt-slide'>
+            <span class='slide-title'>${slide.t}</span>
+            <div class='slide-text'>${slide.c}</div>
+        </div>`;
+
+    document.getElementById('library-slide-counter').innerText = `Slide ${currentLibrarySlideIndex + 1} / ${currentLibrarySlides.length}`;
+
+    const prevBtn = document.querySelector("#biblioteca-detaliu .slide-navigation button:first-child");
+    const nextBtn = document.querySelector("#biblioteca-detaliu .slide-navigation button:last-child");
+
+    if(prevBtn) prevBtn.disabled = currentLibrarySlideIndex === 0;
+    if(nextBtn) nextBtn.disabled = currentLibrarySlideIndex === currentLibrarySlides.length - 1;
+
+    if (window.MathJax) MathJax.typeset();
+}
+
+function nextLibrarySlide() {
+    if (currentLibrarySlideIndex < currentLibrarySlides.length - 1) {
+        currentLibrarySlideIndex++;
+        renderLibrarySlide();
+    }
+}
+
+function prevLibrarySlide() {
+    if (currentLibrarySlideIndex > 0) {
+        currentLibrarySlideIndex--;
+        renderLibrarySlide();
+    }
 }
 
 // --- LOGICA QUIZ ---
@@ -171,6 +290,8 @@ function openUni(id) {
     details.innerHTML = u.d;
     modalBody.appendChild(details);
 
+    if (!u) return;
+    document.getElementById('modal-body').innerHTML = `<h1>${u.n}</h1><p>Medie: <b>${u.m}</b></p><hr>${u.d}`;
     document.getElementById('uni-modal').classList.remove('hidden');
 }
 function closeModal() { document.getElementById('uni-modal').classList.add('hidden'); }
@@ -218,6 +339,19 @@ window.onload = () => {
         div.appendChild(h3);
         div.appendChild(p);
         uniGrid.appendChild(div);
+    });
+
+    // Populare listă bibliotecă
+    bibliotecaCompleta.forEach((l, idx) => {
+        const list = document.getElementById('library-list');
+        if(list) {
+            list.innerHTML += `
+                <div class='chapter-card glass' onclick='openLibraryItem(${idx})'>
+                    <h3>RESURSA ${idx + 1}</h3>
+                    <p>${l.titlu}</p>
+                    <small style='color: var(--accent)'>Click pentru detalii →</small>
+                </div>`;
+        }
     });
     
     // Setăm starea inițială în istoric
