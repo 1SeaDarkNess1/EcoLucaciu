@@ -51,130 +51,27 @@ window.addEventListener("popstate", (event) => {
     }
 });
 // --- DATA: LECTII COMPLETE (EXTRASE DIN PPT-URILE TALE) ---
-const lectiiCompleta = [
-    { id: 0, titlu: "Nevoile și Resursele", file: "Materiale/Lectia 1-Nevoi_si_resurse.ppt", type: "ppt",
-        slides: [
-            { t: "Introducere", c: "Economia studiază modul în care societatea gestionează resursele limitate pentru a satisface nevoi nelimitate.", img: "home_page.png" },
-            { t: "Nevoile Umane", c: "Nevoile reprezintă cerințe sau dorințe ale oamenilor, care pot fi fiziologice, sociale sau spirituale." },
-            { t: "Resursele", c: "Resursele sunt elementele utilizate pentru producerea bunurilor și serviciilor. Ele sunt limitate în raport cu nevoile." },
-            { t: "Tensiunea Nevoi-Resurse", c: "Raritatea este problema fundamentală a economiei. Trebuie să alegem ce să producem și ce să consumăm." }
-        ]
-    },
-    { id: 1, titlu: "Costul de Oportunitate", file: "Materiale/2-Costul_de_oportunitate.ppt", type: "ppt" },
-    { id: 2, titlu: "Oferta", file: "Materiale/2.1.-2.2-Oferta.ppt", type: "ppt" },
-    { id: 3, titlu: "Factori de Producție (1)", file: "Materiale/2.3-Factori_de_productie-_partea_1 (1).ppt", type: "ppt" },
-    { id: 4, titlu: "Factori de Producție (2)", file: "Materiale/2.4-Factori_de_productie-_partea_2.ppt", type: "ppt" },
-    { id: 5, titlu: "Costuri de Producție (1)", file: "Materiale/2.5-Costuri_de_productie-_partea_1 (1).ppt", type: "ppt" },
-    { id: 6, titlu: "Productivitatea", file: "Materiale/2.6-Productivitatea.ppt", type: "ppt" },
-    { id: 7, titlu: "Profitul", file: "Materiale/2.7-Profitul.ppt", type: "ppt" },
-    { id: 8, titlu: "Utilitatea Economică", file: "Materiale/3-Utilitatea_economica.ppt", type: "ppt" },
-    { id: 9, titlu: "Mecanismul Concurențial", file: "Materiale/3.2-Mecanismul_concurential.ppt", type: "ppt" },
-    { id: 10, titlu: "Piața Capitalurilor", file: "Materiale/3.3-Piata_capitalurilor (1).ppt", type: "ppt" },
-    { id: 11, titlu: "Piața Muncii", file: "Materiale/3.4. - Piața muncii_.ppt", type: "ppt" },
-    { id: 12, titlu: "Piața Monetară", file: "Materiale/3.5.-Piata monetară.ppt", type: "ppt" },
-    { id: 13, titlu: "Cererea (Partea 1)", file: "Materiale/4-Cererea_partea_1.ppt", type: "ppt" },
-    { id: 14, titlu: "Cererea (Partea 2)", file: "Materiale/5-Cererea_partea_2.ppt", type: "ppt" },
-    { id: 15, titlu: "Proprietatea și Libera Inițiativă", file: "Materiale/6-Proprietatea_si_propria_initiativa.ppt", type: "ppt" },
-    { id: 16, titlu: "Relația Cerere-Ofertă-Preț", file: "Materiale/Capitolul 3-3.1-Piata_Relatia_cerere-oferta-pret_in_economia_de_piata.ppt", type: "ppt" },
-    { id: 17, titlu: "Factorii de Producție și Combinarea Acestora", file: "Materiale/Factorii de productie si combinarea acestora.ppt", type: "ppt" }
-];
+// --- DATA: ASYNC LOADING ---
+const lectiiCompleta = [];
+const bibliotecaCompleta = [];
+const testeAntrenament = [];
+const unis = [];
+const masterBank = [];
 
-// --- DATA: BIBLIOTECA (PLACEHOLDER) ---
-const bibliotecaCompleta = [
-    { id: 0, titlu: "Consumatorul și Utilitatea Economică", file: "Bibliotecă/03 Consumatorul si utilitatea economica.pdf", type: "pdf" },
-    { id: 1, titlu: "Piața - Test 1", file: "Bibliotecă/05t Piata. Test 1.pdf", type: "pdf" },
-    { id: 2, titlu: "Agenții Economici", file: "Bibliotecă/Agentii economici.pdf", type: "pdf" },
-    { id: 3, titlu: "Banii", file: "Bibliotecă/Banii.pdf", type: "pdf" },
-    { id: 4, titlu: "CEREREA", file: "Bibliotecă/CEREREA.pdf", type: "pdf" },
-    { id: 5, titlu: "Ce este Economia", file: "Bibliotecă/Ce este economia.pdf", type: "pdf" },
-    { id: 6, titlu: "Concurența", file: "Bibliotecă/Concurenta.pdf", type: "pdf" },
-    { id: 7, titlu: "Consumatorul", file: "Bibliotecă/Consumatorul.pdf", type: "pdf" },
-    { id: 8, titlu: "Inflația", file: "Bibliotecă/Inflatia.pdf", type: "pdf" },
-    { id: 9, titlu: "OFERTA", file: "Bibliotecă/OFERTA.pdf", type: "pdf" },
-    { id: 10, titlu: "Piața - Cererea", file: "Bibliotecă/Piata - Cererea.pdf", type: "pdf" },
-    { id: 11, titlu: "Piața - Oferta. Prețul", file: "Bibliotecă/Piata - Oferta. Pretul.pdf", type: "pdf" },
-    { id: 12, titlu: "Piața Capitalurilor", file: "Bibliotecă/Piata capitalurilor.pdf", type: "pdf" },
-    { id: 13, titlu: "Piața Monetară", file: "Bibliotecă/Piata monetara.pdf", type: "pdf" },
-    { id: 14, titlu: "Piața Muncii", file: "Bibliotecă/Piata muncii.pdf", type: "pdf" },
-    { id: 15, titlu: "Piața Valutară", file: "Bibliotecă/Piata valutara.pdf", type: "pdf" },
-    { id: 16, titlu: "Profitul", file: "Bibliotecă/Profitul.pdf", type: "pdf" },
-    { id: 17, titlu: "Proprietatea și Libera Inițiativă", file: "Bibliotecă/Proprietatea si libera initiativa.pdf", type: "pdf" },
-    { id: 18, titlu: "Rezumat - Concurența", file: "Bibliotecă/Rezumat_Concurenta.pdf", type: "pdf" },
-    { id: 19, titlu: "Șomajul", file: "Bibliotecă/Somajul.pdf", type: "pdf" },
-    { id: 20, titlu: "Venit, Consum, Investiții", file: "Bibliotecă/Venit consum investitii.pdf", type: "pdf" }
-];
-
-const testeAntrenament = [
-    { id: 0, titlu: "Bacalaureat 2020 - Varianta 5", file: "Teste de Antrenament/E_d_economie_2020_var_05_LRO.pdf", type: "pdf" },
-    { id: 1, titlu: "Bacalaureat 2020 - Barem 5", file: "Teste de Antrenament/E_d_economie_2020_bar_05_LRO.pdf", type: "pdf" },
-    { id: 2, titlu: "Filosofie 2020 - Barem 5", file: "Teste de Antrenament/E_d_filosofie_2020_bar_05_LRO.pdf", type: "pdf" },
-    { id: 3, titlu: "Logică 2020 - Varianta 5", file: "Teste de Antrenament/E_d_logica_2020_var_05_LRO.pdf", type: "pdf" },
-    { id: 4, titlu: "Recapitulare - Pregătire Bacalaureat", file: "Teste de Antrenament/Economie_Recapitulare_Pregatire pentru bacalaureat.pdf", type: "pdf" }
-];
-
-const unis = [
-    {
-        id: 1,
-        n: "ASE București - Cibernetică",
-        m: "9.85",
-        d: "<h3>Cibernetică, Statistică și Informatică Economică</h3><p>Cea mai prestigioasă facultate din cadrul ASE. Programul de licență îmbină economia cu tehnologia informației.</p><h4>Admitere</h4><ul><li>Examen scris la Matematică sau Economie (60-70% din medie)</li><li>Media Bacalaureat (30-40%)</li></ul><h4>Oportunități</h4><p>Data Scientist, Business Analyst, Developer în Fintech.</p><a href='https://csie.ase.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
-    },
-    {
-        id: 2,
-        n: "FSEGA Cluj (UBB)",
-        m: "9.65",
-        d: "<h3>Facultatea de Științe Economice și Gestiunea Afacerilor</h3><p>Parte a Universității Babeș-Bolyai, FSEGA este cea mai mare facultate din România ca număr de studenți.</p><h4>Admitere</h4><ul><li>Concurs de dosare (media Bacalaureat + nota la disciplină relevantă)</li></ul><h4>Specializări Top</h4><p>Informatică Economică, Finanțe-Bănci, Marketing (linii de studiu în RO, EN, DE, FR, HU).</p><a href='https://econ.ubbcluj.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
-    },
-    {
-        id: 3,
-        n: "UAIC Iași - FEAA",
-        m: "9.45",
-        d: "<h3>Facultatea de Economie și Administrarea Afacerilor</h3><p>Polul educației economice din Moldova, cu o tradiție academică puternică și campus modern.</p><h4>Admitere</h4><p>Media de la Bacalaureat (100% sau ponderată cu nota la diverse discipline).</p><h4>Facilități</h4><p>Acces la baze de date internaționale, stagii de practică la multinaționale din Iași.</p><a href='https://www.feaa.uaic.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
-    },
-    {
-        id: 4,
-        n: "UVT Timișoara - FEAA",
-        m: "9.30",
-        d: "<h3>Facultatea de Economie și de Administrare a Afacerilor</h3><p>Orientare vestică, focalizată pe nevoile pieței muncii și antreprenoriat.</p><h4>Admitere</h4><p>Concurs de dosare. Media generală de la bacalaureat.</p><h4>Puncte forte</h4><p>Parteneriate solide cu mediul de afaceri din Timișoara (Continental, Nokia, etc.).</p><a href='https://feaa.uvt.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
-    },
-    {
-        id: 5,
-        n: "UBB Cluj - Facultatea de Business",
-        m: "9.50",
-        d: "<h3>Facultatea de Business</h3><p>Prima facultate de profil din România, cu o abordare unică, practică și orientată spre leadership.</p><h4>Admitere</h4><p>Eseu motivațional + Media Bacalaureat.</p><h4>Viziune</h4><p>Pregătirea viitorilor antreprenori și manageri prin simulări de business și proiecte reale.</p><a href='https://tbs.ubbcluj.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
-    },
-    {
-        id: 6,
-        n: "Politehnica București - FAIMA",
-        m: "9.10",
-        d: "<h3>Facultatea de Antreprenoriat, Ingineria și Managementul Afacerilor</h3><p>Îmbină rigoarea ingineriei cu flexibilitatea economică.</p><h4>Admitere</h4><p>Examen scris tip grilă (Matematică + Economie/Fizică).</p><h4>Carieră</h4><p>Manageri tehnici, Consultanță în producție, Project Management.</p><a href='https://faima.upb.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
-    },
-    {
-        id: 7,
-        n: "Transilvania Brașov - SEAA",
-        m: "9.25",
-        d: "<h3>Științe Economice și Administrarea Afacerilor</h3><p>Excelență în turism, comerț și servicii, profitând de poziția strategică a Brașovului.</p><h4>Admitere</h4><p>Concurs de dosare.</p><h4>Specializări unice</h4><p>Economia Comerțului, Turismului și Serviciilor.</p><a href='https://economice.unitbv.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
-    },
-    {
-        id: 8,
-        n: "Universitatea din București - FAA",
-        m: "9.40",
-        d: "<h3>Facultatea de Administrație și Afaceri</h3><p>O facultate tânără și dinamică în cadrul celei mai vechi universități din București.</p><h4>Admitere</h4><p>Examen scris (50%) + Media Bacalaureat (50%).</p><h4>Focus</h4><p>Administrarea afacerilor, Marketing, Administrație publică.</p><a href='https://faa.unibuc.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+async function initData() {
+    try {
+        const response = await fetch('data.json');
+        if (!response.ok) throw new Error('Failed to load data.json');
+        const data = await response.json();
+        if (data.lectiiCompleta) lectiiCompleta.push(...data.lectiiCompleta);
+        if (data.bibliotecaCompleta) bibliotecaCompleta.push(...data.bibliotecaCompleta);
+        if (data.testeAntrenament) testeAntrenament.push(...data.testeAntrenament);
+        if (data.unis) unis.push(...data.unis);
+        if (data.masterBank) masterBank.push(...data.masterBank);
+    } catch (error) {
+        console.error('Error loading data:', error);
     }
-];
-
-const masterBank = [
-    { q: "Nevoile umane sunt, în raport cu resursele:", o: ["Limitate", "Nelimitate", "Statice"], c: 1 },
-    { q: "Costul de oportunitate reprezintă:", o: ["Costul banilor", "Cea mai bună alternativă sacrificată", "Profitul net"], c: 1 },
-    { q: "Utilitatea marginală este zero când utilitatea totală este:", o: ["Minimă", "Maximă", "Negativă"], c: 1 },
-    { q: "Salariul este prețul plătit pentru:", o: ["Capital", "Pământ", "Muncă"], c: 2 },
-    { q: "Care dintre următoarele este un bun liber?", o: ["Aerul", "Haina", "Autobuzul"], c: 0 },
-    { q: "Piața cu concurență perfectă presupune:", o: ["Produse diferențiate", "Atomicitatea participanților", "Bariere la intrare"], c: 1 },
-    { q: "Inflația se manifestă prin:", o: ["Scăderea prețurilor", "Creșterea puterii de cumpărare", "Creșterea generalizată a prețurilor"], c: 2 },
-    { q: "Dobânda este prețul:", o: ["Muncii", "Capitalului împrumutat", "Pământului"], c: 1 },
-    { q: "Produsul Intern Brut (PIB) măsoară:", o: ["Bogăția totală", "Valoarea bunurilor finale produse într-un an", "Exporturile nete"], c: 1 },
-    { q: "Cererea este inelastică dacă:", o: ["Coeficientul elasticității < 1", "Coeficientul elasticității > 1", "Coeficientul elasticității = 1"], c: 0 }
-];
+}
 
 // --- LOGICA SUBPAGINI LECTII ---
 let currentSlideIndex = 0;
@@ -577,7 +474,8 @@ function closeModal() {
 }
 
 // --- INITIALIZARE ---
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
+    await initData();
     // Event delegation for Quiz Options
     const quizOptionsBox = document.getElementById('options-box');
     if (quizOptionsBox) {

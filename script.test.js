@@ -104,6 +104,15 @@ global.document = {
     fullscreenElement: null
 };
 
+
+const mockData = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json'), 'utf8'));
+global.fetch = jest.fn(() =>
+    Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockData),
+    })
+);
+
 global.window = {
     scrollTo: jest.fn(),
     history: {
@@ -161,13 +170,13 @@ const loadCall = global.window.addEventListener.mock.calls.find(call => call[0] 
 const loadListener = loadCall ? loadCall[1] : null;
 const popstateCall = global.window.addEventListener.mock.calls.find(call => call[0] === 'popstate');
 const popstateListener = popstateCall ? popstateCall[1] : null;
-if (loadListener) loadListener();
-const toggleSidebar = global.window.toggleSidebar;
+let initializationPromise;
+if (loadListener) initializationPromise = loadListener();
 
 Object.assign(global, context);
-global.toggleSidebar = toggleSidebar;
 
 describe('Core Functionality', () => {
+    beforeAll(async () => { if (initializationPromise) await initializationPromise; });
     beforeEach(() => {
         jest.clearAllMocks();
         mockElements['uni-modal'].classList.add('hidden');
@@ -194,9 +203,9 @@ describe('Core Functionality', () => {
     });
 
     test('toggleSidebar should toggle class', () => {
-        toggleSidebar();
+        global.window.toggleSidebar();
         expect(mockElements['sidebar'].classes.has('open')).toBe(true);
-        toggleSidebar();
+        global.window.toggleSidebar();
         expect(mockElements['sidebar'].classes.has('open')).toBe(false);
     });
 
@@ -333,8 +342,8 @@ describe('Quiz Logic', () => {
         expect(mockElements['final-score'].innerText).toBe(95);
     });
 
-    test('Event Delegation works: Click on option updates score', () => {
-        if (loadListener) loadListener();
+    test('Event Delegation works: Click on option updates score', async () => {
+        await loadListener();
         startQuiz();
         renderQ();
         const addListenerCall = mockElements['options-box'].addEventListener.mock.calls.find(call => call[0] === 'click');
