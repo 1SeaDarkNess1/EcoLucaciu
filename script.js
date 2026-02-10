@@ -426,17 +426,14 @@ function openSlideViewer(type, index) {
     const wrapper = document.getElementById('swiper-wrapper');
     wrapper.innerHTML = '';
 
-    const fragment = document.createDocumentFragment();
-    data.slides.forEach(slide => {
-        const div = document.createElement('div');
-        div.className = 'swiper-slide';
-        div.innerHTML = `<div class='ppt-slide'>
-            <span class='slide-title'>${slide.t}</span>
-            <div class='slide-text'>${slide.c}</div>
-        </div>`;
-        fragment.appendChild(div);
-    });
-    wrapper.appendChild(fragment);
+    const slidesHtml = data.slides.map(slide => `
+        <div class="swiper-slide">
+            <div class="ppt-slide">
+                <span class="slide-title">${slide.t}</span>
+                <div class="slide-text">${slide.c}</div>
+            </div>
+        </div>`).join("");
+    wrapper.innerHTML = slidesHtml;
 
     document.getElementById('slide-viewer-modal').classList.remove('hidden');
 
