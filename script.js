@@ -13,13 +13,13 @@ function showPage(id, saveHistory = true) {
     }
 }
 
-window.onpopstate = function(event) {
+window.addEventListener('popstate', (event) => {
     if (event.state && event.state.pageId) {
         showPage(event.state.pageId, false);
     } else {
         showPage('home', false);
     }
-};
+});
 
 // --- DATA: LECTII COMPLETE (EXTRASE DIN PPT-URILE TALE) ---
 const lectiiCompleta = [
@@ -543,7 +543,7 @@ function closeModal() {
 }
 
 // --- INITIALIZARE ---
-window.onload = () => {
+window.addEventListener('load', () => {
     // Populare listă capitole
     const chaptersList = document.getElementById('chapters-list');
     lectiiCompleta.forEach((l, idx) => {
@@ -666,4 +666,4 @@ window.onload = () => {
     
     // Setăm starea inițială în istoric
     history.replaceState({ pageId: 'home' }, "", "#home");
-};
+});
