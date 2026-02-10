@@ -60,7 +60,7 @@ const mockElements = {};
     'final-score', 'final-time', 'timer', 'final-grade', 'performance-msg', 'correct-count', 'wrong-count',
     'q-text', 'q-counter', 'progress-bar', 'options-box', 'quiz-feedback-overlay',
     'library-body', 'library-slide-counter', 'library-toc',
-    'slide-body', 'slide-counter', 'lesson-toc', 'mySwiper', 'lesson-title', 'library-title'
+    'lesson-body', 'slide-counter', 'lesson-toc', 'mySwiper', 'lesson-title', 'library-title'
 ].forEach(id => {
     mockElements[id] = createMockElement(id);
 });
@@ -305,10 +305,26 @@ describe('Lesson Logic', () => {
         expect(getSlideIndex()).toBe(0);
     });
 
-    test('openLesson opens slide viewer for ppt', () => {
+    test('openLesson opens slide viewer for lesson with predefined slides', () => {
         openLesson(0);
         expect(mockElements['slide-viewer-modal'].classes.has('hidden')).toBe(false);
         expect(mockElements['swiper-wrapper'].innerHTML).toContain('Introducere');
+    });
+
+    test('openLesson for lesson with file but no slides renders into lesson-body', () => {
+        // Lesson 1 has file: "Materiale/2-Costul_de_oportunitate.ppt" but no slides
+        openLesson(1);
+        expect(mockElements['lectie-detaliu'].classes.has('active')).toBe(true);
+        expect(mockElements['lesson-title'].innerText).toBe("Costul de Oportunitate");
+        expect(mockElements['lesson-body'].innerHTML).toContain('file-view-container');
+        expect(mockElements['lesson-body'].innerHTML).toContain('iframe');
+    });
+
+    test('openLesson with invalid index returns early', () => {
+        const initialTitle = "initial";
+        mockElements['lesson-title'].innerText = initialTitle;
+        openLesson(999);
+        expect(mockElements['lesson-title'].innerText).toBe(initialTitle);
     });
 });
 
