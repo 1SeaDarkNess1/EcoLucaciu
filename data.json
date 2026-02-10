@@ -4,26 +4,7 @@
       "id": 0,
       "titlu": "Nevoile și Resursele",
       "file": "Materiale/Lectia 1-Nevoi_si_resurse.ppt",
-      "type": "ppt",
-      "slides": [
-        {
-          "t": "Introducere",
-          "c": "Economia studiază modul în care societatea gestionează resursele limitate pentru a satisface nevoi nelimitate.",
-          "img": "home_page.png"
-        },
-        {
-          "t": "Nevoile Umane",
-          "c": "Nevoile reprezintă cerințe sau dorințe ale oamenilor, care pot fi fiziologice, sociale sau spirituale."
-        },
-        {
-          "t": "Resursele",
-          "c": "Resursele sunt elementele utilizate pentru producerea bunurilor și serviciilor. Ele sunt limitate în raport cu nevoile."
-        },
-        {
-          "t": "Tensiunea Nevoi-Resurse",
-          "c": "Raritatea este problema fundamentală a economiei. Trebuie să alegem ce să producem și ce să consumăm."
-        }
-      ]
+      "type": "ppt"
     },
     {
       "id": 1,
