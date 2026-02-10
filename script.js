@@ -112,7 +112,20 @@ const QuizManager = {
     wrong: 0,
     type: "",
 
+    initElements() {
+        if (this.timerEl) return;
+        this.timerEl = document.getElementById('timer');
+        this.correctEl = document.getElementById('correct-count');
+        this.wrongEl = document.getElementById('wrong-count');
+        this.qTextEl = document.getElementById('q-text');
+        this.qCounterEl = document.getElementById('q-counter');
+        this.progressEl = document.getElementById('progress-bar');
+        this.optionsBoxEl = document.getElementById('options-box');
+        this.feedbackEl = document.getElementById('quiz-feedback-overlay');
+    },
+
     start(type = "general") {
+        this.initElements();
         this.type = type;
         let bank = [...masterBank];
         if(type === 'micro') bank = bank.filter((_, i) => i % 2 === 0);
@@ -123,51 +136,51 @@ const QuizManager = {
 
         // Resetare stare
         this.index = 0; this.score = 0; this.secs = 0; this.correct = 0; this.wrong = 0;
-        document.getElementById('correct-count').innerText = 0;
-        document.getElementById('wrong-count').innerText = 0;
-        document.getElementById('timer').innerText = "00:00";
+        this.correctEl.innerText = 0;
+        this.wrongEl.innerText = 0;
+        this.timerEl.innerText = "00:00";
 
         showPage('quiz');
 
         // Timer
         if (this.timer) clearInterval(this.timer);
-        const timerEl = document.getElementById("timer");
         this.timer = setInterval(() => {
             this.secs++;
             const min = Math.floor(this.secs / 60);
             const sec = this.secs % 60;
-            timerEl.innerText = `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
+            this.timerEl.innerText = `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
         }, 1000);
 
         this.render();
     },
 
     render() {
+        this.initElements();
         const d = this.questions[this.index];
-        const qText = document.getElementById('q-text');
-        qText.innerText = d.q;
-        document.getElementById('q-counter').innerText = `${this.index + 1} / ${this.questions.length}`;
-        document.getElementById('progress-bar').style.width = `${((this.index + 1) / this.questions.length) * 100}%`;
-        const box = document.getElementById('options-box'); box.innerHTML = '';
+        this.qTextEl.innerText = d.q;
+        this.qCounterEl.innerText = `${this.index + 1} / ${this.questions.length}`;
+        this.progressEl.style.width = `${((this.index + 1) / this.questions.length) * 100}%`;
+        this.optionsBoxEl.innerHTML = '';
         d.o.forEach((opt, i) => {
             const btn = document.createElement('button'); btn.className = 'opt-btn'; btn.innerText = opt; btn.dataset.index = i;
-            box.appendChild(btn);
+            this.optionsBoxEl.appendChild(btn);
         });
     },
 
     handleAnswer(i) {
+        this.initElements();
         const d = this.questions[this.index];
-        const overlay = document.getElementById('quiz-feedback-overlay');
+        const overlay = this.feedbackEl;
         overlay.classList.remove('hidden');
 
         if (i === d.c) {
             this.score += 5; this.correct++;
             overlay.innerText = "CORECT!"; overlay.className = "feedback-overlay correct-overlay";
-            document.getElementById('correct-count').innerText = this.correct;
+            this.correctEl.innerText = this.correct;
         } else {
             this.wrong++;
             overlay.innerText = "GREȘIT!"; overlay.className = "feedback-overlay wrong-overlay";
-            document.getElementById('wrong-count').innerText = this.wrong;
+            this.wrongEl.innerText = this.wrong;
         }
         setTimeout(() => {
             overlay.classList.add('hidden');
@@ -177,10 +190,11 @@ const QuizManager = {
     },
 
     finish() {
+        this.initElements();
         clearInterval(this.timer);
         showPage('results');
         document.getElementById('final-score').innerText = this.score;
-        document.getElementById('final-time').innerText = document.getElementById('timer').innerText;
+        document.getElementById('final-time').innerText = this.timerEl.innerText;
         document.getElementById('final-grade').innerText = (this.score / 10).toFixed(1);
         document.getElementById('performance-msg').innerText = this.score >= 85 ? "Excelent! Pregătit de succes." : "Continuă studiul pentru rezultate mai bune.";
     }
