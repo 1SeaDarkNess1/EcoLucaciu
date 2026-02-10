@@ -34,25 +34,28 @@ function loadMathJax() {
 const LessonManager = {
     index: 0,
     slides: [],
+    initElements() {
+        if (this.bodyEl) return;
+        this.bodyEl = document.getElementById('lesson-body');
+        this.counterEl = document.getElementById('slide-counter');
+        this.prevBtn = document.querySelector("#lectie-detaliu .reader-toolbar button:first-child");
+        this.nextBtn = document.querySelector("#lectie-detaliu .reader-toolbar button:last-child");
+    },
     render() {
-        const body = document.getElementById('lesson-body');
+        this.initElements();
         const slide = this.slides[this.index];
         if(!slide) return;
 
-        body.innerHTML = `
+        this.bodyEl.innerHTML = `
             <div class='ppt-slide'>
                 <span class='slide-title'>${slide.t}</span>
                 <div class='slide-text'>${slide.c}</div>
             </div>`;
 
-        document.getElementById('slide-counter').innerText = `Slide ${this.index + 1} / ${this.slides.length}`;
+        this.counterEl.innerText = `Slide ${this.index + 1} / ${this.slides.length}`;
 
-        // Update toolbar buttons
-        const prevBtn = document.querySelector("#lectie-detaliu .reader-toolbar button:first-child");
-        const nextBtn = document.querySelector("#lectie-detaliu .reader-toolbar button:last-child");
-
-        if(prevBtn) prevBtn.disabled = this.index === 0;
-        if(nextBtn) nextBtn.disabled = this.index === this.slides.length - 1;
+        if(this.prevBtn) this.prevBtn.disabled = this.index === 0;
+        if(this.nextBtn) this.nextBtn.disabled = this.index === this.slides.length - 1;
 
         updateActiveTOC('lesson-toc', this.index);
 
@@ -75,25 +78,28 @@ const LessonManager = {
 const LibraryManager = {
     index: 0,
     slides: [],
+    initElements() {
+        if (this.bodyEl) return;
+        this.bodyEl = document.getElementById('library-body');
+        this.counterEl = document.getElementById('library-slide-counter');
+        this.prevBtn = document.querySelector("#biblioteca-detaliu .reader-toolbar button:first-child");
+        this.nextBtn = document.querySelector("#biblioteca-detaliu .reader-toolbar button:last-child");
+    },
     render() {
-        const body = document.getElementById('library-body');
+        this.initElements();
         const slide = this.slides[this.index];
         if(!slide) return;
 
-        body.innerHTML = `
+        this.bodyEl.innerHTML = `
             <div class='ppt-slide'>
                 <span class='slide-title'>${slide.t}</span>
                 <div class='slide-text'>${slide.c}</div>
             </div>`;
 
-        document.getElementById('library-slide-counter').innerText = `Slide ${this.index + 1} / ${this.slides.length}`;
+        this.counterEl.innerText = `Slide ${this.index + 1} / ${this.slides.length}`;
 
-        // Update toolbar buttons
-        const prevBtn = document.querySelector("#biblioteca-detaliu .reader-toolbar button:first-child");
-        const nextBtn = document.querySelector("#biblioteca-detaliu .reader-toolbar button:last-child");
-
-        if(prevBtn) prevBtn.disabled = this.index === 0;
-        if(nextBtn) nextBtn.disabled = this.index === this.slides.length - 1;
+        if(this.prevBtn) this.prevBtn.disabled = this.index === 0;
+        if(this.nextBtn) this.nextBtn.disabled = this.index === this.slides.length - 1;
 
         updateActiveTOC('library-toc', this.index);
 
@@ -365,7 +371,8 @@ function openLesson(index) {
         return;
     }
 
-    document.getElementById('lesson-title').innerText = lesson.titlu;
+    const titleEl = document.getElementById('lesson-title');
+    if (titleEl) titleEl.innerText = lesson.titlu;
 
     if (lesson.file) {
         LessonManager.slides = [{
@@ -401,7 +408,8 @@ function openLibraryItem(index) {
         return;
     }
 
-    document.getElementById('library-title').innerText = item.titlu;
+    const titleEl = document.getElementById('library-title');
+    if (titleEl) titleEl.innerText = item.titlu;
 
     if (item.file) {
         if (item.type === 'pdf') {
@@ -433,11 +441,16 @@ function openLibraryItem(index) {
     LibraryManager.render();
 }
 
+let swiperWrapperEl = null;
+let slideViewerModalEl = null;
+
 function openSlideViewer(type, index) {
     const data = type === 'lesson' ? lectiiCompleta[index] : bibliotecaCompleta[index];
     if (!data || !data.slides) return;
 
-    const wrapper = document.getElementById('swiper-wrapper');
+    if (!swiperWrapperEl) swiperWrapperEl = document.getElementById('swiper-wrapper');
+    if (!slideViewerModalEl) slideViewerModalEl = document.getElementById('slide-viewer-modal');
+
     const slidesHtml = data.slides.map(slide => `
         <div class="swiper-slide">
             <div class="ppt-slide">
@@ -445,9 +458,9 @@ function openSlideViewer(type, index) {
                 <div class="slide-text">${slide.c}</div>
             </div>
         </div>`).join("");
-    wrapper.innerHTML = slidesHtml;
+    if (swiperWrapperEl) swiperWrapperEl.innerHTML = slidesHtml;
 
-    document.getElementById('slide-viewer-modal').classList.remove('hidden');
+    if (slideViewerModalEl) slideViewerModalEl.classList.remove('hidden');
 
     if (window.ecoSwiper) window.ecoSwiper.destroy();
     window.ecoSwiper = new Swiper('.mySwiper', {
@@ -460,7 +473,8 @@ function openSlideViewer(type, index) {
 }
 
 function closeSlideViewer() {
-    document.getElementById('slide-viewer-modal').classList.add('hidden');
+    if (!slideViewerModalEl) slideViewerModalEl = document.getElementById('slide-viewer-modal');
+    if (slideViewerModalEl) slideViewerModalEl.classList.add('hidden');
     if (window.ecoSwiper) window.ecoSwiper.destroy();
 }
 
