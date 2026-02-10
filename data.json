@@ -274,49 +274,121 @@
       "id": 1,
       "n": "ASE București - Cibernetică",
       "m": "9.85",
-      "d": "<h3>Cibernetică, Statistică și Informatică Economică</h3><p>Cea mai prestigioasă facultate din cadrul ASE. Programul de licență îmbină economia cu tehnologia informației.</p><h4>Admitere</h4><ul><li>Examen scris la Matematică sau Economie (60-70% din medie)</li><li>Media Bacalaureat (30-40%)</li></ul><h4>Oportunități</h4><p>Data Scientist, Business Analyst, Developer în Fintech.</p><a href='https://csie.ase.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+      "d": "<h3>Cibernetică, Statistică și Informatică Economică</h3><p>Cea mai prestigioasă facultate din cadrul ASE. Programul de licență îmbină economia cu tehnologia informației.</p><h4>Admitere</h4><ul><li>Examen scris la Matematică sau Economie (60-70% din medie)</li><li>Media Bacalaureat (30-40%)</li></ul><h4>Oportunități</h4><p>Data Scientist, Business Analyst, Developer în Fintech.</p><a href='https://csie.ase.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>",
+      "logo": "https://ase.ro/wp-content/uploads/2021/04/logo-ase.png",
+      "admission": "Examen scris la Matematică sau Economie (70%) + Medie Bac (30%)",
+      "seats": "Aprox. 450 locuri buget",
+      "career": [
+        "Data Scientist",
+        "Business Analyst",
+        "IT Consultant"
+      ],
+      "url": "https://csie.ase.ro"
     },
     {
       "id": 2,
       "n": "FSEGA Cluj (UBB)",
       "m": "9.65",
-      "d": "<h3>Facultatea de Științe Economice și Gestiunea Afacerilor</h3><p>Parte a Universității Babeș-Bolyai, FSEGA este cea mai mare facultate din România ca număr de studenți.</p><h4>Admitere</h4><ul><li>Concurs de dosare (media Bacalaureat + nota la disciplină relevantă)</li></ul><h4>Specializări Top</h4><p>Informatică Economică, Finanțe-Bănci, Marketing (linii de studiu în RO, EN, DE, FR, HU).</p><a href='https://econ.ubbcluj.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Științe Economice și Gestiunea Afacerilor</h3><p>Parte a Universității Babeș-Bolyai, FSEGA este cea mai mare facultate din România ca număr de studenți.</p><h4>Admitere</h4><ul><li>Concurs de dosare (media Bacalaureat + nota la disciplină relevantă)</li></ul><h4>Specializări Top</h4><p>Informatică Economică, Finanțe-Bănci, Marketing (linii de studiu în RO, EN, DE, FR, HU).</p><a href='https://econ.ubbcluj.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>",
+      "logo": "https://www.ubbcluj.ro/ro/infoutile/files/identitate_vizuala/Sigla_UBB.png",
+      "admission": "Concurs de dosare (Media Bac 100%)",
+      "seats": "Aprox. 600 locuri buget",
+      "career": [
+        "Contabil",
+        "Auditor",
+        "Manager Financiar"
+      ],
+      "url": "https://econ.ubbcluj.ro"
     },
     {
       "id": 3,
       "n": "UAIC Iași - FEAA",
       "m": "9.45",
-      "d": "<h3>Facultatea de Economie și Administrarea Afacerilor</h3><p>Polul educației economice din Moldova, cu o tradiție academică puternică și campus modern.</p><h4>Admitere</h4><p>Media de la Bacalaureat (100% sau ponderată cu nota la diverse discipline).</p><h4>Facilități</h4><p>Acces la baze de date internaționale, stagii de practică la multinaționale din Iași.</p><a href='https://www.feaa.uaic.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Economie și Administrarea Afacerilor</h3><p>Polul educației economice din Moldova, cu o tradiție academică puternică și campus modern.</p><h4>Admitere</h4><p>Media de la Bacalaureat (100% sau ponderată cu nota la diverse discipline).</p><h4>Facilități</h4><p>Acces la baze de date internaționale, stagii de practică la multinaționale din Iași.</p><a href='https://www.feaa.uaic.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>",
+      "logo": "https://www.uaic.ro/wp-content/uploads/2013/12/logo_uaic_2014.png",
+      "admission": "Media Bacalaureat (100%)",
+      "seats": "Aprox. 350 locuri buget",
+      "career": [
+        "Analist Economic",
+        "Expert Bancar",
+        "Manager Resurse Umane"
+      ],
+      "url": "https://www.feaa.uaic.ro"
     },
     {
       "id": 4,
       "n": "UVT Timișoara - FEAA",
       "m": "9.30",
-      "d": "<h3>Facultatea de Economie și de Administrare a Afacerilor</h3><p>Orientare vestică, focalizată pe nevoile pieței muncii și antreprenoriat.</p><h4>Admitere</h4><p>Concurs de dosare. Media generală de la bacalaureat.</p><h4>Puncte forte</h4><p>Parteneriate solide cu mediul de afaceri din Timișoara (Continental, Nokia, etc.).</p><a href='https://feaa.uvt.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Economie și de Administrare a Afacerilor</h3><p>Orientare vestică, focalizată pe nevoile pieței muncii și antreprenoriat.</p><h4>Admitere</h4><p>Concurs de dosare. Media generală de la bacalaureat.</p><h4>Puncte forte</h4><p>Parteneriate solide cu mediul de afaceri din Timișoara (Continental, Nokia, etc.).</p><a href='https://feaa.uvt.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>",
+      "logo": "https://www.uvt.ro/wp-content/uploads/2020/06/Logo-UVT-2020.png",
+      "admission": "Media Bacalaureat (100%)",
+      "seats": "Aprox. 300 locuri buget",
+      "career": [
+        "Antreprenor",
+        "Manager Proiect",
+        "Consultant Afaceri"
+      ],
+      "url": "https://feaa.uvt.ro"
     },
     {
       "id": 5,
       "n": "UBB Cluj - Facultatea de Business",
       "m": "9.50",
-      "d": "<h3>Facultatea de Business</h3><p>Prima facultate de profil din România, cu o abordare unică, practică și orientată spre leadership.</p><h4>Admitere</h4><p>Eseu motivațional + Media Bacalaureat.</p><h4>Viziune</h4><p>Pregătirea viitorilor antreprenori și manageri prin simulări de business și proiecte reale.</p><a href='https://tbs.ubbcluj.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Business</h3><p>Prima facultate de profil din România, cu o abordare unică, practică și orientată spre leadership.</p><h4>Admitere</h4><p>Eseu motivațional + Media Bacalaureat.</p><h4>Viziune</h4><p>Pregătirea viitorilor antreprenori și manageri prin simulări de business și proiecte reale.</p><a href='https://tbs.ubbcluj.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>",
+      "logo": "https://www.ubbcluj.ro/ro/infoutile/files/identitate_vizuala/Sigla_UBB.png",
+      "admission": "Eseu motivațional + Media Bac",
+      "seats": "Aprox. 150 locuri buget",
+      "career": [
+        "Leadership Manager",
+        "Brand Manager",
+        "Business Developer"
+      ],
+      "url": "https://tbs.ubbcluj.ro"
     },
     {
       "id": 6,
       "n": "Politehnica București - FAIMA",
       "m": "9.10",
-      "d": "<h3>Facultatea de Antreprenoriat, Ingineria și Managementul Afacerilor</h3><p>Îmbină rigoarea ingineriei cu flexibilitatea economică.</p><h4>Admitere</h4><p>Examen scris tip grilă (Matematică + Economie/Fizică).</p><h4>Carieră</h4><p>Manageri tehnici, Consultanță în producție, Project Management.</p><a href='https://faima.upb.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Antreprenoriat, Ingineria și Managementul Afacerilor</h3><p>Îmbină rigoarea ingineriei cu flexibilitatea economică.</p><h4>Admitere</h4><p>Examen scris tip grilă (Matematică + Economie/Fizică).</p><h4>Carieră</h4><p>Manageri tehnici, Consultanță în producție, Project Management.</p><a href='https://faima.upb.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>",
+      "logo": "https://upb.ro/wp-content/uploads/2017/11/logo-upb.png",
+      "admission": "Examen scris tip grilă (Matematică + Economie)",
+      "seats": "Aprox. 200 locuri buget",
+      "career": [
+        "Manager Tehnic",
+        "Consultant Management",
+        "Inginer Economist"
+      ],
+      "url": "https://faima.upb.ro"
     },
     {
       "id": 7,
       "n": "Transilvania Brașov - SEAA",
       "m": "9.25",
-      "d": "<h3>Științe Economice și Administrarea Afacerilor</h3><p>Excelență în turism, comerț și servicii, profitând de poziția strategică a Brașovului.</p><h4>Admitere</h4><p>Concurs de dosare.</p><h4>Specializări unice</h4><p>Economia Comerțului, Turismului și Serviciilor.</p><a href='https://economice.unitbv.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+      "d": "<h3>Științe Economice și Administrarea Afacerilor</h3><p>Excelență în turism, comerț și servicii, profitând de poziția strategică a Brașovului.</p><h4>Admitere</h4><p>Concurs de dosare.</p><h4>Specializări unice</h4><p>Economia Comerțului, Turismului și Serviciilor.</p><a href='https://economice.unitbv.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>",
+      "logo": "https://www.unitbv.ro/images/logo_unitbv.png",
+      "admission": "Concurs de dosare",
+      "seats": "Aprox. 250 locuri buget",
+      "career": [
+        "Manager Turism",
+        "Expert Comerț",
+        "Analist Servicii"
+      ],
+      "url": "https://economice.unitbv.ro"
     },
     {
       "id": 8,
       "n": "Universitatea din București - FAA",
       "m": "9.40",
-      "d": "<h3>Facultatea de Administrație și Afaceri</h3><p>O facultate tânără și dinamică în cadrul celei mai vechi universități din București.</p><h4>Admitere</h4><p>Examen scris (50%) + Media Bacalaureat (50%).</p><h4>Focus</h4><p>Administrarea afacerilor, Marketing, Administrație publică.</p><a href='https://faa.unibuc.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Administrație și Afaceri</h3><p>O facultate tânără și dinamică în cadrul celei mai vechi universități din București.</p><h4>Admitere</h4><p>Examen scris (50%) + Media Bacalaureat (50%).</p><h4>Focus</h4><p>Administrarea afacerilor, Marketing, Administrație publică.</p><a href='https://faa.unibuc.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>",
+      "logo": "https://unibuc.ro/wp-content/uploads/2018/12/logo-ub-mic.png",
+      "admission": "Examen scris (50%) + Medie Bac (50%)",
+      "seats": "Aprox. 280 locuri buget",
+      "career": [
+        "Administrator Public",
+        "Specialist Marketing",
+        "Manager Vânzări"
+      ],
+      "url": "https://faa.unibuc.ro"
     }
   ],
   "masterBank": [
@@ -327,7 +399,8 @@
         "Nelimitate",
         "Statice"
       ],
-      "c": 1
+      "c": 1,
+      "e": "Raritatea resurselor în raport cu nevoile nelimitate impune alegerea și utilizarea rațională."
     },
     {
       "q": "Costul de oportunitate reprezintă:",
@@ -336,7 +409,8 @@
         "Cea mai bună alternativă sacrificată",
         "Profitul net"
       ],
-      "c": 1
+      "c": 1,
+      "e": "Costul de oportunitate este 'costul alegerii', reprezentând valoarea alternativei la care se renunță."
     },
     {
       "q": "Utilitatea marginală este zero când utilitatea totală este:",
@@ -345,7 +419,8 @@
         "Maximă",
         "Negativă"
       ],
-      "c": 1
+      "c": 1,
+      "e": "Conform legii utilității marginale descrescânde, Umg scade pe măsură ce crește consumul, fiind zero la saturare (UT maximă)."
     },
     {
       "q": "Salariul este prețul plătit pentru:",
@@ -354,7 +429,8 @@
         "Pământ",
         "Muncă"
       ],
-      "c": 2
+      "c": 2,
+      "e": "Salariul reprezintă remunerarea factorului de producție muncă pe piața muncii."
     },
     {
       "q": "Care dintre următoarele este un bun liber?",
@@ -363,7 +439,8 @@
         "Haina",
         "Autobuzul"
       ],
-      "c": 0
+      "c": 0,
+      "e": "Bunurile libere sunt oferite gratuit de natură în cantități ce depășesc nevoile (ex: aerul în condiții normale)."
     },
     {
       "q": "Piața cu concurență perfectă presupune:",
@@ -372,7 +449,8 @@
         "Atomicitatea participanților",
         "Bariere la intrare"
       ],
-      "c": 1
+      "c": 1,
+      "e": "Atomicitatea presupune existența unui număr mare de vânzători și cumpărători, niciunul neputând influența prețul."
     },
     {
       "q": "Inflația se manifestă prin:",
@@ -381,7 +459,8 @@
         "Creșterea puterii de cumpărare",
         "Creșterea generalizată a prețurilor"
       ],
-      "c": 2
+      "c": 2,
+      "e": "Inflația reprezintă un dezechilibru monetar-real ce se manifestă prin creșterea prețurilor și scăderea puterii de cumpărare."
     },
     {
       "q": "Dobânda este prețul:",
@@ -390,7 +469,8 @@
         "Capitalului împrumutat",
         "Pământului"
       ],
-      "c": 1
+      "c": 1,
+      "e": "Dobânda este prețul plătit pentru utilizarea capitalului împrumutat pe o perioadă determinată."
     },
     {
       "q": "Produsul Intern Brut (PIB) măsoară:",
@@ -399,7 +479,8 @@
         "Valoarea bunurilor finale produse într-un an",
         "Exporturile nete"
       ],
-      "c": 1
+      "c": 1,
+      "e": "PIB este principalul indicator macroeconomic care măsoară valoarea de piață a tuturor bunurilor și serviciilor finale."
     },
     {
       "q": "Cererea este inelastică dacă:",
@@ -408,7 +489,8 @@
         "Coeficientul elasticității > 1",
         "Coeficientul elasticității = 1"
       ],
-      "c": 0
+      "c": 0,
+      "e": "Cererea este inelastică atunci când variația cantității este mai mică decât variația prețului (Ke < 1)."
     }
   ]
 }

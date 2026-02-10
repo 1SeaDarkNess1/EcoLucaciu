@@ -133,6 +133,7 @@ const LibraryManager = {
 
 const QuizManager = {
     questions: [],
+    userAnswers: [],
     index: 0,
     score: 0,
     timer: null,
@@ -157,7 +158,8 @@ const QuizManager = {
         if (this.timer) clearInterval(this.timer);
         this.timer = null;
     },
-            start(type = "general") {
+
+    start(type = "general") {
         this.initElements();
         this.type = type;
 
@@ -166,25 +168,11 @@ const QuizManager = {
 
         if (typeof questionsGeneral !== 'undefined') {
             switch(type) {
-                case 'general':
-                    bank = [...questionsGeneral];
-                    limit = 20;
-                    break;
-                case 'micro':
-                    bank = [...questionsMicro];
-                    limit = 15;
-                    break;
-                case 'macro':
-                    bank = [...questionsMacro];
-                    limit = 15;
-                    break;
-                case 'admitere':
-                    bank = [...questionsAdmitere];
-                    limit = 30;
-                    break;
-                default:
-                    bank = [...(typeof masterBank !== 'undefined' ? masterBank : [])];
-                    limit = 20;
+                case 'general': bank = [...questionsGeneral]; limit = 20; break;
+                case 'micro': bank = [...questionsMicro]; limit = 15; break;
+                case 'macro': bank = [...questionsMacro]; limit = 15; break;
+                case 'admitere': bank = [...questionsAdmitere]; limit = 30; break;
+                default: bank = [...(typeof masterBank !== 'undefined' ? masterBank : [])]; limit = 20;
             }
         } else {
              bank = [...(typeof masterBank !== 'undefined' ? masterBank : [])];
@@ -197,6 +185,7 @@ const QuizManager = {
         }
 
         this.questions = bank.slice(0, limit);
+        this.userAnswers = new Array(this.questions.length).fill(null);
 
         // Reset state
         this.index = 0; this.score = 0; this.secs = 0; this.correct = 0; this.wrong = 0;
@@ -236,6 +225,7 @@ const QuizManager = {
     handleAnswer(i) {
         this.initElements();
         const d = this.questions[this.index];
+        this.userAnswers[this.index] = i;
         const overlay = this.feedbackEl;
         overlay.classList.remove('hidden');
 
@@ -260,35 +250,30 @@ const QuizManager = {
         clearInterval(this.timer);
         showPage('results');
 
-        const finalScore = this.score;
         const totalQuestions = this.questions.length;
         const maxScore = totalQuestions * 5;
-
         let grade = 1;
         if (maxScore > 0) {
-            grade = 1 + (finalScore / maxScore) * 9;
+            grade = 1 + (this.score / maxScore) * 9;
         }
         if (grade > 10) grade = 10;
         const gradeFixed = grade.toFixed(2);
 
-        const scoreTextEl = document.getElementById('final-score-text');
-        if(scoreTextEl) scoreTextEl.innerText = `${finalScore} / ${maxScore}`;
-
-        const timeEl = document.getElementById('final-time');
-        if(timeEl) timeEl.innerText = this.timerEl.innerText;
-
-        const gradeBigEl = document.getElementById('final-grade-big');
-        if(gradeBigEl) gradeBigEl.innerText = gradeFixed;
+        // Update Stats
+        document.getElementById('final-time').innerText = this.timerEl.innerText;
+        document.getElementById('final-correct').innerText = this.correct;
+        document.getElementById('final-wrong').innerText = this.wrong;
+        document.getElementById('final-score-text').innerText = `${this.score} / ${maxScore}`;
+        document.getElementById('final-grade-big').innerText = gradeFixed;
 
         const msgEl = document.getElementById('performance-msg');
         if(msgEl) {
-            msgEl.style.fontWeight = "bold";
             if (grade >= 9) {
                 msgEl.innerText = "Excelent! Ești pregătit pentru succes.";
-                msgEl.style.color = "var(--success)";
+                msgEl.style.color = "var(--accent)";
             } else if (grade >= 7) {
                 msgEl.innerText = "Bun! Ești pe drumul cel bun.";
-                msgEl.style.color = "var(--success)";
+                msgEl.style.color = "#43A047";
             } else if (grade >= 5) {
                  msgEl.innerText = "Satisfăcător. Mai ai nevoie de puțin studiu.";
                  msgEl.style.color = "#d97706";
@@ -300,16 +285,44 @@ const QuizManager = {
 
         const circle = document.getElementById('result-circle');
         if(circle) {
-            // Reset animation
             circle.style.transition = 'none';
             circle.style.background = `conic-gradient(var(--accent) 0deg, rgba(255,255,255,0.2) 0deg)`;
-
             setTimeout(() => {
                 const deg = (grade / 10) * 360;
                 circle.style.transition = 'background 1.5s ease-out';
                 circle.style.background = `conic-gradient(var(--accent) ${deg}deg, rgba(255,255,255,0.2) ${deg}deg)`;
             }, 100);
         }
+    },
+
+    showReview() {
+        const container = document.getElementById('review-container');
+        container.innerHTML = '';
+        this.questions.forEach((q, idx) => {
+            const userAns = this.userAnswers[idx];
+            const isCorrect = userAns === q.c;
+
+            const item = document.createElement('div');
+            item.className = 'review-item glass';
+
+            let optionsHtml = q.o.map((opt, optIdx) => {
+                let statusClass = '';
+                if (optIdx === q.c) statusClass = 'correct';
+                else if (optIdx === userAns) statusClass = 'wrong';
+                return `<div class="review-opt ${statusClass}">${opt}</div>`;
+            }).join('');
+
+            item.innerHTML = `
+                <div class="review-q-text">${idx + 1}. ${q.q}</div>
+                <div class="review-options">${optionsHtml}</div>
+                <div class="explanation-box">
+                    <b>Explicație:</b>
+                    ${q.e || "Răspunsul corect a fost stabilit conform manualului de economie."}
+                </div>
+            `;
+            container.appendChild(item);
+        });
+        showPage('review-mode');
     }
 };
 
@@ -320,24 +333,34 @@ const ModalManager = {
         if (!u) return;
 
         const modalBody = document.getElementById('modal-body');
-        modalBody.innerHTML = "";
-
-        const h1 = document.createElement('h1');
-        h1.textContent = u.n;
-        modalBody.appendChild(h1);
-
-        const p = document.createElement('p');
-        p.textContent = 'Medie: ';
-        const b = document.createElement('b');
-        b.textContent = u.m;
-        p.appendChild(b);
-        modalBody.appendChild(p);
-
-        modalBody.appendChild(document.createElement('hr'));
-
-        const details = document.createElement('div');
-        details.innerHTML = u.d;
-        modalBody.appendChild(details);
+        modalBody.innerHTML = `
+            <div class="uni-modal-header">
+                <img src="${u.logo || 'https://via.placeholder.com/150'}" alt="${u.n}" class="uni-modal-logo">
+                <div class="uni-modal-title">
+                    <h2>${u.n}</h2>
+                    <p>Medie Admitere: <b style="color: var(--accent)">${u.m}</b></p>
+                </div>
+            </div>
+            <div class="uni-details-grid">
+                <div class="uni-detail-item">
+                    <h4>🎓 Admitere</h4>
+                    <p>${u.admission || 'Detalii indisponibile momentan.'}</p>
+                </div>
+                <div class="uni-detail-item">
+                    <h4>📍 Locuri Buget</h4>
+                    <p>${u.seats || 'Estimare indisponibilă.'}</p>
+                </div>
+                <div class="uni-detail-item">
+                    <h4>💼 Carieră</h4>
+                    <ul style="padding-left: 1.2rem; margin: 0;">
+                        ${(u.career || []).map(c => `<li>${c}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+            <div class="uni-modal-footer">
+                <a href="${u.url}" target="_blank" class="btn-premium">Vizitează Site-ul Oficial</a>
+            </div>
+        `;
 
         document.getElementById('uni-modal').classList.remove('hidden');
 
@@ -355,6 +378,7 @@ const ModalManager = {
 };
 
 // --- ALIASES FOR GLOBAL ACCESS ---
+window.QuizManager = QuizManager;
 window.showPage = showPage;
 window.startQuiz = (type) => QuizManager.start(type);
 

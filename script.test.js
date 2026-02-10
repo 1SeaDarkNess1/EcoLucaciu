@@ -72,8 +72,9 @@ let quizHandler = null;
 [
     'modal-body', 'uni-modal', 'modal-close-btn', 'home', 'materiale', 'admitere', 'biblioteca', 'grila',
     'chapters-list', 'uni-grid', 'library-list', 'sidebar', 'mobile-toggle', 'swiper-wrapper',
-    'slide-viewer-modal', 'results', 'quiz', 'lectie-detaliu', 'biblioteca-detaliu',
+    'slide-viewer-modal', 'results', 'quiz', 'lectie-detaliu', 'biblioteca-detaliu', 'review-mode', 'review-container',
     'final-score-text', 'final-grade-big', 'result-circle', 'final-time', 'timer', 'performance-msg', 'correct-count', 'wrong-count',
+    'final-correct', 'final-wrong',
     'q-text', 'q-counter', 'progress-bar', 'options-box', 'quiz-feedback-overlay',
     'library-body', 'lesson-body', 'lesson-title', 'library-title'
 ].forEach(id => {
@@ -164,6 +165,7 @@ const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 
     getCurrentQuestions: () => QuizManager.questions,
     setCurrentQuestions: (v) => QuizManager.questions = v,
     getQuizType: () => QuizManager.type,
+    showReview: () => QuizManager.showReview(),
     openLesson, openLibraryItem,
 
     openSlideViewer, closeSlideViewer, toggleFullScreen
@@ -213,5 +215,41 @@ describe('Quiz Logic', () => {
         renderQ();
         expect(mockElements['q-text'].innerText).toBe('Q1');
         expect(mockElements['options-box'].innerHTML).toContain('opt-btn');
+    });
+
+    test('finish updates dashboard stats', () => {
+        setCurrentQuestions([{ q: 'Q1', o: ['A', 'B'], c: 0 }]);
+        setScore(5);
+        setCorrect(1);
+        setWrong(0);
+        mockElements['timer'].innerText = '00:05';
+        finish();
+        expect(mockElements['results'].classes.has('active')).toBe(true);
+        expect(mockElements['final-correct'].innerText).toBe("1");
+        expect(mockElements['final-wrong'].innerText).toBe("0");
+        expect(mockElements['final-time'].innerText).toBe("00:05");
+    });
+
+    test('showReview populates review-container', () => {
+        setCurrentQuestions([{ q: 'Q1', o: ['A', 'B'], c: 0, e: 'Expl' }]);
+        context.userAnswers = [0]; // Added to scriptFunc or set manually
+        showReview();
+        expect(mockElements['review-mode'].classes.has('active')).toBe(true);
+        expect(mockElements['review-container'].innerHTML).toContain('Q1');
+        expect(mockElements['review-container'].innerHTML).toContain('Expl');
+    });
+});
+
+describe('University Logic', () => {
+    test('openUni populates modal with new structured data', () => {
+        const u = { id: 99, n: 'Uni Test', logo: 'logo.png', m: '9.00', admission: 'Test adm', seats: '100', career: ['Dev'], url: 'http://uni.ro' };
+        context.unis.push(u);
+        openUni(99);
+        expect(mockElements['uni-modal'].classes.has('active-link')).toBe(false); // check visibility
+        expect(mockElements['uni-modal'].classes.has('hidden')).toBe(false);
+        expect(mockElements['modal-body'].innerHTML).toContain('Uni Test');
+        expect(mockElements['modal-body'].innerHTML).toContain('Test adm');
+        expect(mockElements['modal-body'].innerHTML).toContain('100');
+        expect(mockElements['modal-body'].innerHTML).toContain('Dev');
     });
 });
