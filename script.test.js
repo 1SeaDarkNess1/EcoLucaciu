@@ -2,12 +2,32 @@ const fs = require('fs');
 const path = require('path');
 
 // Mock DOM elements
+const createMockElement = (id = '') => ({
+    id,
+    classList: {
+        add: jest.fn(),
+        remove: jest.fn(),
+        contains: jest.fn()
+    },
+    focus: jest.fn(),
+    innerHTML: '',
+    appendChild: jest.fn(),
+    style: {},
+    tagName: 'DIV'
+});
+
+const mockViews = [
+    createMockElement('home'),
+    createMockElement('lectii'),
+    createMockElement('biblioteca')
+];
+mockViews.forEach(v => v.classList.contains.mockImplementation((cls) => cls === 'view'));
+
 const mockElements = {
     'modal-body': {
         innerHTML: '',
         focus: jest.fn(),
         appendChild: jest.fn(function(child) {
-            // Simplified simulation of appendChild for text checks
             if (child.textContent) this.innerHTML += child.textContent;
             if (child.innerHTML) this.innerHTML += child.innerHTML;
             if (child.tagName === 'HR') this.innerHTML += '<hr>';
@@ -65,7 +85,12 @@ global.document = {
                  if (child.innerHTML) this.innerHTML += child.innerHTML;
             }),
             setAttribute: jest.fn(),
-            focus: jest.fn()
+            focus: jest.fn(),
+            classList: {
+                add: jest.fn(),
+                remove: jest.fn(),
+                contains: jest.fn()
+            }
         };
     })
 };
@@ -96,6 +121,7 @@ global.showPage = showPage;
 global.openUni = openUni;
 global.closeModal = closeModal;
 global.unis = unis;
+global.showPage = showPage;
 
 describe('University Modal', () => {
     beforeEach(() => {
