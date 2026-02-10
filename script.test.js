@@ -75,7 +75,7 @@ let quizHandler = null;
     'slide-viewer-modal', 'results', 'quiz', 'lectie-detaliu', 'biblioteca-detaliu',
     'final-score-text', 'final-grade-big', 'result-circle', 'final-time', 'timer', 'performance-msg', 'correct-count', 'wrong-count',
     'q-text', 'q-counter', 'progress-bar', 'options-box', 'quiz-feedback-overlay',
-    'library-body', 'lesson-body', 'lesson-title', 'library-title', 'theme-icon', 'theme-text'
+    'library-body', 'lesson-body', 'lesson-title', 'library-title'
 ].forEach(id => {
     mockElements[id] = createMockElement(id);
     if (id === 'options-box') {
@@ -165,7 +165,7 @@ const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 
     setCurrentQuestions: (v) => QuizManager.questions = v,
     getQuizType: () => QuizManager.type,
     openLesson, openLibraryItem,
-    toggleDarkMode, initTheme, updateThemeUI,
+
     openSlideViewer, closeSlideViewer, toggleFullScreen
  };`);
 
@@ -179,25 +179,6 @@ Object.assign(global, context);
 
 beforeAll(async () => { if (initializationPromise) await initializationPromise; });
 
-describe('Theme Logic', () => {
-    test('toggleDarkMode toggles class and saves to localStorage', () => {
-        const body = document.body;
-        const initial = body.classList.contains('dark-mode');
-        toggleDarkMode();
-        expect(body.classList.contains('dark-mode')).toBe(!initial);
-        expect(global.localStorage.getItem('darkMode')).toBe(!initial ? 'enabled' : 'disabled');
-        toggleDarkMode();
-        expect(body.classList.contains('dark-mode')).toBe(initial);
-    });
-
-    test('initTheme loads from localStorage', () => {
-        global.localStorage.setItem('darkMode', 'enabled');
-        document.body.classList.remove('dark-mode');
-        initTheme();
-        expect(document.body.classList.contains('dark-mode')).toBe(true);
-        expect(mockElements['theme-icon'].innerText).toBe('☀️');
-    });
-});
 
 describe('Lesson Logic', () => {
     test('openLesson for lesson with file renders into lesson-body', () => {
