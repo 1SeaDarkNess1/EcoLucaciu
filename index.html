@@ -39,7 +39,7 @@
         <div class='sidebar-footer'>
             <div class='author-box'>
                 <p>Realizat de: <strong>Bontoș Bogdan Mihai</strong></p>
-                <small class="sidebar-footer-info">Coordonatori:<br>Prof. Delia Mariana Ardelean<br>& Prof. Adriana Diaconescu</small>
+                <small style="display: block; margin-top: 8px; line-height: 1.4; color: var(--text-muted);">Coordonatori:<br>Prof. Delia Mariana Ardelean<br>& Prof. Adriana Diaconescu</small>
             </div>
         </div>
     </aside>
@@ -189,10 +189,10 @@
         <!-- Secțiunea REZULTATE -->
         <section id='results' class='view'>
             <div class='results-container'>
-                <div class='results-main-card glass animate-in' >
-                    <h2 >Rezultat Final</h2>
+                <div class='results-main-card glass animate-in' style='max-width: 600px; margin: 0 auto; padding: 3rem;'>
+                    <h2 style='text-align: center; margin-bottom: 2rem; font-size: 2rem;'>Rezultat Final</h2>
 
-                    <div class='circular-progress-container' >
+                    <div class='circular-progress-container' style='display: flex; justify-content: center; margin-bottom: 2rem;'>
                         <div class='circular-progress' id='result-circle'>
                             <div class='inner-circle glass'>
                                 <span id='final-grade-big'>0.00</span>
@@ -201,28 +201,28 @@
                         </div>
                     </div>
 
-                    <p id='performance-msg' ></p>
+                    <p id='performance-msg' style='text-align: center; font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; color: var(--accent);'></p>
 
-                    <div class="results-stats-grid">
-                        <div class="stat-box glass">
-                            <small class="stat-label">TIMP TOTAL</small>
-                            <b id="final-time" class="stat-value">00:00</b>
+                    <div class="results-stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <div class="stat-box glass" style="padding: 1rem; text-align: center;">
+                            <small style="display: block; color: var(--text-muted);">TIMP TOTAL</small>
+                            <b id="final-time" style="font-size: 1.2rem;">00:00</b>
                         </div>
-                        <div class="stat-box glass">
-                            <small class="stat-label">CORECTE</small>
-                            <b id="final-correct" class="stat-value success">0</b>
+                        <div class="stat-box glass" style="padding: 1rem; text-align: center;">
+                            <small style="display: block; color: var(--text-muted);">CORECTE</small>
+                            <b id="final-correct" style="font-size: 1.2rem; color: var(--success);">0</b>
                         </div>
-                        <div class="stat-box glass">
-                            <small class="stat-label">GREȘITE</small>
-                            <b id="final-wrong" class="stat-value danger">0</b>
+                        <div class="stat-box glass" style="padding: 1rem; text-align: center;">
+                            <small style="display: block; color: var(--text-muted);">GREȘITE</small>
+                            <b id="final-wrong" style="font-size: 1.2rem; color: var(--danger);">0</b>
                         </div>
-                        <div class="stat-box glass">
-                            <small class="stat-label">SCOR</small>
-                            <b id="final-score-text" class="stat-value">0 / 0</b>
+                        <div class="stat-box glass" style="padding: 1rem; text-align: center;">
+                            <small style="display: block; color: var(--text-muted);">SCOR</small>
+                            <b id="final-score-text" style="font-size: 1.2rem;">0 / 0</b>
                         </div>
                     </div>
 
-                    <div class="results-actions">
+                    <div class="results-actions" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                         <button class="btn-premium btn-outline" onclick="startQuiz(QuizManager.type)">🔄 Repetă Testul</button>
                         <button class="btn-premium btn-outline" onclick="QuizManager.showReview()">👁️ Vezi Răspunsurile</button>
                         <button class="btn-premium" onclick="showPage('grila')">🎓 Înapoi la Evaluare</button>
