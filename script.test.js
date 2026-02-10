@@ -145,8 +145,12 @@ const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 
     showPage, openUni, closeModal, unis, finish,
     setScore: (v) => score = v,
     setTimer: (v) => timer = v,
+    setSecs: (v) => secs = v,
+    setCorrect: (v) => correct = v,
+    setWrong: (v) => wrong = v,
     getScore: () => score,
     getTimer: () => timer,
+    getSecs: () => secs,
     startQuiz, renderQ,
     getCurrentIdx: () => currentIdx, setCurrentIdx: (v) => currentIdx = v,
     getCorrect: () => correct,
@@ -340,17 +344,50 @@ describe('Quiz Logic', () => {
     });
 
     test('startQuiz resets state and starts timer', () => {
+        // Setup initial dirty state
+        setScore(10);
+        setCurrentIdx(5);
+        setSecs(100);
+        setCorrect(5);
+        setWrong(5);
+        setTimer(999);
+        mockElements['correct-count'].innerText = 5;
+        mockElements['wrong-count'].innerText = 5;
+        mockElements['timer'].innerText = "01:40";
+
         startQuiz();
+
+        // Verify global state resets
         expect(getCurrentIdx()).toBe(0);
+        expect(getScore()).toBe(0);
+        expect(getSecs()).toBe(0);
+        expect(getCorrect()).toBe(0);
+        expect(getWrong()).toBe(0);
+
+        // Verify timer management
+        expect(global.clearInterval).toHaveBeenCalledWith(999);
         expect(global.setInterval).toHaveBeenCalled();
+
+        // Verify DOM resets
+        expect(mockElements['correct-count'].innerText).toBe(0);
+        expect(mockElements['wrong-count'].innerText).toBe(0);
+        expect(mockElements['timer'].innerText).toBe("00:00");
+
+        // Verify navigation and initial render
         expect(mockElements['quiz'].classes.has('active')).toBe(true);
+        expect(getCurrentQuestions().length).toBeGreaterThan(0);
+        expect(getCurrentQuestions().length).toBeLessThanOrEqual(20);
+
+        // renderQ side effects (check first question is rendered)
+        expect(mockElements['q-text'].innerText).not.toBe('');
+        expect(mockElements['q-counter'].innerText).toContain('1 /');
     });
 
     test('startQuiz filters by type', () => {
         startQuiz('micro');
         expect(getQuizType()).toBe('micro');
+        expect(getCurrentQuestions().length).toBeGreaterThan(0);
     });
-
 
     test('renderQ correctly populates DOM with question and options', () => {
         const mockQuestions = [
