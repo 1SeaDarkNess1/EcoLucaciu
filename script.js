@@ -1,3 +1,14 @@
+let cachedViews = [];
+let viewsMap = {};
+let isViewCacheInitialized = false;
+
+function initViewCache() {
+    if (isViewCacheInitialized) return;
+    cachedViews = Array.from(document.querySelectorAll(".view"));
+    cachedViews.forEach(v => { if (v.id) viewsMap[v.id] = v; });
+    isViewCacheInitialized = true;
+}
+
 let mathJaxPromise = null;
 function loadMathJax() {
     if (mathJaxPromise) return mathJaxPromise;
@@ -266,8 +277,11 @@ function showPage(id, saveHistory = true) {
         return;
     }
 
-    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
-    const target = document.getElementById(id);
+    // Lazy initialization if called before 'load' event
+    initViewCache();
+
+    cachedViews.forEach(v => v.classList.remove("active"));
+    const target = viewsMap[id] || document.getElementById(id);
     if(target) {
         target.classList.add("active");
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -465,6 +479,9 @@ function toggleFullScreen() {
 
 // --- INITIALIZARE ---
 window.addEventListener('load', async () => {
+    // Populate views cache
+    initViewCache();
+
     await initData();
     // Event delegation for Quiz Options
     const quizOptionsBox = document.getElementById('options-box');
