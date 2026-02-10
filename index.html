@@ -34,6 +34,11 @@
                 <li><a href='#biblioteca' onclick="event.preventDefault(); showPage('biblioteca')">Biblioteca</a></li>
                 <li><a href='#grila' onclick="event.preventDefault(); showPage('grila')">Grile</a></li>
             </ul>
+            <div class='theme-toggle-wrapper' style="padding: 0 1.25rem; margin-top: 2rem;">
+                <button id="theme-toggle" onclick="toggleDarkMode()" class="glass" aria-label="Schimbă tema" style="width: 100%; padding: 0.75rem; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; border: var(--glass-border); background: var(--glass-surface); color: var(--text); font-weight: 600; transition: all 0.3s ease;">
+                    <span id="theme-icon">🌙</span> <span id="theme-text">Mod Întunecat</span>
+                </button>
+            </div>
         </nav>
 
         <div class='sidebar-footer'>
@@ -84,21 +89,11 @@
             <div class='reader-header'>
                 <button class='btn-back' onclick="showPage('materiale')">← Înapoi</button>
                 <h1 id='lesson-title' class='reader-title'>Titlu Lecție</h1>
-                <button class='btn-toc' onclick="toggleTOC('lesson-toc')">📑 Cuprins</button>
             </div>
 
             <div class='reader-layout'>
-                <aside id='lesson-toc' class='reader-toc hidden'>
-                    <!-- TOC Generated via JS -->
-                </aside>
-
-                <div class='reader-main'>
-                    <div class='reader-toolbar'>
-                        <button class='tool-btn' onclick='prevSlide()'>&#8592;</button>
-                        <span id='slide-counter' class='page-indicator'>0 / 0</span>
-                        <button class='tool-btn' onclick='nextSlide()'>&#8594;</button>
-                    </div>
-                    <div class='lesson-content glass paper-sheet' id='lesson-body'>
+                <div class='material-viewer'>
+                    <div class='lesson-content' id='lesson-body'>
                         <!-- Aici se încarcă slide-urile PPT -->
                     </div>
                 </div>
@@ -117,21 +112,11 @@
             <div class='reader-header'>
                 <button class='btn-back' onclick="showPage('biblioteca')">← Înapoi</button>
                 <h1 id='library-title' class='reader-title'>Titlu Material</h1>
-                <button class='btn-toc' onclick="toggleTOC('library-toc')">📑 Cuprins</button>
             </div>
 
             <div class='reader-layout'>
-                <aside id='library-toc' class='reader-toc hidden'>
-                    <!-- TOC Generated via JS -->
-                </aside>
-
-                <div class='reader-main'>
-                    <div class='reader-toolbar'>
-                        <button class='tool-btn' onclick='prevLibrarySlide()'>&#8592;</button>
-                        <span id='library-slide-counter' class='page-indicator'>0 / 0</span>
-                        <button class='tool-btn' onclick='nextLibrarySlide()'>&#8594;</button>
-                    </div>
-                    <div class='lesson-content glass paper-sheet' id='library-body'>
+                <div class='material-viewer'>
+                    <div class='lesson-content' id='library-body'>
                         <!-- Aici se încarcă slide-urile bibliotecii -->
                     </div>
                 </div>

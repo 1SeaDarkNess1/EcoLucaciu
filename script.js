@@ -108,90 +108,26 @@ function loadMathJax() {
 // --- MANAGERS ---
 
 const LessonManager = {
-    index: 0,
     slides: [],
-    initElements() {
-        if (this.bodyEl) return;
-        this.bodyEl = document.getElementById('lesson-body');
-        this.counterEl = document.getElementById('slide-counter');
-        this.prevBtn = document.querySelector("#lectie-detaliu .reader-toolbar button:first-child");
-        this.nextBtn = document.querySelector("#lectie-detaliu .reader-toolbar button:last-child");
-    },
     render() {
-        this.initElements();
-        const slide = this.slides[this.index];
-        if(!slide) return;
+        const bodyEl = document.getElementById('lesson-body');
+        const slide = this.slides[0];
+        if(!bodyEl || !slide) return;
 
-        this.bodyEl.innerHTML = `
-            <div class='ppt-slide'>
-                <span class='slide-title'>${slide.t}</span>
-                <div class='slide-text'>${slide.c}</div>
-            </div>`;
-
-        this.counterEl.innerText = `Slide ${this.index + 1} / ${this.slides.length}`;
-
-        if(this.prevBtn) this.prevBtn.disabled = this.index === 0;
-        if(this.nextBtn) this.nextBtn.disabled = this.index === this.slides.length - 1;
-
-        updateActiveTOC('lesson-toc', this.index);
-
+        bodyEl.innerHTML = slide.c;
         loadMathJax().then(() => { if (window.MathJax) MathJax.typesetPromise(); });
-    },
-    next() {
-        if (this.index < this.slides.length - 1) {
-            this.index++;
-            this.render();
-        }
-    },
-    prev() {
-        if (this.index > 0) {
-            this.index--;
-            this.render();
-        }
     }
 };
 
 const LibraryManager = {
-    index: 0,
     slides: [],
-    initElements() {
-        if (this.bodyEl) return;
-        this.bodyEl = document.getElementById('library-body');
-        this.counterEl = document.getElementById('library-slide-counter');
-        this.prevBtn = document.querySelector("#biblioteca-detaliu .reader-toolbar button:first-child");
-        this.nextBtn = document.querySelector("#biblioteca-detaliu .reader-toolbar button:last-child");
-    },
     render() {
-        this.initElements();
-        const slide = this.slides[this.index];
-        if(!slide) return;
+        const bodyEl = document.getElementById('library-body');
+        const slide = this.slides[0];
+        if(!bodyEl || !slide) return;
 
-        this.bodyEl.innerHTML = `
-            <div class='ppt-slide'>
-                <span class='slide-title'>${slide.t}</span>
-                <div class='slide-text'>${slide.c}</div>
-            </div>`;
-
-        this.counterEl.innerText = `Slide ${this.index + 1} / ${this.slides.length}`;
-
-        if(this.prevBtn) this.prevBtn.disabled = this.index === 0;
-        if(this.nextBtn) this.nextBtn.disabled = this.index === this.slides.length - 1;
-
-        updateActiveTOC('library-toc', this.index);
-
+        bodyEl.innerHTML = slide.c;
         loadMathJax().then(() => { if (window.MathJax) MathJax.typesetPromise(); });
-    },
-    next() {
-        if (this.index < this.slides.length - 1) {
-            this.index++;
-            this.render();
-        }
-    },
-    prev() {
-        if (this.index > 0) {
-            this.index--;
-            this.render();
-        }
     }
 };
 
@@ -421,13 +357,13 @@ const ModalManager = {
 // --- ALIASES FOR GLOBAL ACCESS ---
 window.showPage = showPage;
 window.startQuiz = (type) => QuizManager.start(type);
-window.nextSlide = () => LessonManager.next();
-window.prevSlide = () => LessonManager.prev();
-window.nextLibrarySlide = () => LibraryManager.next();
-window.prevLibrarySlide = () => LibraryManager.prev();
+
+
+
+
 window.closeModal = () => ModalManager.closeModal();
 window.openUni = (id) => ModalManager.openUni(id);
-window.toggleTOC = toggleTOC;
+
 window.openLesson = openLesson;
 window.openLibraryItem = openLibraryItem;
 window.toggleFullScreen = toggleFullScreen;
@@ -441,6 +377,7 @@ function showPage(id, saveHistory = true) {
     }
 
     // Lazy initialization if called before 'load' event
+    initTheme();
     initViewCache();
     if (id !== "quiz" && typeof QuizManager !== "undefined") {
         QuizManager.stop();
@@ -491,43 +428,52 @@ async function initData() {
 }
 
 // --- LECTII LOGIC ---
-function toggleTOC(id) {
-    const el = document.getElementById(id);
-    if(el) el.classList.toggle('collapsed');
-}
 
-function generateTOC(tocId, slides, setIndexCallback) {
-    const container = document.getElementById(tocId);
-    if(!container) return;
-    container.innerHTML = '';
 
-    const fragment = document.createDocumentFragment();
-    slides.forEach((slide, idx) => {
-        const item = document.createElement('div');
-        item.className = 'toc-item';
-        item.dataset.idx = idx;
-        item.textContent = `${idx + 1}. ${slide.t}`;
-        item.onclick = () => setIndexCallback(idx);
-        fragment.appendChild(item);
-    });
-    container.appendChild(fragment);
-}
 
-function updateActiveTOC(tocId, idx) {
-    const container = document.getElementById(tocId);
-    if(!container) return;
-    const items = container.querySelectorAll('.toc-item');
-    items.forEach(it => it.classList.remove('active'));
-    const current = Array.from(items).find(it => parseInt(it.dataset.idx) === idx);
-    if(current) current.classList.add('active');
+
+
+
+function openLesson(index) {
+    loadMathJax();
+    const lesson = lectiiCompleta[index];
+    if(!lesson) return;
+
+    if (lesson.slides) {
+        openSlideViewer('lesson', index);
+        return;
+    }
+
+    const titleEl = document.getElementById('lesson-title');
+    if (titleEl) titleEl.innerText = lesson.titlu;
+
+    if (lesson.file) {
+        let contentHtml = '';
+        if (lesson.type === 'ppt') {
+             const encodedUrl = encodeURIComponent(`https://ecolucaciu.vercel.app/${lesson.file}`);
+             contentHtml = `<iframe src="https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}"></iframe>
+                    <div style="margin-top: 15px; text-align: center;">
+                        <a href="${lesson.file}" download class="uni-link" style="color: var(--accent); font-weight: bold;">📥 Descarcă Materialul PPT</a>
+                    </div>`;
+        } else {
+             contentHtml = `<iframe src="${lesson.file}"></iframe>
+                    <div style="margin-top: 15px; text-align: center;">
+                        <a href="${lesson.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">📥 Descarcă Materialul</a>
+                    </div>`;
+        }
+        LessonManager.slides = [{ t: lesson.titlu, c: contentHtml }];
+    } else {
+        LessonManager.slides = lesson.slides || [];
+    }
+
+    showPage('lectie-detaliu');
+    LessonManager.render();
 }
 
 function openLesson(index) {
+    loadMathJax();
     const lesson = lectiiCompleta[index];
-    if(!lesson) return;
-    if (!lesson.file && (!lesson.slides || lesson.slides.length === 0)) {
-        return;
-    }
+    if (!lesson) return;
 
     if (lesson.slides && lesson.slides.length > 0) {
         openSlideViewer('lesson', index);
@@ -577,13 +523,9 @@ function openLesson(index) {
         LessonManager.slides = lesson.slides || [];
     }
 
-    LessonManager.index = 0;
+
 
     showPage('lectie-detaliu');
-    generateTOC('lesson-toc', LessonManager.slides, (idx) => {
-        LessonManager.index = idx;
-        LessonManager.render();
-    });
     LessonManager.render();
 }
 
@@ -601,32 +543,22 @@ function openLibraryItem(index) {
     if (titleEl) titleEl.innerText = item.titlu;
 
     if (item.file) {
+        let contentHtml = '';
         if (item.type === 'pdf') {
-            LibraryManager.slides = [{
-                t: item.titlu,
-                c: `<iframe src="${item.file}" style="width: 100%; height: 700px; border: none; border-radius: 8px;"></iframe>
-                <p style="text-align: center; margin-top: 10px;"><a href="${item.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">Sau descarcă PDF</a></p>`
-            }];
+            contentHtml = `<iframe src="${item.file}"></iframe>
+                <p style="text-align: center; margin-top: 10px;"><a href="${item.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">Sau descarcă PDF</a></p>`;
         } else {
-             LibraryManager.slides = [{
-                t: item.titlu,
-                c: `<div style="text-align: center; padding: 40px;">
+             contentHtml = `<div style="text-align: center; padding: 40px;">
                         <p>Acest fișier poate fi descărcat:</p>
                         <a href="${item.file}" download class="btn-start" style="text-decoration: none; display: inline-block; margin-top: 10px;">📥 Descarcă ${item.titlu}</a>
-                    </div>`
-            }];
+                    </div>`;
         }
+        LibraryManager.slides = [{ t: item.titlu, c: contentHtml }];
     } else {
         LibraryManager.slides = item.slides || [];
     }
 
-    LibraryManager.index = 0;
-
     showPage('biblioteca-detaliu');
-    generateTOC('library-toc', LibraryManager.slides, (idx) => {
-        LibraryManager.index = idx;
-        LibraryManager.render();
-    });
     LibraryManager.render();
 }
 
@@ -692,9 +624,34 @@ function toggleFullScreen() {
     }
 }
 
+
+function toggleDarkMode() {
+    const isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    updateThemeUI(isDark);
+}
+
+function updateThemeUI(isDark) {
+    const icon = document.getElementById('theme-icon');
+    const text = document.getElementById('theme-text');
+    if (icon) icon.innerText = isDark ? '☀️' : '🌙';
+    if (text) text.innerText = isDark ? 'Mod Luminos' : 'Mod Întunecat';
+}
+
+function initTheme() {
+    const darkMode = localStorage.getItem('darkMode');
+    const isDark = darkMode === 'enabled';
+    if (isDark) {
+        document.body.classList.add('dark-mode');
+    }
+    updateThemeUI(isDark);
+}
+window.toggleDarkMode = toggleDarkMode;
+
 // --- INITIALIZARE ---
 window.addEventListener('load', async () => {
     // Populate views cache
+    initTheme();
     initViewCache();
     await initData();
     // Event delegation for Quiz Options
