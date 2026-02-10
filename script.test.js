@@ -18,8 +18,9 @@ const createMockElement = (id = '', tagName = 'DIV') => {
         getAttribute: jest.fn(),
         innerHTML: '',
         textContent: '',
+        innerText: '',
         appendChild: jest.fn(function(child) {
-            const content = child.innerHTML || child.textContent || '';
+            const content = child.innerHTML || child.textContent || child.innerText || '';
             this.innerHTML += content;
             return child;
         }),
@@ -46,10 +47,21 @@ const mockElements = {
     'sidebar': createMockElement('sidebar'),
     'mobile-toggle': createMockElement('mobile-toggle'),
     'swiper-wrapper': createMockElement('swiper-wrapper'),
-    'slide-viewer-modal': createMockElement('slide-viewer-modal')
+    'slide-viewer-modal': createMockElement('slide-viewer-modal'),
+    'results': createMockElement('results'),
+    'quiz': createMockElement('quiz'),
+    'lectie-detaliu': createMockElement('lectie-detaliu'),
+    'biblioteca-detaliu': createMockElement('biblioteca-detaliu'),
+    'final-score': createMockElement('final-score'),
+    'final-time': createMockElement('final-time'),
+    'timer': createMockElement('timer'),
+    'final-grade': createMockElement('final-grade'),
+    'performance-msg': createMockElement('performance-msg'),
+    'correct-count': createMockElement('correct-count'),
+    'wrong-count': createMockElement('wrong-count')
 };
 // Add .view class to view elements
-['home', 'lectii', 'biblioteca', 'about'].forEach(id => mockElements[id].classes.add('view'));
+['home', 'lectii', 'biblioteca', 'about', 'results', 'quiz', 'lectie-detaliu', 'biblioteca-detaliu'].forEach(id => mockElements[id].classes.add('view'));
 mockElements['uni-modal'].classes.add('hidden');
 
 global.document = {
@@ -60,7 +72,7 @@ global.document = {
     }),
     querySelectorAll: jest.fn((selector) => {
         if (selector === '.view') {
-            return [mockElements['home'], mockElements['lectii'], mockElements['biblioteca'], mockElements['about']];
+            return ['home', 'lectii', 'biblioteca', 'about', 'results', 'quiz', 'lectie-detaliu', 'biblioteca-detaliu'].map(id => mockElements[id]);
         }
         if (selector === '.toc-item') return [];
         return [];
@@ -90,11 +102,14 @@ global.window = {
     location: { hash: '' },
     innerWidth: 1024,
     addEventListener: jest.fn(),
-    open: jest.fn()
+    open: jest.fn(),
+    MathJax: {
+        typesetPromise: jest.fn(() => Promise.resolve())
+    }
 };
 
 global.history = global.window.history;
-global.setInterval = jest.fn();
+global.setInterval = jest.fn(() => 123); // Return a dummy interval ID
 global.clearInterval = jest.fn();
 
 // Mock Swiper
@@ -107,14 +122,17 @@ const scriptPath = path.resolve(__dirname, 'script.js');
 const scriptContent = fs.readFileSync(scriptPath, 'utf8');
 
 // We need to execute the script in the global context
-const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 'clearInterval', 'Swiper', scriptContent + '\n return { showPage, openUni, closeModal, unis };');
-const { showPage, openUni, closeModal, unis } = scriptFunc(global.window, global.document, global.history, global.setInterval, global.clearInterval, global.Swiper);
+const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 'clearInterval', 'Swiper', scriptContent + '\n return { showPage, openUni, closeModal, unis, finish, setScore: (v) => score = v, setTimer: (v) => timer = v };');
+const { showPage, openUni, closeModal, unis, finish, setScore, setTimer } = scriptFunc(global.window, global.document, global.history, global.setInterval, global.clearInterval, global.Swiper);
 
 // Expose them to the test context
 global.showPage = showPage;
 global.openUni = openUni;
 global.closeModal = closeModal;
 global.unis = unis;
+global.finish = finish;
+global.setScore = setScore;
+global.setTimer = setTimer;
 
 describe('University Modal', () => {
     beforeEach(() => {
@@ -157,7 +175,7 @@ describe('Navigation (showPage)', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         // Reset classes
-        ['home', 'lectii', 'biblioteca', 'about'].forEach(id => {
+        ['home', 'lectii', 'biblioteca', 'about', 'results', 'quiz', 'lectie-detaliu', 'biblioteca-detaliu'].forEach(id => {
             mockElements[id].classes.clear();
             mockElements[id].classes.add('view');
         });
@@ -172,6 +190,7 @@ describe('Navigation (showPage)', () => {
         expect(mockElements['lectii'].classes.has('active')).toBe(false);
         expect(mockElements['biblioteca'].classes.has('active')).toBe(false);
         expect(mockElements['about'].classes.has('active')).toBe(false);
+        expect(mockElements['results'].classes.has('active')).toBe(false);
     });
 
     test('showPage should scroll to top', () => {
@@ -214,5 +233,54 @@ describe('Navigation (showPage)', () => {
 
         expect(mockElements['home'].classes.has('active')).toBe(true);
         expect(global.history.pushState).not.toHaveBeenCalled(); // saveHistory should be false
+    });
+});
+
+describe('Quiz Finish Logic', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        // Reset view classes
+        ['home', 'lectii', 'biblioteca', 'about', 'results', 'quiz', 'lectie-detaliu', 'biblioteca-detaliu'].forEach(id => {
+            mockElements[id].classes.clear();
+            mockElements[id].classes.add('view');
+        });
+        mockElements['timer'].innerText = '00:00';
+    });
+
+    test('finish should clear timer, show results, and update DOM for high score', () => {
+        const dummyTimer = 456;
+        setTimer(dummyTimer);
+        setScore(90);
+        mockElements['timer'].innerText = '10:30';
+
+        finish();
+
+        expect(global.clearInterval).toHaveBeenCalledWith(dummyTimer);
+        expect(mockElements['results'].classes.has('active')).toBe(true);
+        expect(mockElements['final-score'].innerText).toBe(90);
+        expect(mockElements['final-time'].innerText).toBe('10:30');
+        expect(mockElements['final-grade'].innerText).toBe('9.0');
+        expect(mockElements['performance-msg'].innerText).toBe("Excelent! Pregătit de succes.");
+    });
+
+    test('finish should show correct performance message for low score', () => {
+        setScore(50);
+        finish();
+
+        expect(mockElements['final-score'].innerText).toBe(50);
+        expect(mockElements['final-grade'].innerText).toBe('5.0');
+        expect(mockElements['performance-msg'].innerText).toBe("Continuă studiul pentru rezultate mai bune.");
+    });
+
+    test('finish should handle boundary score 85 as Excellent', () => {
+        setScore(85);
+        finish();
+        expect(mockElements['performance-msg'].innerText).toBe("Excelent! Pregătit de succes.");
+    });
+
+    test('finish should handle score just below 85 as Continue Study', () => {
+        setScore(84);
+        finish();
+        expect(mockElements['performance-msg'].innerText).toBe("Continuă studiul pentru rezultate mai bune.");
     });
 });
