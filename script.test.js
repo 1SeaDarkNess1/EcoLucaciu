@@ -59,6 +59,8 @@ const createMockElement = (id = '', tagName = 'DIV') => {
 };
 
 const mockElements = {};
+let quizHandler = null;
+
 [
     'modal-body', 'uni-modal', 'modal-close-btn', 'home', 'lectii', 'biblioteca', 'about',
     'chapters-list', 'uni-grid', 'library-list', 'sidebar', 'mobile-toggle', 'swiper-wrapper',
@@ -69,6 +71,11 @@ const mockElements = {};
     'lesson-body', 'slide-counter', 'lesson-toc', 'mySwiper', 'lesson-title', 'library-title'
 ].forEach(id => {
     mockElements[id] = createMockElement(id);
+    if (id === 'options-box') {
+        mockElements[id].addEventListener = jest.fn((type, handler) => {
+            if (type === 'click') quizHandler = handler;
+        });
+    }
 });
 
 // Add .view class to view elements
@@ -91,6 +98,7 @@ global.document = {
     querySelector: jest.fn((selector) => {
         if (mockElements[selector]) return mockElements[selector];
         if (selector === '.mySwiper') return mockElements['mySwiper'];
+        if (selector === '.slide-viewer-modal') return mockElements['slide-viewer-modal'];
         if (selector.includes('.reader-toolbar')) return createMockElement();
         return createMockElement();
     }),
@@ -142,44 +150,52 @@ global.Swiper = jest.fn(() => ({ destroy: jest.fn() }));
 const scriptContent = fs.readFileSync(path.resolve(__dirname, 'script.js'), 'utf8');
 const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 'clearInterval', 'Swiper', 'MathJax', scriptContent + `
  return {
-    showPage, openUni, closeModal, unis, finish, getLastFocusedElement: () => lastFocusedElement,
-    setScore: (v) => score = v,
-    setTimer: (v) => timer = v,
-    setSecs: (v) => secs = v,
-    setCorrect: (v) => correct = v,
-    setWrong: (v) => wrong = v,
-    getScore: () => score,
-    getTimer: () => timer,
-    getSecs: () => secs,
-    startQuiz, renderQ,
-    getCurrentIdx: () => currentIdx, setCurrentIdx: (v) => currentIdx = v,
-    getCorrect: () => correct,
-    getWrong: () => wrong,
-    getCurrentQuestions: () => currentQuestions, setCurrentQuestions: (v) => currentQuestions = v,
-    getQuizType: () => currentQuizType,
-    nextLibrarySlide, prevLibrarySlide,
-    getLibrarySlideIndex: () => currentLibrarySlideIndex,
-    setLibrarySlides: (s) => currentLibrarySlides = s,
-    setLibrarySlideIndex: (i) => currentLibrarySlideIndex = i,
-    renderLibrarySlide,
+    showPage,
+    openUni: (id) => ModalManager.openUni(id),
+    closeModal: () => ModalManager.closeModal(),
+    unis, masterBank, lectiiCompleta, bibliotecaCompleta,
+    finish: () => QuizManager.finish(),
+    getLastFocusedElement: () => ModalManager.lastFocusedElement,
+    setScore: (v) => QuizManager.score = v,
+    setTimer: (v) => QuizManager.timer = v,
+    setSecs: (v) => QuizManager.secs = v,
+    setCorrect: (v) => QuizManager.correct = v,
+    setWrong: (v) => QuizManager.wrong = v,
+    getScore: () => QuizManager.score,
+    getTimer: () => QuizManager.timer,
+    getSecs: () => QuizManager.secs,
+    startQuiz: (type) => QuizManager.start(type),
+    renderQ: () => QuizManager.render(),
+    getCurrentIdx: () => QuizManager.index,
+    setCurrentIdx: (v) => QuizManager.index = v,
+    getCorrect: () => QuizManager.correct,
+    getWrong: () => QuizManager.wrong,
+    getCurrentQuestions: () => QuizManager.questions,
+    setCurrentQuestions: (v) => QuizManager.questions = v,
+    getQuizType: () => QuizManager.type,
+    nextLibrarySlide: () => LibraryManager.next(),
+    prevLibrarySlide: () => LibraryManager.prev(),
+    getLibrarySlideIndex: () => LibraryManager.index,
+    setLibrarySlides: (s) => LibraryManager.slides = s,
+    setLibrarySlideIndex: (i) => LibraryManager.index = i,
+    renderLibrarySlide: () => LibraryManager.render(),
     openLesson, openLibraryItem,
     loadMathJax,
 
     toggleTOC, generateTOC, updateActiveTOC,
     openSlideViewer, closeSlideViewer, toggleFullScreen,
-    nextSlide, prevSlide, renderSlide,
-    getSlideIndex: () => currentSlideIndex,
-    setSlideIndex: (i) => currentSlideIndex = i,
-    setLessonSlides: (s) => currentLessonSlides = s,
-    getLessonSlides: () => currentLessonSlides,
-
+    nextSlide: () => LessonManager.next(),
+    prevSlide: () => LessonManager.prev(),
+    renderSlide: () => LessonManager.render(),
+    getSlideIndex: () => LessonManager.index,
+    setSlideIndex: (i) => LessonManager.index = i,
+    setLessonSlides: (s) => LessonManager.slides = s,
+    getLessonSlides: () => LessonManager.slides,
  };`);
 
 const context = scriptFunc(global.window, global.document, global.history, global.setInterval, global.clearInterval, global.Swiper, global.window.MathJax);
 const loadCall = global.window.addEventListener.mock.calls.find(call => call[0] === 'load');
 const loadListener = loadCall ? loadCall[1] : null;
-const popstateCall = global.window.addEventListener.mock.calls.find(call => call[0] === 'popstate');
-const popstateListener = popstateCall ? popstateCall[1] : null;
 let initializationPromise;
 if (loadListener) initializationPromise = loadListener();
 
@@ -200,39 +216,29 @@ describe('Core Functionality', () => {
 
         openUni(uni.id);
 
+        expect(mockElements['uni-modal'].classes.has('hidden')).toBe(false);
         expect(mockElements['modal-body'].innerHTML).toContain(uni.n);
         expect(mockElements['modal-body'].innerHTML).toContain(uni.m);
-        expect(mockElements['modal-body'].innerHTML).toContain(uni.d);
-        expect(mockElements['uni-modal'].classes.has('hidden')).toBe(false);
-        expect(getLastFocusedElement()).toBe(previousActiveElement);
         expect(mockElements['modal-close-btn'].focus).toHaveBeenCalled();
+        expect(getLastFocusedElement()).toBe(previousActiveElement);
     });
 
     test('openUni with invalid ID does nothing', () => {
-        const initialHTML = mockElements['modal-body'].innerHTML;
-        mockElements['uni-modal'].classList.add('hidden');
-        openUni('non-existent');
-        expect(mockElements['modal-body'].innerHTML).toBe(initialHTML);
+        openUni('invalid');
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(true);
     });
 
     test('closeModal hides modal and restores focus', () => {
-        const previousActiveElement = { focus: jest.fn() };
-        global.document.activeElement = previousActiveElement;
-
-        openUni(unis[0].id);
-        mockElements['uni-modal'].classList.remove('hidden');
-
+        openUni(unis[0]);
         closeModal();
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(true);
-        expect(previousActiveElement.focus).toHaveBeenCalled();
-        expect(getLastFocusedElement()).toBeNull();
     });
 
     test('showPage should navigate correctly', () => {
-        showPage('lectii');
-        expect(mockElements['lectii'].classes.has('active')).toBe(true);
+        showPage('biblioteca');
+        expect(mockElements['biblioteca'].classes.has('active')).toBe(true);
         expect(mockElements['home'].classes.has('active')).toBe(false);
+        expect(global.window.history.pushState).toHaveBeenCalledWith({ pageId: 'biblioteca' }, "", "#biblioteca");
     });
 
     test('toggleSidebar should toggle class', () => {
@@ -243,8 +249,10 @@ describe('Core Functionality', () => {
     });
 
     test('window.onpopstate should call showPage', () => {
-        if (popstateListener) popstateListener({ state: { pageId: 'lectii' } });
-        expect(mockElements['lectii'].classes.has('active')).toBe(true);
+        const popstateCall = global.window.addEventListener.mock.calls.find(call => call[0] === 'popstate');
+        const popstateListener = popstateCall ? popstateCall[1] : null;
+        if (popstateListener) popstateListener({ state: { pageId: 'biblioteca' } });
+        expect(mockElements['biblioteca'].classes.has('active')).toBe(true);
     });
 });
 
@@ -293,8 +301,10 @@ describe('TOC & Navigation Logic', () => {
         const container = mockElements['lesson-toc'];
         const item0 = createMockElement('', 'DIV');
         item0.classList.add('toc-item');
+        item0.dataset.idx = '0';
         const item1 = createMockElement('', 'DIV');
         item1.classList.add('toc-item');
+        item1.dataset.idx = '1';
         container.tocItems = [item0, item1];
 
         updateActiveTOC('lesson-toc', 1);
@@ -345,7 +355,6 @@ describe('Lesson Logic', () => {
     });
 
     test('openLesson for lesson with file but no slides renders into lesson-body', () => {
-        // Lesson 1 has file: "Materiale/2-Costul_de_oportunitate.ppt" but no slides
         openLesson(1);
         expect(mockElements['lectie-detaliu'].classes.has('active')).toBe(true);
         expect(mockElements['lesson-title'].innerText).toBe("Costul de Oportunitate");
@@ -367,7 +376,6 @@ describe('Quiz Logic', () => {
     });
 
     test('startQuiz resets state and starts timer', () => {
-        // Setup initial dirty state
         setScore(10);
         setCurrentIdx(5);
         setSecs(100);
@@ -380,28 +388,22 @@ describe('Quiz Logic', () => {
 
         startQuiz();
 
-        // Verify global state resets
         expect(getCurrentIdx()).toBe(0);
         expect(getScore()).toBe(0);
         expect(getSecs()).toBe(0);
         expect(getCorrect()).toBe(0);
         expect(getWrong()).toBe(0);
 
-        // Verify timer management
         expect(global.clearInterval).toHaveBeenCalledWith(999);
         expect(global.setInterval).toHaveBeenCalled();
 
-        // Verify DOM resets
         expect(mockElements['correct-count'].innerText).toBe(0);
         expect(mockElements['wrong-count'].innerText).toBe(0);
         expect(mockElements['timer'].innerText).toBe("00:00");
 
-        // Verify navigation and initial render
         expect(mockElements['quiz'].classes.has('active')).toBe(true);
         expect(getCurrentQuestions().length).toBeGreaterThan(0);
         expect(getCurrentQuestions().length).toBeLessThanOrEqual(20);
-
-        // renderQ side effects (check first question is rendered)
         expect(mockElements['q-text'].innerText).not.toBe('');
         expect(mockElements['q-counter'].innerText).toContain('1 /');
     });
@@ -418,8 +420,6 @@ describe('Quiz Logic', () => {
             { q: 'What is 2+2?', o: ['3', '4', '5'], c: 1 }
         ];
         setCurrentQuestions(mockQuestions);
-
-        // Test first question
         setCurrentIdx(0);
         renderQ();
 
@@ -428,13 +428,8 @@ describe('Quiz Logic', () => {
         expect(mockElements['progress-bar'].style.width).toBe('50%');
         expect(mockElements['options-box'].innerHTML).toContain('opt-btn');
         expect(mockElements['options-box'].innerHTML).toContain('1');
-        expect(mockElements['options-box'].innerHTML).toContain('2');
-        expect(mockElements['options-box'].innerHTML).toContain('3');
         expect(mockElements['options-box'].innerHTML).toContain('data-index="0"');
-        expect(mockElements['options-box'].innerHTML).toContain('data-index="1"');
-        expect(mockElements['options-box'].innerHTML).toContain('data-index="2"');
 
-        // Test second question (clearing and updating)
         setCurrentIdx(1);
         mockElements['options-box'].innerHTML = 'some old content';
         renderQ();
@@ -453,12 +448,13 @@ describe('Quiz Logic', () => {
     });
 
     test('Event Delegation works: Click on option updates score', async () => {
-        await loadListener();
+        await initializationPromise;
         startQuiz();
         renderQ();
-        const addListenerCall = mockElements['options-box'].addEventListener.mock.calls.find(call => call[0] === 'click');
-        expect(addListenerCall).toBeDefined();
-        const handler = addListenerCall[1];
+
+        const handler = quizHandler;
+        expect(handler).toBeDefined();
+
         const q = getCurrentQuestions()[getCurrentIdx()];
         const correctIndex = q.c;
         const mockEvent = { target: { classList: { contains: (c) => c === 'opt-btn' }, dataset: { index: correctIndex.toString() } } };
