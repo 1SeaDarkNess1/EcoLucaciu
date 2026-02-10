@@ -2,97 +2,83 @@ const fs = require('fs');
 const path = require('path');
 
 // Mock DOM elements
-const createMockElement = (id = '') => ({
-    id,
-    classList: {
-        add: jest.fn(),
-        remove: jest.fn(),
-        contains: jest.fn()
-    },
-    focus: jest.fn(),
-    innerHTML: '',
-    appendChild: jest.fn(),
-    style: {},
-    tagName: 'DIV'
-});
-
-const mockViews = [
-    createMockElement('home'),
-    createMockElement('lectii'),
-    createMockElement('biblioteca')
-];
-mockViews.forEach(v => v.classList.contains.mockImplementation((cls) => cls === 'view'));
+const createMockElement = (id = '', tagName = 'DIV') => {
+    const el = {
+        id,
+        tagName: tagName.toUpperCase(),
+        classList: {
+            add: jest.fn(),
+            remove: jest.fn(),
+            contains: jest.fn((cls) => el.classes.has(cls))
+        },
+        classes: new Set(),
+        focus: jest.fn(),
+        style: {},
+        setAttribute: jest.fn(),
+        getAttribute: jest.fn(),
+        innerHTML: '',
+        textContent: '',
+        appendChild: jest.fn(function(child) {
+            const content = child.innerHTML || child.textContent || '';
+            this.innerHTML += content;
+            return child;
+        }),
+        tabIndex: 0,
+        role: ''
+    };
+    // Special handling for classList.add/remove to update the Set
+    el.classList.add.mockImplementation((cls) => el.classes.add(cls));
+    el.classList.remove.mockImplementation((cls) => el.classes.delete(cls));
+    return el;
+};
 
 const mockElements = {
-    'modal-body': {
-        innerHTML: '',
-        focus: jest.fn(),
-        appendChild: jest.fn(function(child) {
-            if (child.textContent) this.innerHTML += child.textContent;
-            if (child.innerHTML) this.innerHTML += child.innerHTML;
-            if (child.tagName === 'HR') this.innerHTML += '<hr>';
-        })
-    },
-    'uni-modal': {
-        classList: {
-            add: jest.fn((cls) => {
-                if(mockElements['uni-modal'].classes) mockElements['uni-modal'].classes.add(cls);
-            }),
-            remove: jest.fn((cls) => {
-                 if(mockElements['uni-modal'].classes) mockElements['uni-modal'].classes.delete(cls);
-            }),
-            contains: jest.fn((cls) => {
-                 if(mockElements['uni-modal'].classes) return mockElements['uni-modal'].classes.has(cls);
-                 return false;
-            })
-        },
-        classes: new Set(['hidden']),
-        focus: jest.fn()
-    },
-    'modal-close-btn': { focus: jest.fn() },
-    'home': { id: 'home', classList: { add: jest.fn(), remove: jest.fn() } },
-    'about': { id: 'about', classList: { add: jest.fn(), remove: jest.fn() } }
+    'modal-body': createMockElement('modal-body'),
+    'uni-modal': createMockElement('uni-modal'),
+    'modal-close-btn': createMockElement('modal-close-btn'),
+    'home': createMockElement('home'),
+    'lectii': createMockElement('lectii'),
+    'biblioteca': createMockElement('biblioteca'),
+    'about': createMockElement('about'),
+    'chapters-list': createMockElement('chapters-list'),
+    'uni-grid': createMockElement('uni-grid'),
+    'library-list': createMockElement('library-list'),
+    'sidebar': createMockElement('sidebar'),
+    'mobile-toggle': createMockElement('mobile-toggle'),
+    'swiper-wrapper': createMockElement('swiper-wrapper'),
+    'slide-viewer-modal': createMockElement('slide-viewer-modal')
 };
+// Add .view class to view elements
+['home', 'lectii', 'biblioteca', 'about'].forEach(id => mockElements[id].classes.add('view'));
+mockElements['uni-modal'].classes.add('hidden');
 
 global.document = {
     getElementById: jest.fn((id) => {
         if (mockElements[id]) return mockElements[id];
         if (id === 'non-existent') return null;
-        // Return a generic mock if not found, to avoid crashes in other parts of the script
-        return {
-            focus: jest.fn(),
-            classList: { add: jest.fn(), remove: jest.fn() },
-            style: {},
-            innerText: ''
-        };
+        return createMockElement(id);
     }),
     querySelectorAll: jest.fn((selector) => {
         if (selector === '.view') {
-            return [mockElements['home'], mockElements['about']];
+            return [mockElements['home'], mockElements['lectii'], mockElements['biblioteca'], mockElements['about']];
         }
+        if (selector === '.toc-item') return [];
         return [];
+    }),
+    querySelector: jest.fn((selector) => {
+        if (mockElements[selector]) return mockElements[selector];
+        if (selector === '.quiz-dashboard') return createMockElement('quiz-dashboard');
+        if (selector === '.mySwiper') return createMockElement('mySwiper');
+        return null;
     }),
     activeElement: { className: '', id: '', focus: jest.fn() },
     createElement: jest.fn((tag) => {
-        return {
-            tagName: tag.toUpperCase(),
-            textContent: '',
-            innerHTML: '',
-            style: {},
-            className: '',
-            appendChild: jest.fn(function(child) {
-                 if (child.textContent) this.textContent += child.textContent;
-                 if (child.innerHTML) this.innerHTML += child.innerHTML;
-            }),
-            setAttribute: jest.fn(),
-            focus: jest.fn(),
-            classList: {
-                add: jest.fn(),
-                remove: jest.fn(),
-                contains: jest.fn()
-            }
-        };
-    })
+        return createMockElement('', tag);
+    }),
+    addEventListener: jest.fn(),
+    createDocumentFragment: jest.fn(() => ({
+        appendChild: jest.fn()
+    }))
 };
 
 global.window = {
@@ -101,33 +87,41 @@ global.window = {
         pushState: jest.fn(),
         replaceState: jest.fn()
     },
-    location: { hash: '' }
+    location: { hash: '' },
+    innerWidth: 1024,
+    addEventListener: jest.fn(),
+    open: jest.fn()
 };
 
 global.history = global.window.history;
 global.setInterval = jest.fn();
 global.clearInterval = jest.fn();
 
+// Mock Swiper
+global.Swiper = jest.fn(() => ({
+    destroy: jest.fn()
+}));
+
 // Load the script
 const scriptPath = path.resolve(__dirname, 'script.js');
 const scriptContent = fs.readFileSync(scriptPath, 'utf8');
 
 // We need to execute the script in the global context
-const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 'clearInterval', scriptContent + '\n return { showPage, openUni, closeModal, unis };');
-const { showPage, openUni, closeModal, unis } = scriptFunc(global.window, global.document, global.history, global.setInterval, global.clearInterval);
+const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 'clearInterval', 'Swiper', scriptContent + '\n return { showPage, openUni, closeModal, unis };');
+const { showPage, openUni, closeModal, unis } = scriptFunc(global.window, global.document, global.history, global.setInterval, global.clearInterval, global.Swiper);
 
 // Expose them to the test context
 global.showPage = showPage;
 global.openUni = openUni;
 global.closeModal = closeModal;
 global.unis = unis;
-global.showPage = showPage;
 
 describe('University Modal', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         mockElements['modal-body'].innerHTML = '';
-        mockElements['uni-modal'].classes = new Set(['hidden']);
+        mockElements['uni-modal'].classes.clear();
+        mockElements['uni-modal'].classes.add('hidden');
     });
 
     test('openUni should populate modal-body with correct university info and show the modal', () => {
@@ -139,7 +133,6 @@ describe('University Modal', () => {
         expect(mockElements['modal-body'].innerHTML).toContain(expectedUni.n);
         expect(mockElements['modal-body'].innerHTML).toContain(expectedUni.m);
         expect(mockElements['modal-body'].innerHTML).toContain(expectedUni.d);
-        expect(mockElements['uni-modal'].classList.remove).toHaveBeenCalledWith('hidden');
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(false);
     });
 
@@ -149,15 +142,12 @@ describe('University Modal', () => {
 
         closeModal();
 
-        expect(mockElements['uni-modal'].classList.add).toHaveBeenCalledWith('hidden');
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(true);
     });
 
     test('openUni should handle non-existent ID gracefully', () => {
-        // Should not throw, should not update innerHTML, should not show modal
         const initialHTML = mockElements['modal-body'].innerHTML;
-
-        expect(() => openUni(999)).not.toThrow();
+        openUni(999);
         expect(mockElements['modal-body'].innerHTML).toBe(initialHTML);
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(true);
     });
@@ -166,15 +156,22 @@ describe('University Modal', () => {
 describe('Navigation (showPage)', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        // Reset classes
+        ['home', 'lectii', 'biblioteca', 'about'].forEach(id => {
+            mockElements[id].classes.clear();
+            mockElements[id].classes.add('view');
+        });
     });
 
     test('showPage should remove active class from all views and add it to the target', () => {
+        mockElements['about'].classes.add('active');
+
         showPage('home');
 
-        expect(mockElements['home'].classList.remove).toHaveBeenCalledWith('active');
-        expect(mockElements['about'].classList.remove).toHaveBeenCalledWith('active');
-        expect(mockElements['home'].classList.add).toHaveBeenCalledWith('active');
-        expect(mockElements['about'].classList.add).not.toHaveBeenCalled();
+        expect(mockElements['home'].classes.has('active')).toBe(true);
+        expect(mockElements['lectii'].classes.has('active')).toBe(false);
+        expect(mockElements['biblioteca'].classes.has('active')).toBe(false);
+        expect(mockElements['about'].classes.has('active')).toBe(false);
     });
 
     test('showPage should scroll to top', () => {
@@ -196,11 +193,26 @@ describe('Navigation (showPage)', () => {
         showPage('non-existent');
 
         // It still removes active from all views
-        expect(mockElements['home'].classList.remove).toHaveBeenCalledWith('active');
-        expect(mockElements['about'].classList.remove).toHaveBeenCalledWith('active');
+        expect(mockElements['home'].classes.has('active')).toBe(false);
+        expect(mockElements['about'].classes.has('active')).toBe(false);
 
-        // But it doesn't add active to anything or scroll/pushState
+        // But it doesn't scroll or pushState
         expect(global.window.scrollTo).not.toHaveBeenCalled();
         expect(global.history.pushState).not.toHaveBeenCalled();
+    });
+
+    test('window.onpopstate should call showPage with state pageId', () => {
+        const event = { state: { pageId: 'lectii' } };
+        global.window.onpopstate(event);
+
+        expect(mockElements['lectii'].classes.has('active')).toBe(true);
+        expect(global.history.pushState).not.toHaveBeenCalled(); // saveHistory should be false
+    });
+
+    test('window.onpopstate should call showPage with home if no state', () => {
+        global.window.onpopstate({});
+
+        expect(mockElements['home'].classes.has('active')).toBe(true);
+        expect(global.history.pushState).not.toHaveBeenCalled(); // saveHistory should be false
     });
 });
