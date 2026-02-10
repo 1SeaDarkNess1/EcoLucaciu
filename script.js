@@ -76,11 +76,12 @@ const masterBank = [...questionsGeneral, ...questionsMicro, ...questionsMacro, .
 let cachedViews = [];
 let viewsMap = {};
 let isViewCacheInitialized = false;
+let activeView = null;
 
 function initViewCache() {
     if (isViewCacheInitialized) return;
     cachedViews = Array.from(document.querySelectorAll(".view"));
-    cachedViews.forEach(v => { if (v.id) viewsMap[v.id] = v; });
+    cachedViews.forEach(v => { if (v.id) viewsMap[v.id] = v; if (v.classList.contains("active")) activeView = v; });
     isViewCacheInitialized = true;
 }
 
@@ -445,10 +446,15 @@ function showPage(id, saveHistory = true) {
         QuizManager.stop();
     }
 
-    cachedViews.forEach(v => v.classList.remove("active"));
+    if (activeView) {
+        activeView.classList.remove("active");
+    } else {
+        cachedViews.forEach(v => v.classList.remove("active"));
+    }
     const target = viewsMap[id] || document.getElementById(id);
     if(target) {
         target.classList.add("active");
+        activeView = target;
         window.scrollTo({ top: 0, behavior: "smooth" });
         
         if(saveHistory) {
