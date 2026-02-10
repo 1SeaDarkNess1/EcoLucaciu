@@ -26,18 +26,24 @@ const createMockElement = (id = '', tagName = 'DIV') => {
         innerHTML: '',
         textContent: '',
         innerText: '',
+        tabIndex: 0,
         appendChild: jest.fn(function(child) {
             const content = child.innerHTML || child.textContent || child.innerText || '';
             const tag = child.tagName ? child.tagName.toLowerCase() : '';
             if (tag) {
                 const cls = child.className ? ` class="${child.className}"` : '';
-                this.innerHTML += `<${tag}${cls}>${content}</${tag}>`;
+                let dataAttrs = '';
+                if (child.dataset) {
+                    for (const key in child.dataset) {
+                        dataAttrs += ` data-${key}="${child.dataset[key]}"`;
+                    }
+                }
+                this.innerHTML += `<${tag}${cls}${dataAttrs}>${content}</${tag}>`;
             } else {
                 this.innerHTML += content;
             }
             return child;
         }),
-        tabIndex: 0,
         role: '',
         querySelectorAll: jest.fn((selector) => {
             if (selector === '.toc-item') {
@@ -142,10 +148,10 @@ const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 
     getScore: () => score,
     getTimer: () => timer,
     startQuiz, renderQ,
-    getCurrentIdx: () => currentIdx,
+    getCurrentIdx: () => currentIdx, setCurrentIdx: (v) => currentIdx = v,
     getCorrect: () => correct,
     getWrong: () => wrong,
-    getCurrentQuestions: () => currentQuestions,
+    getCurrentQuestions: () => currentQuestions, setCurrentQuestions: (v) => currentQuestions = v,
     getQuizType: () => currentQuizType,
     nextLibrarySlide, prevLibrarySlide,
     getLibrarySlideIndex: () => currentLibrarySlideIndex,
@@ -345,12 +351,40 @@ describe('Quiz Logic', () => {
         expect(getQuizType()).toBe('micro');
     });
 
-    test('renderQ updates options', () => {
-        startQuiz();
-        renderQ();
-        expect(mockElements['options-box'].innerHTML).toContain('opt-btn');
-    });
 
+    test('renderQ correctly populates DOM with question and options', () => {
+        const mockQuestions = [
+            { q: 'What is 1+1?', o: ['1', '2', '3'], c: 1 },
+            { q: 'What is 2+2?', o: ['3', '4', '5'], c: 1 }
+        ];
+        setCurrentQuestions(mockQuestions);
+
+        // Test first question
+        setCurrentIdx(0);
+        renderQ();
+
+        expect(mockElements['q-text'].innerText).toBe('What is 1+1?');
+        expect(mockElements['q-counter'].innerText).toBe('1 / 2');
+        expect(mockElements['progress-bar'].style.width).toBe('50%');
+        expect(mockElements['options-box'].innerHTML).toContain('opt-btn');
+        expect(mockElements['options-box'].innerHTML).toContain('1');
+        expect(mockElements['options-box'].innerHTML).toContain('2');
+        expect(mockElements['options-box'].innerHTML).toContain('3');
+        expect(mockElements['options-box'].innerHTML).toContain('data-index="0"');
+        expect(mockElements['options-box'].innerHTML).toContain('data-index="1"');
+        expect(mockElements['options-box'].innerHTML).toContain('data-index="2"');
+
+        // Test second question (clearing and updating)
+        setCurrentIdx(1);
+        mockElements['options-box'].innerHTML = 'some old content';
+        renderQ();
+
+        expect(mockElements['q-text'].innerText).toBe('What is 2+2?');
+        expect(mockElements['q-counter'].innerText).toBe('2 / 2');
+        expect(mockElements['progress-bar'].style.width).toBe('100%');
+        expect(mockElements['options-box'].innerHTML).not.toContain('some old content');
+        expect(mockElements['options-box'].innerHTML).toContain('4');
+    });
     test('finish shows results', () => {
         setScore(95);
         finish();
