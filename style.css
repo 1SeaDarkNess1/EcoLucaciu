@@ -11,7 +11,7 @@
     --text-muted: #536350;
 
     /* Glassmorphism */
-    --glass-surface: rgba(255, 255, 255, 0.75);
+    --glass-surface: rgba(255, 255, 255, 0.9);
     --glass-border: 1px solid rgba(255, 255, 255, 0.6);
     --glass-blur: blur(20px) saturate(180%);
     --shadow-colored: 0 20px 40px rgba(122, 139, 110, 0.15);
@@ -49,7 +49,7 @@ body {
     width: 100%;
     line-height: 1.6;
     font-size: var(--fs-base);
-    background-color: var(--accent-light);
+    background-color: #D4E0CD !important;
     background-image:
         radial-gradient(at 0% 0%, rgba(156, 175, 136, 0.4) 0px, transparent 50%),
         radial-gradient(at 100% 0%, rgba(122, 139, 110, 0.4) 0px, transparent 50%),
@@ -805,4 +805,12 @@ img, video, iframe {
     .inner-circle span {
         font-size: 2.5rem;
     }
+}
+
+/* Enhanced Results Card */
+.results-main-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 24px;
+    padding: 3rem;
 }
