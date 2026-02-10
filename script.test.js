@@ -149,7 +149,10 @@ global.window = {
         pushState: jest.fn(),
         replaceState: jest.fn()
     },
-    location: { hash: '' },
+    location: {
+        hash: '',
+        href: 'http://localhost/'
+    },
     innerWidth: 1024,
     addEventListener: jest.fn(),
     open: jest.fn(),
@@ -344,6 +347,7 @@ describe('TOC & Navigation Logic', () => {
 
 describe('Slide Viewer', () => {
     test('openSlideViewer shows modal and populates wrapper', () => {
+        lectiiCompleta[0].slides = [{ t: 'Slide 1', c: 'Content 1' }];
         openSlideViewer('lesson', 0);
         expect(mockElements['slide-viewer-modal'].classes.has('hidden')).toBe(false);
         expect(mockElements['swiper-wrapper'].innerHTML).toContain('swiper-slide');
@@ -378,6 +382,7 @@ describe('Lesson Logic', () => {
     });
 
     test('openLesson opens slide viewer for lesson with predefined slides', () => {
+        lectiiCompleta[0].slides = [{ t: 'Introducere', c: 'Content' }];
         openLesson(0);
         expect(mockElements['slide-viewer-modal'].classes.has('hidden')).toBe(false);
         expect(mockElements['swiper-wrapper'].innerHTML).toContain('Introducere');
