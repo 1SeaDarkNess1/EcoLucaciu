@@ -142,7 +142,7 @@ global.Swiper = jest.fn(() => ({ destroy: jest.fn() }));
 const scriptContent = fs.readFileSync(path.resolve(__dirname, 'script.js'), 'utf8');
 const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 'clearInterval', 'Swiper', 'MathJax', scriptContent + `
  return {
-    showPage, openUni, closeModal, unis, finish,
+    showPage, openUni, closeModal, unis, finish, getLastFocusedElement: () => lastFocusedElement,
     setScore: (v) => score = v,
     setTimer: (v) => timer = v,
     setSecs: (v) => secs = v,
@@ -193,17 +193,40 @@ describe('Core Functionality', () => {
         mockElements['slide-viewer-modal'].classList.add('hidden');
     });
 
-    test('openUni should show modal with correct info', () => {
+    test('openUni should show modal with correct info and manage focus', () => {
         const uni = unis[0];
+        const previousActiveElement = { focus: jest.fn() };
+        global.document.activeElement = previousActiveElement;
+
         openUni(uni.id);
+
         expect(mockElements['modal-body'].innerHTML).toContain(uni.n);
+        expect(mockElements['modal-body'].innerHTML).toContain(uni.m);
+        expect(mockElements['modal-body'].innerHTML).toContain(uni.d);
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(false);
+        expect(getLastFocusedElement()).toBe(previousActiveElement);
+        expect(mockElements['modal-close-btn'].focus).toHaveBeenCalled();
     });
 
-    test('closeModal hides modal', () => {
+    test('openUni with invalid ID does nothing', () => {
+        const initialHTML = mockElements['modal-body'].innerHTML;
+        mockElements['uni-modal'].classList.add('hidden');
+        openUni('non-existent');
+        expect(mockElements['modal-body'].innerHTML).toBe(initialHTML);
+        expect(mockElements['uni-modal'].classes.has('hidden')).toBe(true);
+    });
+
+    test('closeModal hides modal and restores focus', () => {
+        const previousActiveElement = { focus: jest.fn() };
+        global.document.activeElement = previousActiveElement;
+
+        openUni(unis[0].id);
         mockElements['uni-modal'].classList.remove('hidden');
+
         closeModal();
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(true);
+        expect(previousActiveElement.focus).toHaveBeenCalled();
+        expect(getLastFocusedElement()).toBeNull();
     });
 
     test('showPage should navigate correctly', () => {
