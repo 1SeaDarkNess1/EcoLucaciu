@@ -375,14 +375,40 @@ function openLesson(index) {
     if (titleEl) titleEl.innerText = lesson.titlu;
 
     if (lesson.file) {
-        LessonManager.slides = [{
-            t: lesson.titlu,
-            c: `<div class="file-view-container">
+        const isPPT = lesson.file.endsWith('.ppt') || lesson.file.endsWith('.pptx');
+        let contentHtml = '';
+
+        if (isPPT) {
+            let baseUrl = window.location.href.split('#')[0].split('?')[0];
+            baseUrl = baseUrl.replace(/\/index\.html$/, '/');
+            if (!baseUrl.endsWith('/')) baseUrl += '/';
+
+            // Handle relative paths that might start with / or no slash
+            let cleanFile = lesson.file;
+            if (cleanFile.startsWith('/')) cleanFile = cleanFile.substring(1);
+
+            const fullUrl = baseUrl + cleanFile;
+            const embedUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fullUrl)}`;
+
+            contentHtml = `<div class="file-view-container">
+                    <iframe src="${embedUrl}" style="width: 100%; height: 600px; border: none; border-radius: 8px;"></iframe>
+                    <div style="margin-top: 15px; text-align: center;">
+                        <p style="margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Dacă previzualizarea nu încarcă (necesită URL public), folosește butonul:</p>
+                        <a href="${lesson.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">📥 Descarcă Materialul PPT</a>
+                    </div>
+                </div>`;
+        } else {
+             contentHtml = `<div class="file-view-container">
                     <iframe src="${lesson.file}" style="width: 100%; height: 600px; border: none; border-radius: 8px;"></iframe>
                     <div style="margin-top: 15px; text-align: center;">
                         <a href="${lesson.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">📥 Descarcă Materialul</a>
                     </div>
-                </div>`
+                </div>`;
+        }
+
+        LessonManager.slides = [{
+            t: lesson.titlu,
+            c: contentHtml
         }];
     } else {
         LessonManager.slides = lesson.slides || [];
