@@ -502,26 +502,30 @@ window.addEventListener('load', async () => {
 
     // Populare universități
     const uniGrid = document.getElementById('uni-grid');
-    const uniFragment = document.createDocumentFragment();
-    unis.forEach(u => {
-        const card = document.createElement('div');
-        card.className = 'nav-card glass';
-        card.onclick = () => openUni(u.id);
+    if (uniGrid) {
+        uniGrid.innerHTML = unis.map(u => `
+            <div class='nav-card glass' data-id='${u.id}' tabIndex='0' role='button' aria-label='Vezi detalii despre ${u.n}'>
+                <h3>${u.n}</h3>
+                <p>Medie: <b>${u.m}</b></p>
+            </div>`).join('');
 
-        card.tabIndex = 0;
-        card.role = 'button';
-        card.setAttribute('aria-label', `Vezi detalii despre ${u.n}`);
-        card.onkeydown = (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                openUni(u.id);
+        // Event delegation for Universities Grid
+        uniGrid.addEventListener('click', (e) => {
+            const card = e.target.closest('.nav-card');
+            if (card && card.dataset.id) {
+                openUni(parseInt(card.dataset.id));
             }
-        };
-
-        card.innerHTML = `<h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p>`;
-        uniFragment.appendChild(card);
-    });
-    uniGrid.appendChild(uniFragment);
+        });
+        uniGrid.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const card = e.target.closest('.nav-card');
+                if (card && card.dataset.id) {
+                    e.preventDefault();
+                    openUni(parseInt(card.dataset.id));
+                }
+            }
+        });
+    }
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') { closeModal(); closeSlideViewer(); }
