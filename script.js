@@ -236,6 +236,10 @@ const QuizManager = {
         this.feedbackEl = document.getElementById('quiz-feedback-overlay');
     },
 
+    stop() {
+        if (this.timer) clearInterval(this.timer);
+        this.timer = null;
+    },
             start(type = "general") {
         this.initElements();
         this.type = type;
@@ -441,7 +445,6 @@ window.openLibraryItem = openLibraryItem;
 window.toggleFullScreen = toggleFullScreen;
 window.closeSlideViewer = closeSlideViewer;
 
-// --- NAVIGARE CU BROWSER BACK FIX ---
 function showPage(id, saveHistory = true) {
     if (!id) return;
 
@@ -451,6 +454,9 @@ function showPage(id, saveHistory = true) {
 
     // Lazy initialization if called before 'load' event
     initViewCache();
+    if (id !== "quiz" && typeof QuizManager !== "undefined") {
+        QuizManager.stop();
+    }
 
     cachedViews.forEach(v => v.classList.remove("active"));
     const target = viewsMap[id] || document.getElementById(id);
@@ -526,6 +532,9 @@ function updateActiveTOC(tocId, idx) {
 function openLesson(index) {
     const lesson = lectiiCompleta[index];
     if(!lesson) return;
+    if (!lesson.file && (!lesson.slides || lesson.slides.length === 0)) {
+        return;
+    }
 
     if (lesson.slides && lesson.slides.length > 0) {
         openSlideViewer('lesson', index);
@@ -694,7 +703,6 @@ function toggleFullScreen() {
 window.addEventListener('load', async () => {
     // Populate views cache
     initViewCache();
-
     await initData();
     // Event delegation for Quiz Options
     const quizOptionsBox = document.getElementById('options-box');
