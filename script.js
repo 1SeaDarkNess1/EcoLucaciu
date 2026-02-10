@@ -751,3 +751,4 @@ window.addEventListener('load', async () => {
         history.replaceState({ pageId: 'home' }, "", "#home");
     }
 });
+// HOTFIX
