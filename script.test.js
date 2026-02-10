@@ -72,6 +72,7 @@ mockElements['slide-viewer-modal'].classList.add('hidden');
 
 global.document = {
     body: { style: {} },
+    head: { appendChild: jest.fn() },
     getElementById: jest.fn((id) => {
         return mockElements[id] || createMockElement(id);
     }),
@@ -143,6 +144,7 @@ const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 
     setLibrarySlideIndex: (i) => currentLibrarySlideIndex = i,
     renderLibrarySlide,
     openLesson, openLibraryItem,
+    loadMathJax,
 
     toggleTOC, generateTOC, updateActiveTOC,
     openSlideViewer, closeSlideViewer, toggleFullScreen,
@@ -201,6 +203,28 @@ describe('Core Functionality', () => {
     test('window.onpopstate should call showPage', () => {
         if (popstateListener) popstateListener({ state: { pageId: 'lectii' } });
         expect(mockElements['lectii'].classes.has('active')).toBe(true);
+    });
+});
+
+describe('MathJax Loading', () => {
+    let originalMathJax;
+    beforeEach(() => {
+        originalMathJax = global.window.MathJax;
+        global.document.head.appendChild.mockClear();
+    });
+    afterEach(() => {
+        global.window.MathJax = originalMathJax;
+    });
+
+    test('loadMathJax should lazy load script when MathJax is missing', async () => {
+         delete global.window.MathJax;
+
+         const p = loadMathJax();
+         expect(global.document.head.appendChild).toHaveBeenCalled();
+
+         const script = global.document.head.appendChild.mock.calls[0][0];
+         script.onload();
+         await expect(p).resolves.toBeUndefined();
     });
 });
 
