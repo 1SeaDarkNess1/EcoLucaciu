@@ -1,3 +1,7 @@
+
+> ecolucaciu@1.0.0 start
+> node server.js
+
 node:internal/modules/cjs/loader:1386
   throw err;
   ^
