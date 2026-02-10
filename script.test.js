@@ -6,26 +6,30 @@ const createMockElement = (id = '', tagName = 'DIV') => {
     const el = {
         id,
         tagName: tagName.toUpperCase(),
-        className: '',
+        _innerHTML: '',
+        classes: new Set(),
+        get className() { return Array.from(this.classes).join(' '); },
+        set className(val) { this.classes = new Set(String(val).split(' ').filter(c => c)); },
         classList: {
-            add: jest.fn((cls) => { el.classes.add(cls); el.className = Array.from(el.classes).join(' '); }),
-            remove: jest.fn((cls) => { el.classes.delete(cls); el.className = Array.from(el.classes).join(' '); }),
+            add: jest.fn((cls) => { el.classes.add(cls); }),
+            remove: jest.fn((cls) => { el.classes.delete(cls); }),
             contains: jest.fn((cls) => el.classes.has(cls)),
             toggle: jest.fn((cls) => {
                 if (el.classes.has(cls)) el.classes.delete(cls);
                 else el.classes.add(cls);
-                el.className = Array.from(el.classes).join(' ');
             })
         },
-        classes: new Set(),
         focus: jest.fn(),
         style: {},
         dataset: {},
         setAttribute: jest.fn(),
         getAttribute: jest.fn(),
-        innerHTML: '',
-        textContent: '',
-        innerText: '',
+        get innerHTML() { return this._innerHTML; },
+        set innerHTML(val) { this._innerHTML = String(val); },
+        get textContent() { return String(this._innerHTML).replace(/<[^>]*>/g, ''); },
+        set textContent(val) { this._innerHTML = String(val); },
+        get innerText() { return this.textContent; },
+        set innerText(val) { this.textContent = val; },
         tabIndex: 0,
         appendChild: jest.fn(function(child) {
             const content = child.innerHTML || child.textContent || child.innerText || '';
@@ -57,7 +61,6 @@ const createMockElement = (id = '', tagName = 'DIV') => {
     };
     return el;
 };
-
 const mockElements = {};
 let quizHandler = null;
 
@@ -219,21 +222,34 @@ describe('Core Functionality', () => {
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(false);
         expect(mockElements['modal-body'].innerHTML).toContain(uni.n);
         expect(mockElements['modal-body'].innerHTML).toContain(uni.m);
+        expect(mockElements['modal-body'].innerHTML).toContain('Medie:');
+        expect(mockElements['modal-body'].innerHTML).toContain(uni.d);
         expect(mockElements['modal-close-btn'].focus).toHaveBeenCalled();
         expect(getLastFocusedElement()).toBe(previousActiveElement);
-    });
 
+        // Verify structure
+        expect(mockElements['modal-body'].innerHTML).toContain('<h1');
+        expect(mockElements['modal-body'].innerHTML).toContain('<b');
+        expect(mockElements['modal-body'].innerHTML).toContain('<hr');
+        expect(mockElements['modal-body'].innerHTML).toContain('<div');
+    });
     test('openUni with invalid ID does nothing', () => {
         openUni('invalid');
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(true);
     });
 
     test('closeModal hides modal and restores focus', () => {
-        openUni(unis[0]);
+        const previousActiveElement = { focus: jest.fn() };
+        global.document.activeElement = previousActiveElement;
+
+        openUni(unis[0].id);
+        expect(getLastFocusedElement()).toBe(previousActiveElement);
+
         closeModal();
         expect(mockElements['uni-modal'].classes.has('hidden')).toBe(true);
+        expect(previousActiveElement.focus).toHaveBeenCalled();
+        expect(getLastFocusedElement()).toBe(null);
     });
-
     test('showPage should navigate correctly', () => {
         showPage('biblioteca');
         expect(mockElements['biblioteca'].classes.has('active')).toBe(true);
@@ -397,8 +413,8 @@ describe('Quiz Logic', () => {
         expect(global.clearInterval).toHaveBeenCalledWith(999);
         expect(global.setInterval).toHaveBeenCalled();
 
-        expect(mockElements['correct-count'].innerText).toBe(0);
-        expect(mockElements['wrong-count'].innerText).toBe(0);
+        expect(mockElements['correct-count'].innerText).toBe("0");
+        expect(mockElements['wrong-count'].innerText).toBe("0");
         expect(mockElements['timer'].innerText).toBe("00:00");
 
         expect(mockElements['quiz'].classes.has('active')).toBe(true);
@@ -444,7 +460,7 @@ describe('Quiz Logic', () => {
         setScore(95);
         finish();
         expect(mockElements['results'].classes.has('active')).toBe(true);
-        expect(mockElements['final-score'].innerText).toBe(95);
+        expect(mockElements['final-score'].innerText).toBe("95");
     });
 
     test('Event Delegation works: Click on option updates score', async () => {
