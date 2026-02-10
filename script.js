@@ -495,28 +495,12 @@ window.addEventListener('load', async () => {
     }
     // Populare listă capitole
     const chaptersList = document.getElementById('chapters-list');
-    const chapterFragment = document.createDocumentFragment();
-    lectiiCompleta.forEach((l, idx) => {
-        const div = document.createElement('div');
-        div.className = 'chapter-card glass';
-        div.onclick = () => openLesson(idx);
-
-        const h3 = document.createElement('h3');
-        h3.textContent = `CAPITOLUL ${idx + 1}`;
-
-        const p = document.createElement('p');
-        p.textContent = l.titlu;
-
-        const small = document.createElement('small');
-        small.style.color = 'var(--accent)';
-        small.textContent = 'Click pentru lecție →';
-
-        div.appendChild(h3);
-        div.appendChild(p);
-        div.appendChild(small);
-        chapterFragment.appendChild(div);
-    });
-    chaptersList.appendChild(chapterFragment);
+    chaptersList.innerHTML = lectiiCompleta.map((l, idx) => `
+        <div class='chapter-card glass' onclick='openLesson(${idx})'>
+            <h3>CAPITOLUL ${idx + 1}</h3>
+            <p>${l.titlu}</p>
+            <small style='color: var(--accent)'>Click pentru lecție →</small>
+        </div>`).join('');
 
     // Populare universități
     const uniGrid = document.getElementById('uni-grid');
@@ -548,28 +532,12 @@ window.addEventListener('load', async () => {
     // Populare listă bibliotecă
     const libraryList = document.getElementById('library-list');
     if (libraryList) {
-        const fragment = document.createDocumentFragment();
-        bibliotecaCompleta.forEach((l, idx) => {
-            const div = document.createElement('div');
-            div.className = 'chapter-card glass';
-            div.onclick = () => openLibraryItem(idx);
-
-            const h3 = document.createElement('h3');
-            h3.textContent = `RESURSA ${idx + 1}`;
-
-            const p = document.createElement('p');
-            p.textContent = l.titlu;
-
-            const small = document.createElement('small');
-            small.style.color = 'var(--accent)';
-            small.textContent = 'Click pentru detalii →';
-
-            div.appendChild(h3);
-            div.appendChild(p);
-            div.appendChild(small);
-            fragment.appendChild(div);
-        });
-        libraryList.appendChild(fragment);
+        libraryList.innerHTML = bibliotecaCompleta.map((l, idx) => `
+            <div class='chapter-card glass' onclick='openLibraryItem(${idx})'>
+                <h3>RESURSA ${idx + 1}</h3>
+                <p>${l.titlu}</p>
+                <small style='color: var(--accent)'>Click pentru detalii →</small>
+            </div>`).join('');
     }
 
     // Populare teste antrenament
@@ -582,22 +550,13 @@ window.addEventListener('load', async () => {
         const grid = document.createElement('div');
         grid.className = 'quiz-grid';
 
-        const testFragment = document.createDocumentFragment();
-        testeAntrenament.forEach(t => {
-            const card = document.createElement('div');
-            card.className = 'quiz-card glass';
-            card.style.cursor = "pointer";
-            card.onclick = () => window.open(t.file, '_blank');
-
-            card.innerHTML = `
-                <div class="quiz-icon" style="font-size: 2.5rem;">📄</div>
-                <h3 style="font-size: 1.1rem; margin: 10px 0;">${t.titlu}</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 15px;">Descarcă / Vizualizează PDF</p>
-                <button class="btn-start" style="padding: 8px 20px; font-size: 0.9rem;">Deschide</button>
-            `;
-            testFragment.appendChild(card);
-        });
-        grid.appendChild(testFragment);
+        grid.innerHTML = testeAntrenament.map(t => `
+            <div class='quiz-card glass' style='cursor: pointer;' onclick='window.open("${t.file}", "_blank")'>
+                <div class='quiz-icon' style='font-size: 2.5rem;'>📄</div>
+                <h3 style='font-size: 1.1rem; margin: 10px 0;'>${t.titlu}</h3>
+                <p style='font-size: 0.9rem; margin-bottom: 15px;'>Descarcă / Vizualizează PDF</p>
+                <button class='btn-start' style='padding: 8px 20px; font-size: 0.9rem;'>Deschide</button>
+            </div>`).join('');
 
         testSection.appendChild(grid);
         quizDashboard.appendChild(testSection);
