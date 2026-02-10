@@ -377,7 +377,6 @@ function showPage(id, saveHistory = true) {
     }
 
     // Lazy initialization if called before 'load' event
-    initTheme();
     initViewCache();
     if (id !== "quiz" && typeof QuizManager !== "undefined") {
         QuizManager.stop();
@@ -625,33 +624,10 @@ function toggleFullScreen() {
 }
 
 
-function toggleDarkMode() {
-    const isDark = document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-    updateThemeUI(isDark);
-}
-
-function updateThemeUI(isDark) {
-    const icon = document.getElementById('theme-icon');
-    const text = document.getElementById('theme-text');
-    if (icon) icon.innerText = isDark ? '☀️' : '🌙';
-    if (text) text.innerText = isDark ? 'Mod Luminos' : 'Mod Întunecat';
-}
-
-function initTheme() {
-    const darkMode = localStorage.getItem('darkMode');
-    const isDark = darkMode === 'enabled';
-    if (isDark) {
-        document.body.classList.add('dark-mode');
-    }
-    updateThemeUI(isDark);
-}
-window.toggleDarkMode = toggleDarkMode;
 
 // --- INITIALIZARE ---
 window.addEventListener('load', async () => {
     // Populate views cache
-    initTheme();
     initViewCache();
     await initData();
     // Event delegation for Quiz Options
