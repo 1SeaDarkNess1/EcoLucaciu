@@ -68,7 +68,7 @@ let quizHandler = null;
     'modal-body', 'uni-modal', 'modal-close-btn', 'home', 'lectii', 'biblioteca', 'about',
     'chapters-list', 'uni-grid', 'library-list', 'sidebar', 'mobile-toggle', 'swiper-wrapper',
     'slide-viewer-modal', 'results', 'quiz', 'lectie-detaliu', 'biblioteca-detaliu',
-    'final-score', 'final-time', 'timer', 'final-grade', 'performance-msg', 'correct-count', 'wrong-count',
+    'final-score', 'final-score-text', 'final-grade-big', 'result-circle', 'final-time', 'timer', 'final-grade', 'performance-msg', 'correct-count', 'wrong-count',
     'q-text', 'q-counter', 'progress-bar', 'options-box', 'quiz-feedback-overlay',
     'library-body', 'library-slide-counter', 'library-toc',
     'lesson-body', 'slide-counter', 'lesson-toc', 'mySwiper', 'lesson-title', 'library-title'
@@ -482,7 +482,7 @@ describe('Quiz Logic', () => {
         setScore(95);
         finish();
         expect(mockElements['results'].classes.has('active')).toBe(true);
-        expect(mockElements['final-score'].innerText).toBe("95");
+        expect(mockElements['final-score-text'].innerText).toContain("95");
     });
 
     test('Event Delegation works: Click on option updates score', async () => {
