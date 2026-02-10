@@ -217,8 +217,9 @@ if (loadListener) initializationPromise = loadListener();
 
 Object.assign(global, context);
 
+beforeAll(async () => { if (initializationPromise) await initializationPromise; });
+
 describe('Core Functionality', () => {
-    beforeAll(async () => { if (initializationPromise) await initializationPromise; });
     beforeEach(() => {
         jest.clearAllMocks();
         mockElements['uni-modal'].classList.add('hidden');
@@ -344,6 +345,8 @@ describe('TOC & Navigation Logic', () => {
 
 describe('Slide Viewer', () => {
     test('openSlideViewer shows modal and populates wrapper', () => {
+        const originalLesson = context.lectiiCompleta[0];
+        context.lectiiCompleta[0] = { id: 0, titlu: 'Test', slides: [{ t: 'Introducere', c: 'Content' }] };
         openSlideViewer('lesson', 0);
         expect(mockElements['slide-viewer-modal'].classes.has('hidden')).toBe(false);
         expect(mockElements['swiper-wrapper'].innerHTML).toContain('swiper-slide');
@@ -378,6 +381,7 @@ describe('Lesson Logic', () => {
     });
 
     test('openLesson opens slide viewer for lesson with predefined slides', () => {
+        context.lectiiCompleta[0] = { id: 0, titlu: 'Test', slides: [{ t: 'Introducere', c: 'Content' }] };
         openLesson(0);
         expect(mockElements['slide-viewer-modal'].classes.has('hidden')).toBe(false);
         expect(mockElements['swiper-wrapper'].innerHTML).toContain('Introducere');

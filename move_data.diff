@@ -1,0 +1,25 @@
+<<<<<<< SEARCH
+let slideViewerModalEl = null;
+
+function openSlideViewer(type, index) {
+=======
+// --- DATA ---
+const lectiiCompleta = [];
+const bibliotecaCompleta = [];
+const testeAntrenament = [];
+const unis = [];
+const masterBank = [];
+
+let slideViewerModalEl = null;
+
+function openSlideViewer(type, index) {
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+// --- DATA ---
+const lectiiCompleta = [];
+const bibliotecaCompleta = [];
+const testeAntrenament = [];
+const unis = [];
+const masterBank = [];
+=======
+>>>>>>> REPLACE

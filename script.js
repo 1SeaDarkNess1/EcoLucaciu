@@ -1,3 +1,4 @@
+const lectiiCompleta = []; const bibliotecaCompleta = []; const testeAntrenament = []; const unis = []; const masterBank = [];
 let cachedViews = [];
 let viewsMap = {};
 let isViewCacheInitialized = false;
@@ -308,12 +309,7 @@ window.addEventListener("popstate", (event) => {
     }
 });
 
-// --- DATA ---
-const lectiiCompleta = [];
-const bibliotecaCompleta = [];
-const testeAntrenament = [];
-const unis = [];
-const masterBank = [];
+
 
 async function initData() {
     try {
@@ -379,7 +375,7 @@ function openLesson(index) {
         let contentHtml = '';
 
         if (isPPT) {
-            let baseUrl = window.location.href.split('#')[0].split('?')[0];
+            let baseUrl = (window.location && window.location.href) ? window.location.href.split('#')[0].split('?')[0] : '';
             baseUrl = baseUrl.replace(/\/index\.html$/, '/');
             if (!baseUrl.endsWith('/')) baseUrl += '/';
 
@@ -467,26 +463,40 @@ function openLibraryItem(index) {
     LibraryManager.render();
 }
 
-let swiperWrapperEl = null;
-let slideViewerModalEl = null;
-
 function openSlideViewer(type, index) {
     const data = type === 'lesson' ? lectiiCompleta[index] : bibliotecaCompleta[index];
     if (!data || !data.slides) return;
 
-    if (!swiperWrapperEl) swiperWrapperEl = document.getElementById('swiper-wrapper');
-    if (!slideViewerModalEl) slideViewerModalEl = document.getElementById('slide-viewer-modal');
+    const wrapper = document.getElementById('swiper-wrapper');
+    const modal = document.getElementById('slide-viewer-modal');
 
-    const slidesHtml = data.slides.map(slide => `
-        <div class="swiper-slide">
-            <div class="ppt-slide">
-                <span class="slide-title">${slide.t}</span>
-                <div class="slide-text">${slide.c}</div>
-            </div>
-        </div>`).join("");
-    if (swiperWrapperEl) swiperWrapperEl.innerHTML = slidesHtml;
+    if (wrapper) {
+        wrapper.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+        data.slides.forEach(slide => {
+            const swiperSlide = document.createElement('div');
+            swiperSlide.className = 'swiper-slide';
 
-    if (slideViewerModalEl) slideViewerModalEl.classList.remove('hidden');
+            const pptSlide = document.createElement('div');
+            pptSlide.className = 'ppt-slide';
+
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'slide-title';
+            titleSpan.textContent = slide.t;
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'slide-text';
+            textDiv.innerHTML = slide.c;
+
+            pptSlide.appendChild(titleSpan);
+            pptSlide.appendChild(textDiv);
+            swiperSlide.appendChild(pptSlide);
+            fragment.appendChild(swiperSlide);
+        });
+        wrapper.appendChild(fragment);
+    }
+
+    if (modal) modal.classList.remove('hidden');
 
     if (window.ecoSwiper) window.ecoSwiper.destroy();
     window.ecoSwiper = new Swiper('.mySwiper', {
@@ -499,8 +509,8 @@ function openSlideViewer(type, index) {
 }
 
 function closeSlideViewer() {
-    if (!slideViewerModalEl) slideViewerModalEl = document.getElementById('slide-viewer-modal');
-    if (slideViewerModalEl) slideViewerModalEl.classList.add('hidden');
+    const modal = document.getElementById('slide-viewer-modal');
+    if (modal) modal.classList.add('hidden');
     if (window.ecoSwiper) window.ecoSwiper.destroy();
 }
 
