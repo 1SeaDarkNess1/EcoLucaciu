@@ -150,7 +150,11 @@ const QuizManager = {
         if(type === 'macro') bank = bank.filter((_, i) => i % 2 !== 0);
         if (bank.length < 5) bank = [...masterBank];
 
-        this.questions = bank.sort(() => 0.5 - Math.random()).slice(0, 20);
+        for (let i = bank.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [bank[i], bank[j]] = [bank[j], bank[i]];
+        }
+        this.questions = bank.slice(0, 20);
 
         // Resetare stare
         this.index = 0; this.score = 0; this.secs = 0; this.correct = 0; this.wrong = 0;
