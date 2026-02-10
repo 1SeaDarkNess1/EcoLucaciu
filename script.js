@@ -438,8 +438,6 @@ function openSlideViewer(type, index) {
     if (!data || !data.slides) return;
 
     const wrapper = document.getElementById('swiper-wrapper');
-    wrapper.innerHTML = '';
-
     const slidesHtml = data.slides.map(slide => `
         <div class="swiper-slide">
             <div class="ppt-slide">
