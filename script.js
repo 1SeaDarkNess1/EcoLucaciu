@@ -480,11 +480,12 @@ function startQuiz(type = "general") {
 
     // Timer
     if (timer) clearInterval(timer);
+    const timerEl = document.getElementById("timer");
     timer = setInterval(() => {
         secs++;
         const min = Math.floor(secs / 60);
         const sec = secs % 60;
-        document.getElementById('timer').innerText = `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
+        timerEl.innerText = `${min < 10 ? '0'+min : min}:${sec < 10 ? '0'+sec : sec}`;
     }, 1000);
 
     renderQ();
