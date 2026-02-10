@@ -184,6 +184,7 @@ const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 
     getTimer: () => QuizManager.timer,
     getSecs: () => QuizManager.secs,
     startQuiz: (type) => QuizManager.start(type),
+    stopQuiz: () => QuizManager.stop(),
     renderQ: () => QuizManager.render(),
     getCurrentIdx: () => QuizManager.index,
     setCurrentIdx: (v) => QuizManager.index = v,
@@ -503,6 +504,29 @@ describe('Quiz Logic', () => {
     });
 
 });
+    test('stopQuiz clears timer', () => {
+        setTimer(123);
+        stopQuiz();
+        expect(global.clearInterval).toHaveBeenCalledWith(123);
+        expect(getTimer()).toBeNull();
+    });
+
+    test('finish calculates grade correctly', () => {
+        const msgEl = mockElements['performance-msg'];
+        const scoreEl = mockElements['final-score-text'];
+        const mockQs = new Array(10).fill({}).map((_, i) => ({ q: 'q', o: [], c: 0 }));
+        setCurrentQuestions(mockQs);
+        setScore(50);
+        finish();
+        expect(msgEl.innerText).toContain('Excelent');
+        expect(msgEl.style.color).toBe('var(--success)');
+        setScore(25);
+        finish();
+        expect(msgEl.innerText).toContain('Satisfăcător');
+        setScore(5);
+        finish();
+        expect(msgEl.innerText).toContain('Insuficient');
+    });
 describe('Library Logic', () => {
     test('nextLibrarySlide increments index', () => {
         setLibrarySlides([{t:'S1',c:'C1'}, {t:'S2',c:'C2'}]);
