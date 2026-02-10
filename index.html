@@ -3,10 +3,9 @@
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>EcoLucaciu | Platformă Educațională</title>
+    <title>EcoLucaciu | Proiect Bogdan Bontoș</title>
     <link href='https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap' rel='stylesheet'>
     <link rel='stylesheet' href='style.css'>
-    <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body>
@@ -15,10 +14,8 @@
         <div class='glow-orb orb-2'></div>
     </div>
 
-    <!-- Mobile Toggle -->
-    <button id="mobile-toggle" onclick="toggleSidebar()" aria-label="Deschide meniu">☰</button>
-
     <!-- Sidebar -->
+    <button id="mobile-toggle" onclick="toggleSidebar()" aria-label="Deschide meniu">☰</button>
     <aside class='sidebar glass' id="sidebar">
         <div class='sidebar-header'>
             <div class='badge-premium'>PLATFORMĂ EDUCAȚIONALĂ 2026</div>
@@ -26,16 +23,16 @@
                 <img src='https://cdilucaciu.wordpress.com/wp-content/uploads/2012/10/sigla-cnvl2.jpg' alt='Sigla CNVL' class='hero-logo'>
                 <h1>Colegiul Național<br><span class='gradient-text'>„Vasile Lucaciu”</span></h1>
             </div>
-            <p class='hero-subtitle'>Economie: Resurse complete pentru performanță.</p>
+            <p class='hero-subtitle'>Economie: Resurse complete pentru performanță academică.</p>
         </div>
 
         <nav class='sidebar-nav'>
             <ul class='menu-vertical'>
-                <li><a href='#home' onclick="event.preventDefault(); showPage('home')" class="active">Acasă</a></li>
-                <li><a href='#materiale' onclick="event.preventDefault(); showPage('materiale')">Lecții</a></li>
-                <li><a href='#biblioteca' onclick="event.preventDefault(); showPage('biblioteca')">Bibliotecă</a></li>
+                <li><a href='#home' onclick="event.preventDefault(); showPage('home')">Acasă</a></li>
+                <li><a href='#materiale' onclick="event.preventDefault(); showPage('materiale')">Materiale</a></li>
                 <li><a href='#admitere' onclick="event.preventDefault(); showPage('admitere')">Admitere</a></li>
-                <li><a href='#grila' onclick="event.preventDefault(); showPage('grila')">Testare</a></li>
+                <li><a href='#biblioteca' onclick="event.preventDefault(); showPage('biblioteca')">Biblioteca</a></li>
+                <li><a href='#grila' onclick="event.preventDefault(); showPage('grila')">Grile</a></li>
             </ul>
         </nav>
 
@@ -51,74 +48,71 @@
     <main class='main-content'>
         <!-- Secțiunea HOME -->
         <section id='home' class='view active'>
-            <h2 class='section-title'>Bun venit, <span class='gradient-text'>Elevule!</span></h2>
-            <p class='section-subtitle'>Alege o categorie pentru a începe studiul.</p>
-
-            <div class='home-grid-compact categories-grid'>
+            <div class='home-grid-compact'>
                 <div class='nav-card glass' onclick="showPage('materiale')">
-                    <span class='card-icon'>📘</span>
-                    <h3>Lecții Interactive</h3>
-                    <p>Parcurge materia structurat.</p>
-                </div>
-                <div class='nav-card glass' onclick="showPage('biblioteca')">
                     <span class='card-icon'>📚</span>
-                    <h3>Bibliotecă Digitală</h3>
-                    <p>Resurse și documente PDF.</p>
+                    <h3>Materiale de Studiu</h3>
+                    <p>Cursuri interactive pe subpagini.</p>
                 </div>
                 <div class='nav-card glass' onclick="showPage('admitere')">
                     <span class='card-icon'>🎓</span>
                     <h3>Ghid Admitere</h3>
-                    <p>Facultăți și oportunități.</p>
+                    <p>Facultăți de top și detalii.</p>
                 </div>
-                <div class='nav-card glass accent-glow' onclick="showPage('grila')">
+                <div class='nav-card glass' onclick="showPage('biblioteca')">
+                    <span class='card-icon'>📖</span>
+                    <h3>Biblioteca</h3>
+                    <p>Resurse suplimentare de studiu.</p>
+                </div>
+                <div class='nav-card glass accent-glow' onclick='startQuiz()'>
                     <span class='card-icon'>⚡</span>
                     <h3>Simulator Grile</h3>
-                    <p>Testează-ți cunoștințele.</p>
+                    <p>Test rapid de 20 de întrebări.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Secțiunea MATERIALE (Lecții) -->
+        <!-- Secțiunea MATERIALE (Lista de capitole) -->
         <section id='materiale' class='view'>
-            <h2 class='section-title'>Lecții <span class='gradient-text'>Economie</span></h2>
-            <p class='section-subtitle'>Capitole esențiale pentru bacalaureat.</p>
+            <h2 class='section-title'>Capitole <span class='gradient-text'>Economie</span></h2>
+            <p class='section-subtitle'>Alege un capitol pentru a accesa lecția completă.</p>
             <div class='chapters-grid' id='chapters-list'></div>
         </section>
 
         <!-- Subpagina LECTIE DETALII -->
         <section id='lectie-detaliu' class='view reader-view'>
             <div class='reader-header'>
-                <button class='btn-back' onclick="showPage('materiale')">← Înapoi la Lecții</button>
+                <button class='btn-back' onclick="showPage('materiale')">← Înapoi</button>
                 <h1 id='lesson-title' class='reader-title'>Titlu Lecție</h1>
             </div>
 
             <div class='reader-layout'>
                 <div class='material-viewer'>
                     <div class='lesson-content' id='lesson-body'>
-                        <!-- Aici se încarcă conținutul -->
+                        <!-- Aici se încarcă slide-urile PPT -->
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Secțiunea BIBLIOTECA -->
+        <!-- Secțiunea BIBLIOTECA (Lista de materiale) -->
         <section id='biblioteca' class='view'>
             <h2 class='section-title'>Biblioteca <span class='gradient-text'>Virtuală</span></h2>
-            <p class='section-subtitle'>Materiale suplimentare și teste PDF.</p>
+            <p class='section-subtitle'>Resurse suplimentare pentru aprofundarea cunoștințelor.</p>
             <div class='chapters-grid' id='library-list'></div>
         </section>
 
         <!-- Subpagina BIBLIOTECA DETALII -->
         <section id='biblioteca-detaliu' class='view reader-view'>
             <div class='reader-header'>
-                <button class='btn-back' onclick="showPage('biblioteca')">← Înapoi la Bibliotecă</button>
+                <button class='btn-back' onclick="showPage('biblioteca')">← Înapoi</button>
                 <h1 id='library-title' class='reader-title'>Titlu Material</h1>
             </div>
 
             <div class='reader-layout'>
                 <div class='material-viewer'>
                     <div class='lesson-content' id='library-body'>
-                        <!-- Aici se încarcă PDF-ul -->
+                        <!-- Aici se încarcă slide-urile bibliotecii -->
                     </div>
                 </div>
             </div>
@@ -126,38 +120,49 @@
 
         <!-- Secțiunea ADMITERE -->
         <section id='admitere' class='view'>
-            <h2 class='section-title'>Oportunități <span class='gradient-text'>Universitare</span></h2>
-            <p class='section-subtitle'>Descoperă facultățile de profil economic.</p>
+            <h2 class='section-title'>Orizonturi <span class='gradient-text'>Admitere</span></h2>
             <div class='uni-cards-grid' id='uni-grid'></div>
         </section>
 
-        <!-- Secțiunea GRILA (Meniu Teste) -->
+        <!-- Secțiunea GRILE -->
         <section id='grila' class='view'>
             <div class='quiz-dashboard animate-in'>
                 <div class='dashboard-header'>
                     <div class='icon-main'>📝</div>
                     <h2>Centru de <span class='gradient-text'>Evaluare</span></h2>
-                    <p>Alege tipul de testare.</p>
+                    <p>Alege un test pentru a-ți verifica cunoștințele.</p>
                 </div>
 
                 <div class='quiz-grid'>
                     <div class='quiz-card glass' onclick='startQuiz("general")'>
                         <div class='quiz-icon'>🌍</div>
                         <h3>Economie Generală</h3>
-                        <p>20 Întrebări • Aleatoriu</p>
-                        <button class='btn-start'>Start</button>
+                        <p>20 Întrebări • Dificultate Medie</p>
+                        <button class='btn-start'>Începe Testul</button>
+                    </div>
+                    <div class='quiz-card glass' onclick='startQuiz("micro")'>
+                        <div class='quiz-icon'>💼</div>
+                        <h3>Microeconomie</h3>
+                        <p>15 Întrebări • Dificultate Ridicată</p>
+                        <button class='btn-start'>Începe Testul</button>
+                    </div>
+                    <div class='quiz-card glass' onclick='startQuiz("macro")'>
+                        <div class='quiz-icon'>📈</div>
+                        <h3>Macroeconomie</h3>
+                        <p>15 Întrebări • Dificultate Ridicată</p>
+                        <button class='btn-start'>Începe Testul</button>
                     </div>
                     <div class='quiz-card glass' onclick='startQuiz("admitere")'>
                         <div class='quiz-icon'>🎓</div>
                         <h3>Simulare Admitere</h3>
-                        <p>20 Întrebări • Dificultate Medie</p>
-                        <button class='btn-start'>Start</button>
+                        <p>30 Întrebări • Tip Examen</p>
+                        <button class='btn-start'>Începe Testul</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Secțiunea QUIZ ACTIV -->
+        <!-- Secțiunea QUIZ -->
         <section id='quiz' class='view'>
             <div class='quiz-layout'>
                 <div class='quiz-side'>
@@ -165,6 +170,7 @@
                 </div>
                 <div class='quiz-main'>
                     <div class='q-container glass'>
+                        <div id='quiz-feedback-overlay' class='feedback-overlay hidden'></div>
                         <div class='q-header'>
                             <span id='q-counter'>1 / 20</span>
                             <div class='progress-bg'><div id='progress-bar'></div></div>
@@ -183,8 +189,8 @@
         <!-- Secțiunea REZULTATE -->
         <section id='results' class='view'>
             <div class='results-container'>
-                <div class='results-main-card glass animate-in' style='max-width: 800px; margin: 0 auto; padding: 3rem; text-align: center;'>
-                    <h2 class='section-title' style='margin-bottom: 2rem;'>Rezultat Final</h2>
+                <div class='results-main-card glass animate-in' style='max-width: 600px; margin: 0 auto; padding: 3rem;'>
+                    <h2 style='text-align: center; margin-bottom: 2rem; font-size: 2rem;'>Rezultat Final</h2>
 
                     <div class='circular-progress-container' style='display: flex; justify-content: center; margin-bottom: 2rem;'>
                         <div class='circular-progress' id='result-circle'>
@@ -195,22 +201,22 @@
                         </div>
                     </div>
 
-                    <p id='performance-msg' style='font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; color: var(--primary);'></p>
+                    <p id='performance-msg' style='text-align: center; font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; color: var(--accent);'></p>
 
                     <div class='results-stats-grid' style='display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;'>
-                        <div class='stat-box glass' style='padding: 1rem;'>
-                            <small style='color: var(--text-muted);'>TIMP</small>
-                            <b id='final-time' style='font-size: 1.2rem; display: block;'>00:00</b>
+                        <div class='stat-box glass' style='padding: 1rem; text-align: center;'>
+                            <small style='display: block; color: var(--text-muted);'>TIMP TOTAL</small>
+                            <b id='final-time' style='font-size: 1.2rem;'>00:00</b>
                         </div>
-                        <div class='stat-box glass' style='padding: 1rem;'>
-                            <small style='color: var(--text-muted);'>SCOR</small>
-                            <b id='final-score-text' style='font-size: 1.2rem; display: block;'>0 / 0</b>
+                        <div class='stat-box glass' style='padding: 1rem; text-align: center;'>
+                            <small style='display: block; color: var(--text-muted);'>SCOR</small>
+                            <b id='final-score-text' style='font-size: 1.2rem;'>0 / 0</b>
                         </div>
                     </div>
 
                     <div class='results-actions' style='display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;'>
-                        <button class='btn-premium' onclick="showPage('grila')">Înapoi la Meniu</button>
-                        <!-- Button "Vezi Răspunsuri" added by JS -->
+                        <button class='btn-premium btn-outline' onclick="startQuiz(QuizManager.type)">🔄 Repetă Testul</button>
+                        <button class='btn-premium' onclick="showPage('grila')">🎓 Înapoi la Evaluare</button>
                     </div>
                 </div>
             </div>
@@ -218,27 +224,32 @@
     </main>
 
     <!-- MODALA UNIVERSITATI -->
-    <div id='uni-modal' class='modal' onclick='closeModal()' role='dialog' aria-modal='true'>
+    <div id='uni-modal' class='modal hidden' onclick='closeModal()' role='dialog' aria-modal='true'>
         <div class='modal-content glass' onclick='event.stopPropagation()'>
             <button id='modal-close-btn' class='close-btn' onclick='closeModal()' aria-label='Închide'>&times;</button>
             <div id='modal-body'></div>
         </div>
     </div>
 
-    <!-- MODALA SLIDE VIEWER (Hidden but kept for structure if needed later) -->
-    <div id='slide-viewer-modal' class='modal slide-viewer-modal hidden'>
+    <!-- MODALA SLIDE VIEWER -->
+    <div id='slide-viewer-modal' class='modal slide-viewer-modal hidden' role='dialog' aria-modal='true'>
         <div class='slide-viewer-container glass'>
-            <button class='close-btn viewer-close' onclick='closeSlideViewer()'>&times;</button>
+            <button class='close-btn viewer-close' onclick='closeSlideViewer()' aria-label='Închide'>&times;</button>
+            <button class='fullscreen-btn' onclick='toggleFullScreen()' title='Full Screen'>⛶</button>
+
             <div class='swiper mySwiper'>
-                <div class='swiper-wrapper' id='swiper-wrapper'></div>
+                <div class='swiper-wrapper' id='swiper-wrapper'>
+                    <!-- Slides injected via JS -->
+                </div>
+                <!-- Navigation buttons -->
                 <div class='swiper-button-next custom-nav'></div>
                 <div class='swiper-button-prev custom-nav'></div>
+                <!-- Pagination -->
                 <div class='swiper-pagination'></div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src='script.js'></script>
 </body>

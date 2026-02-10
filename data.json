@@ -237,306 +237,178 @@
       "type": "pdf"
     }
   ],
+  "testeAntrenament": [
+    {
+      "id": 0,
+      "titlu": "Bacalaureat 2020 - Varianta 5",
+      "file": "Teste de Antrenament/E_d_economie_2020_var_05_LRO.pdf",
+      "type": "pdf"
+    },
+    {
+      "id": 1,
+      "titlu": "Bacalaureat 2020 - Barem 5",
+      "file": "Teste de Antrenament/E_d_economie_2020_bar_05_LRO.pdf",
+      "type": "pdf"
+    },
+    {
+      "id": 2,
+      "titlu": "Filosofie 2020 - Barem 5",
+      "file": "Teste de Antrenament/E_d_filosofie_2020_bar_05_LRO.pdf",
+      "type": "pdf"
+    },
+    {
+      "id": 3,
+      "titlu": "Logică 2020 - Varianta 5",
+      "file": "Teste de Antrenament/E_d_logica_2020_var_05_LRO.pdf",
+      "type": "pdf"
+    },
+    {
+      "id": 4,
+      "titlu": "Recapitulare - Pregătire Bacalaureat",
+      "file": "Teste de Antrenament/Economie_Recapitulare_Pregatire pentru bacalaureat.pdf",
+      "type": "pdf"
+    }
+  ],
   "unis": [
     {
       "id": 1,
       "n": "ASE București - Cibernetică",
       "m": "9.85",
-      "d": "<h3>Cibernetică, Statistică și Informatică Economică</h3><p>Facultatea de Cibernetică, Statistică și Informatică Economică pregătește specialiști în analiza datelor, dezvoltarea de software și modelarea proceselor economice. Este recunoscută pentru rata de angajare de aproape 100% a absolvenților.</p><h4>Detalii Admitere</h4><ul><li><strong>Locuri buget:</strong> 450</li><li><strong>Locuri taxă:</strong> 200</li><li><strong>Criterii:</strong> Examen scris la Matematică sau Economie (60-70%), Media BAC (30-40%)</li></ul><h4>Oportunități de Carieră</h4><p>Data Scientist, Business Analyst, Software Developer, Actuar, Consultant IT.</p><a href='https://csie.ase.ro' target='_blank' class='btn-premium btn-outline' style='margin-top: 10px; display: inline-block;'>Vizitează site oficial</a>"
+      "d": "<h3>Cibernetică, Statistică și Informatică Economică</h3><p>Cea mai prestigioasă facultate din cadrul ASE. Programul de licență îmbină economia cu tehnologia informației.</p><h4>Admitere</h4><ul><li>Examen scris la Matematică sau Economie (60-70% din medie)</li><li>Media Bacalaureat (30-40%)</li></ul><h4>Oportunități</h4><p>Data Scientist, Business Analyst, Developer în Fintech.</p><a href='https://csie.ase.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
     },
     {
       "id": 2,
       "n": "FSEGA Cluj (UBB)",
       "m": "9.65",
-      "d": "<h3>Facultatea de Științe Economice și Gestiunea Afacerilor</h3><p>FSEGA este cea mai mare facultate din România și un lider în educația economică din Europa de Est. Oferă programe moderne și o viață studențească vibrantă.</p><h4>Detalii Admitere</h4><ul><li><strong>Locuri buget:</strong> 600+</li><li><strong>Criterii:</strong> Concurs de dosare (media Bacalaureat + nota la o disciplină relevantă precum Matematică sau Economie).</li></ul><h4>Specializări Top</h4><p>Informatică Economică, Finanțe-Bănci, Marketing, Management (linii de studiu în Română, Engleză, Germană, Maghiară).</p><a href='https://econ.ubbcluj.ro' target='_blank' class='btn-premium btn-outline' style='margin-top: 10px; display: inline-block;'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Științe Economice și Gestiunea Afacerilor</h3><p>Parte a Universității Babeș-Bolyai, FSEGA este cea mai mare facultate din România ca număr de studenți.</p><h4>Admitere</h4><ul><li>Concurs de dosare (media Bacalaureat + nota la disciplină relevantă)</li></ul><h4>Specializări Top</h4><p>Informatică Economică, Finanțe-Bănci, Marketing (linii de studiu în RO, EN, DE, FR, HU).</p><a href='https://econ.ubbcluj.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
     },
     {
       "id": 3,
       "n": "UAIC Iași - FEAA",
       "m": "9.45",
-      "d": "<h3>Facultatea de Economie și Administrarea Afacerilor</h3><p>Cu o tradiție îndelungată, FEAA Iași este un centru de excelență academică. Campusul universitar din Iași oferă o experiență unică.</p><h4>Detalii Admitere</h4><ul><li><strong>Locuri:</strong> Peste 800 locuri la buget</li><li><strong>Criterii:</strong> Media de la Bacalaureat (100% sau ponderată cu nota la diverse discipline, în funcție de specializare).</li></ul><h4>Facilități</h4><p>Acces la baze de date internaționale (Bloomberg, Reuters), stagii de practică la multinaționale din Iași (Amazon, Continental).</p><a href='https://www.feaa.uaic.ro' target='_blank' class='btn-premium btn-outline' style='margin-top: 10px; display: inline-block;'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Economie și Administrarea Afacerilor</h3><p>Polul educației economice din Moldova, cu o tradiție academică puternică și campus modern.</p><h4>Admitere</h4><p>Media de la Bacalaureat (100% sau ponderată cu nota la diverse discipline).</p><h4>Facilități</h4><p>Acces la baze de date internaționale, stagii de practică la multinaționale din Iași.</p><a href='https://www.feaa.uaic.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
     },
     {
       "id": 4,
       "n": "UVT Timișoara - FEAA",
       "m": "9.30",
-      "d": "<h3>Facultatea de Economie și de Administrare a Afacerilor</h3><p>Situată într-unul dintre cele mai dinamice orașe economice, FEAA Timișoara pune accent pe antreprenoriat și inovare.</p><h4>Detalii Admitere</h4><ul><li><strong>Criterii:</strong> Concurs de dosare pe baza mediei de la bacalaureat.</li></ul><h4>Puncte forte</h4><p>Parteneriate solide cu mediul de afaceri local și internațional, oportunități de internship și schimburi Erasmus.</p><a href='https://feaa.uvt.ro' target='_blank' class='btn-premium btn-outline' style='margin-top: 10px; display: inline-block;'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Economie și de Administrare a Afacerilor</h3><p>Orientare vestică, focalizată pe nevoile pieței muncii și antreprenoriat.</p><h4>Admitere</h4><p>Concurs de dosare. Media generală de la bacalaureat.</p><h4>Puncte forte</h4><p>Parteneriate solide cu mediul de afaceri din Timișoara (Continental, Nokia, etc.).</p><a href='https://feaa.uvt.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
     },
     {
       "id": 5,
       "n": "UBB Cluj - Facultatea de Business",
       "m": "9.50",
-      "d": "<h3>Facultatea de Business</h3><p>O facultate cu profil unic, axată pe dezvoltarea abilităților de leadership și administrare a afacerilor într-un mediu competitiv.</p><h4>Detalii Admitere</h4><ul><li><strong>Criterii:</strong> Eseu motivațional + Media Bacalaureat.</li></ul><h4>Viziune</h4><p>Pregătirea viitorilor antreprenori și manageri prin metode de învățare experiențială și proiecte aplicate.</p><a href='https://tbs.ubbcluj.ro' target='_blank' class='btn-premium btn-outline' style='margin-top: 10px; display: inline-block;'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Business</h3><p>Prima facultate de profil din România, cu o abordare unică, practică și orientată spre leadership.</p><h4>Admitere</h4><p>Eseu motivațional + Media Bacalaureat.</p><h4>Viziune</h4><p>Pregătirea viitorilor antreprenori și manageri prin simulări de business și proiecte reale.</p><a href='https://tbs.ubbcluj.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
     },
     {
       "id": 6,
       "n": "Politehnica București - FAIMA",
       "m": "9.10",
-      "d": "<h3>Facultatea de Antreprenoriat, Ingineria și Managementul Afacerilor</h3><p>FAIMA combină gândirea inginerească structurată cu flexibilitatea și creativitatea domeniului economic.</p><h4>Detalii Admitere</h4><ul><li><strong>Criterii:</strong> Examen scris tip grilă (Matematică + Economie/Fizică).</li></ul><h4>Carieră</h4><p>Ideale pentru roluri de Project Manager, Consultant Tehnic, Antreprenor în tehnologie sau Manager de Producție.</p><a href='https://faima.upb.ro' target='_blank' class='btn-premium btn-outline' style='margin-top: 10px; display: inline-block;'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Antreprenoriat, Ingineria și Managementul Afacerilor</h3><p>Îmbină rigoarea ingineriei cu flexibilitatea economică.</p><h4>Admitere</h4><p>Examen scris tip grilă (Matematică + Economie/Fizică).</p><h4>Carieră</h4><p>Manageri tehnici, Consultanță în producție, Project Management.</p><a href='https://faima.upb.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
     },
     {
       "id": 7,
       "n": "Transilvania Brașov - SEAA",
       "m": "9.25",
-      "d": "<h3>Științe Economice și Administrarea Afacerilor</h3><p>Situată în inima Brașovului, facultatea oferă programe excelente în turism, servicii și comerț.</p><h4>Detalii Admitere</h4><ul><li><strong>Criterii:</strong> Concurs de dosare.</li></ul><h4>Specializări unice</h4><p>Economia Comerțului, Turismului și Serviciilor - o specializare foarte căutată datorită potențialului turistic al zonei.</p><a href='https://economice.unitbv.ro' target='_blank' class='btn-premium btn-outline' style='margin-top: 10px; display: inline-block;'>Vizitează site oficial</a>"
+      "d": "<h3>Științe Economice și Administrarea Afacerilor</h3><p>Excelență în turism, comerț și servicii, profitând de poziția strategică a Brașovului.</p><h4>Admitere</h4><p>Concurs de dosare.</p><h4>Specializări unice</h4><p>Economia Comerțului, Turismului și Serviciilor.</p><a href='https://economice.unitbv.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
     },
     {
       "id": 8,
       "n": "Universitatea din București - FAA",
       "m": "9.40",
-      "d": "<h3>Facultatea de Administrație și Afaceri</h3><p>O structură modernă în cadrul prestigioasei Universități din București, FAA se concentrează pe formarea liderilor în sectorul public și privat.</p><h4>Detalii Admitere</h4><ul><li><strong>Criterii:</strong> Examen scris (50%) + Media Bacalaureat (50%).</li></ul><h4>Focus</h4><p>Administrarea Afacerilor, Marketing, Administrație Publică. Accent pe etică și responsabilitate socială.</p><a href='https://faa.unibuc.ro' target='_blank' class='btn-premium btn-outline' style='margin-top: 10px; display: inline-block;'>Vizitează site oficial</a>"
+      "d": "<h3>Facultatea de Administrație și Afaceri</h3><p>O facultate tânără și dinamică în cadrul celei mai vechi universități din București.</p><h4>Admitere</h4><p>Examen scris (50%) + Media Bacalaureat (50%).</p><h4>Focus</h4><p>Administrarea afacerilor, Marketing, Administrație publică.</p><a href='https://faa.unibuc.ro' target='_blank' class='uni-link'>Vizitează site oficial</a>"
     }
   ],
   "masterBank": [
     {
+      "q": "Nevoile umane sunt, în raport cu resursele:",
+      "o": [
+        "Limitate",
+        "Nelimitate",
+        "Statice"
+      ],
+      "c": 1
+    },
+    {
       "q": "Costul de oportunitate reprezintă:",
       "o": [
-        "Cheltuielile totale de producție",
-        "Valoarea celei mai bune alternative la care se renunță",
-        "Costul fix al unei afaceri",
-        "Profitul obținut de o firmă"
+        "Costul banilor",
+        "Cea mai bună alternativă sacrificată",
+        "Profitul net"
       ],
       "c": 1
     },
     {
-      "q": "Legea cererii exprimă relația dintre:",
+      "q": "Utilitatea marginală este zero când utilitatea totală este:",
       "o": [
-        "Preț și costul de producție",
-        "Preț și cantitatea cerută (relație inversă)",
-        "Venit și cantitatea oferită",
-        "Taxe și subvenții"
+        "Minimă",
+        "Maximă",
+        "Negativă"
       ],
       "c": 1
     },
     {
-      "q": "Dacă prețul unui bun crește și cantitatea cerută scade semnificativ, cererea este:",
+      "q": "Salariul este prețul plătit pentru:",
       "o": [
-        "Perfect inelastică",
-        "Inelastică",
-        "Elastică",
-        "Unitară"
+        "Capital",
+        "Pământ",
+        "Muncă"
       ],
       "c": 2
     },
     {
-      "q": "Produsul Intern Brut (PIB) măsoară:",
+      "q": "Care dintre următoarele este un bun liber?",
       "o": [
-        "Valoarea totală a bunurilor intermediare",
-        "Valoarea de piață a tuturor bunurilor și serviciilor finale produse într-o țară într-un an",
-        "Venitul național net",
-        "Bogăția acumulată a cetățenilor"
-      ],
-      "c": 1
-    },
-    {
-      "q": "Inflația se definește ca:",
-      "o": [
-        "Creșterea producției naționale",
-        "Creșterea generalizată și durabilă a prețurilor",
-        "Scăderea ratei șomajului",
-        "Creșterea valorii monedei naționale"
-      ],
-      "c": 1
-    },
-    {
-      "q": "Care dintre următorii este un factor de producție primar?",
-      "o": [
-        "Capitalul",
-        "Informația",
-        "Munca",
-        "Antreprenoriatul"
-      ],
-      "c": 2
-    },
-    {
-      "q": "Utilitatea marginală este:",
-      "o": [
-        "Satisfacția totală resimțită",
-        "Satisfacția suplimentară obținută prin consumul unei unități adiționale dintr-un bun",
-        "Utilitatea medie pe unitate",
-        "Prețul bunului"
-      ],
-      "c": 1
-    },
-    {
-      "q": "Piața cu concurență perfectă se caracterizează prin:",
-      "o": [
-        "Un singur vânzător (Monopol)",
-        "Produse diferențiate",
-        "Atomicitate, omogenitate, transparență",
-        "Bariere mari la intrare"
-      ],
-      "c": 2
-    },
-    {
-      "q": "Salariul real reprezintă:",
-      "o": [
-        "Suma de bani primită de angajat",
-        "Cantitatea de bunuri și servicii ce poate fi cumpărată cu salariul nominal",
-        "Salariul minim pe economie",
-        "Salariul brut înainte de taxe"
-      ],
-      "c": 1
-    },
-    {
-      "q": "Dobânda este prețul plătit pentru utilizarea:",
-      "o": [
-        "Muncii",
-        "Pământului",
-        "Capitalului împrumutat",
-        "Tehnologiei"
-      ],
-      "c": 2
-    },
-    {
-      "q": "În faza de recesiune economică:",
-      "o": [
-        "Șomajul scade și PIB-ul crește",
-        "Șomajul crește și PIB-ul scade",
-        "Inflația este întotdeauna zero",
-        "Investițiile sunt maxime"
-      ],
-      "c": 1
-    },
-    {
-      "q": "Productivitatea muncii se calculează ca raport între:",
-      "o": [
-        "Producție și numărul de salariați",
-        "Costuri și profit",
-        "Venit și cheltuieli",
-        "Capital și dobândă"
+        "Aerul",
+        "Haina",
+        "Autobuzul"
       ],
       "c": 0
     },
     {
-      "q": "Un bun substitut pentru unt este:",
+      "q": "Piața cu concurență perfectă presupune:",
       "o": [
-        "Pâinea",
-        "Margarina",
-        "Cuțitul",
-        "Laptele"
+        "Produse diferențiate",
+        "Atomicitatea participanților",
+        "Bariere la intrare"
       ],
       "c": 1
     },
     {
-      "q": "Deficitul bugetar apare atunci când:",
+      "q": "Inflația se manifestă prin:",
       "o": [
-        "Veniturile statului sunt egale cu cheltuielile",
-        "Veniturile statului sunt mai mari decât cheltuielile",
-        "Cheltuielile statului depășesc veniturile",
-        "Exporturile depășesc importurile"
+        "Scăderea prețurilor",
+        "Creșterea puterii de cumpărare",
+        "Creșterea generalizată a prețurilor"
       ],
       "c": 2
     },
     {
-      "q": "Bursa de Valori este piața unde se tranzacționează:",
+      "q": "Dobânda este prețul:",
       "o": [
-        "Bunuri de consum",
-        "Forța de muncă",
-        "Titluri de valoare (acțiuni, obligațiuni)",
-        "Imobile"
-      ],
-      "c": 2
-    },
-    {
-      "q": "Capitalul fix se caracterizează prin:",
-      "o": [
-        "Se consumă integral într-un singur ciclu de producție",
-        "Se uzează treptat și participă la mai multe cicluri de producție",
-        "Include materiile prime și materialele",
-        "Nu se amortizează"
+        "Muncii",
+        "Capitalului împrumutat",
+        "Pământului"
       ],
       "c": 1
     },
     {
-      "q": "Rata șomajului se calculează ca raport procentual între:",
+      "q": "Produsul Intern Brut (PIB) măsoară:",
       "o": [
-        "Numărul șomerilor și populația totală",
-        "Numărul șomerilor și populația activă",
-        "Numărul șomerilor și numărul angajaților",
-        "Populația inactivă și populația activă"
+        "Bogăția totală",
+        "Valoarea bunurilor finale produse într-un an",
+        "Exporturile nete"
       ],
       "c": 1
     },
     {
-      "q": "Monopolul se caracterizează prin:",
+      "q": "Cererea este inelastică dacă:",
       "o": [
-        "Mulți vânzători și mulți cumpărători",
-        "Un singur vânzător care domină piața",
-        "Produse omogene",
-        "Libera intrare pe piață"
+        "Coeficientul elasticității < 1",
+        "Coeficientul elasticității > 1",
+        "Coeficientul elasticității = 1"
       ],
-      "c": 1
-    },
-    {
-      "q": "Banii îndeplinesc funcția de:",
-      "o": [
-        "Mijloc de schimb",
-        "Etalon al valorii",
-        "Mijloc de rezervă",
-        "Toate cele de mai sus"
-      ],
-      "c": 3
-    },
-    {
-      "q": "Taxele și impozitele directe sunt plătite:",
-      "o": [
-        "Doar de companii",
-        "Direct de către contribuabil către stat (ex: impozit pe venit)",
-        "Indirect, prin consum (ex: TVA)",
-        "Doar de cetățenii străini"
-      ],
-      "c": 1
-    },
-    {
-      "q": "Cererea elastică înseamnă că o modificare mică a prețului duce la:",
-      "o": [
-        "O modificare mică a cantității cerute",
-        "Nicio modificare a cantității cerute",
-        "O modificare mare a cantității cerute",
-        "O creștere a ofertei"
-      ],
-      "c": 2
-    },
-    {
-      "q": "Profitul brut minus impozitul pe profit este egal cu:",
-      "o": [
-        "Cifra de afaceri",
-        "Profitul net",
-        "Costul total",
-        "Amortizarea"
-      ],
-      "c": 1
-    },
-    {
-      "q": "Diviziunea muncii contribuie la:",
-      "o": [
-        "Scăderea eficienței",
-        "Creșterea productivității",
-        "Creșterea costurilor unitare",
-        "Reducerea specializării"
-      ],
-      "c": 1
-    },
-    {
-      "q": "Resursele economice sunt:",
-      "o": [
-        "Nelimitate",
-        "Gratuite",
-        "Limitate în raport cu nevoile",
-        "Identice în toate țările"
-      ],
-      "c": 2
-    },
-    {
-      "q": "Economia de piață se bazează pe:",
-      "o": [
-        "Planificare centralizată",
-        "Proprietate privată și libera inițiativă",
-        "Controlul total al statului",
-        "Troc"
-      ],
-      "c": 1
+      "c": 0
     }
   ]
 }
