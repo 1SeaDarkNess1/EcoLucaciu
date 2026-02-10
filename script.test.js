@@ -46,7 +46,8 @@ const createMockElement = (id = '', tagName = 'DIV') => {
             return [];
         }),
         requestFullscreen: jest.fn(() => Promise.resolve()),
-        click: jest.fn()
+        click: jest.fn(),
+        addEventListener: jest.fn()
     };
     return el;
 };
@@ -307,8 +308,24 @@ describe('Quiz Logic', () => {
         expect(mockElements['results'].classes.has('active')).toBe(true);
         expect(mockElements['final-score'].innerText).toBe(95);
     });
-});
 
+    test('Event Delegation works: Click on option updates score', () => {
+        if (loadListener) loadListener();
+        startQuiz();
+        renderQ();
+        const addListenerCall = mockElements['options-box'].addEventListener.mock.calls.find(call => call[0] === 'click');
+        expect(addListenerCall).toBeDefined();
+        const handler = addListenerCall[1];
+        const q = getCurrentQuestions()[getCurrentIdx()];
+        const correctIndex = q.c;
+        const mockEvent = { target: { classList: { contains: (c) => c === 'opt-btn' }, dataset: { index: correctIndex.toString() } } };
+        const initialScore = getScore();
+        handler(mockEvent);
+        expect(getScore()).toBeGreaterThan(initialScore);
+        expect(mockElements['quiz-feedback-overlay'].innerText).toBe('CORECT!');
+    });
+
+});
 describe('Library Logic', () => {
     test('nextLibrarySlide increments index', () => {
         setLibrarySlides([{t:'S1',c:'C1'}, {t:'S2',c:'C2'}]);

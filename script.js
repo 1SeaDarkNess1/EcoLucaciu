@@ -499,25 +499,7 @@ function renderQ() {
     document.getElementById('progress-bar').style.width = `${((currentIdx + 1) / currentQuestions.length) * 100}%`;
     const box = document.getElementById('options-box'); box.innerHTML = '';
     d.o.forEach((opt, i) => {
-        const btn = document.createElement('button'); btn.className = 'opt-btn'; btn.innerText = opt;
-        btn.onclick = () => {
-            const overlay = document.getElementById('quiz-feedback-overlay');
-            overlay.classList.remove('hidden');
-            if (i === d.c) {
-                score += 5; correct++;
-                overlay.innerText = "CORECT!"; overlay.className = "feedback-overlay correct-overlay";
-                document.getElementById('correct-count').innerText = correct;
-            } else {
-                wrong++;
-                overlay.innerText = "GREȘIT!"; overlay.className = "feedback-overlay wrong-overlay";
-                document.getElementById('wrong-count').innerText = wrong;
-            }
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-                currentIdx++;
-                if (currentIdx < currentQuestions.length) renderQ(); else finish();
-            }, 700);
-        };
+        const btn = document.createElement('button'); btn.className = 'opt-btn'; btn.innerText = opt; btn.dataset.index = i;
         box.appendChild(btn);
     });
 }
@@ -574,6 +556,34 @@ function closeModal() {
 
 // --- INITIALIZARE ---
 window.addEventListener('load', () => {
+    // Event delegation for Quiz Options
+    const quizOptionsBox = document.getElementById('options-box');
+    if (quizOptionsBox) {
+        quizOptionsBox.addEventListener('click', (e) => {
+            const btn = e.target.classList.contains('opt-btn') ? e.target : e.target.closest('.opt-btn');
+            if (btn) {
+                const i = parseInt(btn.dataset.index);
+                const d = currentQuestions[currentIdx];
+                const overlay = document.getElementById('quiz-feedback-overlay');
+                overlay.classList.remove('hidden');
+
+                if (i === d.c) {
+                    score += 5; correct++;
+                    overlay.innerText = "CORECT!"; overlay.className = "feedback-overlay correct-overlay";
+                    document.getElementById('correct-count').innerText = correct;
+                } else {
+                    wrong++;
+                    overlay.innerText = "GREȘIT!"; overlay.className = "feedback-overlay wrong-overlay";
+                    document.getElementById('wrong-count').innerText = wrong;
+                }
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                    currentIdx++;
+                    if (currentIdx < currentQuestions.length) renderQ(); else finish();
+                }, 700);
+            }
+        });
+    }
     // Populare listă capitole
     const chaptersList = document.getElementById('chapters-list');
     lectiiCompleta.forEach((l, idx) => {
