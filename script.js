@@ -161,10 +161,12 @@ const QuizManager = {
         this.qCounterEl.innerText = `${this.index + 1} / ${this.questions.length}`;
         this.progressEl.style.width = `${((this.index + 1) / this.questions.length) * 100}%`;
         this.optionsBoxEl.innerHTML = '';
+        const fragment = document.createDocumentFragment();
         d.o.forEach((opt, i) => {
             const btn = document.createElement('button'); btn.className = 'opt-btn'; btn.innerText = opt; btn.dataset.index = i;
-            this.optionsBoxEl.appendChild(btn);
+            fragment.appendChild(btn);
         });
+        this.optionsBoxEl.appendChild(fragment);
     },
 
     handleAnswer(i) {
@@ -319,14 +321,16 @@ function generateTOC(tocId, slides, setIndexCallback) {
     if(!container) return;
     container.innerHTML = '';
 
+    const fragment = document.createDocumentFragment();
     slides.forEach((slide, idx) => {
         const item = document.createElement('div');
         item.className = 'toc-item';
         item.dataset.idx = idx;
         item.textContent = `${idx + 1}. ${slide.t}`;
         item.onclick = () => setIndexCallback(idx);
-        container.appendChild(item);
+        fragment.appendChild(item);
     });
+    container.appendChild(fragment);
 }
 
 function updateActiveTOC(tocId, idx) {
@@ -422,6 +426,7 @@ function openSlideViewer(type, index) {
     const wrapper = document.getElementById('swiper-wrapper');
     wrapper.innerHTML = '';
 
+    const fragment = document.createDocumentFragment();
     data.slides.forEach(slide => {
         const div = document.createElement('div');
         div.className = 'swiper-slide';
@@ -429,8 +434,9 @@ function openSlideViewer(type, index) {
             <span class='slide-title'>${slide.t}</span>
             <div class='slide-text'>${slide.c}</div>
         </div>`;
-        wrapper.appendChild(div);
+        fragment.appendChild(div);
     });
+    wrapper.appendChild(fragment);
 
     document.getElementById('slide-viewer-modal').classList.remove('hidden');
 
@@ -475,6 +481,7 @@ window.addEventListener('load', async () => {
     }
     // Populare listă capitole
     const chaptersList = document.getElementById('chapters-list');
+    const chapterFragment = document.createDocumentFragment();
     lectiiCompleta.forEach((l, idx) => {
         const div = document.createElement('div');
         div.className = 'chapter-card glass';
@@ -493,11 +500,13 @@ window.addEventListener('load', async () => {
         div.appendChild(h3);
         div.appendChild(p);
         div.appendChild(small);
-        chaptersList.appendChild(div);
+        chapterFragment.appendChild(div);
     });
+    chaptersList.appendChild(chapterFragment);
 
     // Populare universități
     const uniGrid = document.getElementById('uni-grid');
+    const uniFragment = document.createDocumentFragment();
     unis.forEach(u => {
         const card = document.createElement('div');
         card.className = 'nav-card glass';
@@ -514,8 +523,9 @@ window.addEventListener('load', async () => {
         };
 
         card.innerHTML = `<h3>${u.n}</h3><p>Medie: <b>${u.m}</b></p>`;
-        uniGrid.appendChild(card);
+        uniFragment.appendChild(card);
     });
+    uniGrid.appendChild(uniFragment);
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') { closeModal(); closeSlideViewer(); }
@@ -558,6 +568,7 @@ window.addEventListener('load', async () => {
         const grid = document.createElement('div');
         grid.className = 'quiz-grid';
 
+        const testFragment = document.createDocumentFragment();
         testeAntrenament.forEach(t => {
             const card = document.createElement('div');
             card.className = 'quiz-card glass';
@@ -570,8 +581,9 @@ window.addEventListener('load', async () => {
                 <p style="font-size: 0.9rem; margin-bottom: 15px;">Descarcă / Vizualizează PDF</p>
                 <button class="btn-start" style="padding: 8px 20px; font-size: 0.9rem;">Deschide</button>
             `;
-            grid.appendChild(card);
+            testFragment.appendChild(card);
         });
+        grid.appendChild(testFragment);
 
         testSection.appendChild(grid);
         quizDashboard.appendChild(testSection);

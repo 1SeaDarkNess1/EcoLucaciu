@@ -110,13 +110,26 @@ global.document = {
         return createMockElement('', tag);
     }),
     addEventListener: jest.fn(),
-    createDocumentFragment: jest.fn(() => ({
-        appendChild: jest.fn(function(child) {
-            this.innerHTML = (this.innerHTML || '') + (child.innerHTML || '');
-            return child;
-        }),
-        childNodes: []
-    })),
+    createDocumentFragment: jest.fn(() => {
+        const fragment = {
+            innerHTML: '',
+            appendChild: jest.fn(function(child) {
+                const tag = child.tagName ? child.tagName.toLowerCase() : 'div';
+                const cls = child.className ? ` class="${child.className}"` : '';
+                let dataAttrs = '';
+                if (child.dataset) {
+                    for (const key in child.dataset) {
+                        dataAttrs += ` data-${key}="${child.dataset[key]}"`;
+                    }
+                }
+                const content = child.innerHTML || child.textContent || '';
+                this.innerHTML += `<${tag}${cls}${dataAttrs}>${content}</${tag}>`;
+                return child;
+            }),
+            childNodes: []
+        };
+        return fragment;
+    }),
     exitFullscreen: jest.fn(),
     fullscreenElement: null
 };
