@@ -142,7 +142,7 @@ const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 
     setLibrarySlideIndex: (i) => currentLibrarySlideIndex = i,
     renderLibrarySlide,
     openLesson, openLibraryItem,
-    getOnLoad: () => window.onload,
+
     toggleTOC, generateTOC, updateActiveTOC,
     openSlideViewer, closeSlideViewer, toggleFullScreen,
     nextSlide, prevSlide, renderSlide,
@@ -150,11 +150,15 @@ const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 
     setSlideIndex: (i) => currentSlideIndex = i,
     setLessonSlides: (s) => currentLessonSlides = s,
     getLessonSlides: () => currentLessonSlides,
-    getOnPopState: () => window.onpopstate
+
  };`);
 
 const context = scriptFunc(global.window, global.document, global.history, global.setInterval, global.clearInterval, global.Swiper, global.window.MathJax);
-context.getOnLoad()();
+const loadCall = global.window.addEventListener.mock.calls.find(call => call[0] === 'load');
+const loadListener = loadCall ? loadCall[1] : null;
+const popstateCall = global.window.addEventListener.mock.calls.find(call => call[0] === 'popstate');
+const popstateListener = popstateCall ? popstateCall[1] : null;
+if (loadListener) loadListener();
 const toggleSidebar = global.window.toggleSidebar;
 
 Object.assign(global, context);
@@ -194,8 +198,7 @@ describe('Core Functionality', () => {
     });
 
     test('window.onpopstate should call showPage', () => {
-        const onPopState = getOnPopState();
-        onPopState({ state: { pageId: 'lectii' } });
+        if (popstateListener) popstateListener({ state: { pageId: 'lectii' } });
         expect(mockElements['lectii'].classes.has('active')).toBe(true);
     });
 });
