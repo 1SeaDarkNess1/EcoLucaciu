@@ -179,10 +179,10 @@ h3 { font-size: var(--fs-h3); }
 /* Hero - Compact Grid */
 .home-grid-compact {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); justify-content: center;
+    grid-template-columns: repeat(2, 1fr); justify-content: center;
     gap: 2rem;
     align-items: stretch;
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     min-height: calc(100vh - 140px);
     align-content: center;
@@ -200,7 +200,7 @@ h3 { font-size: var(--fs-h3); }
 
 .uni-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); justify-content: center;
+    grid-template-columns: repeat(2, 1fr); max-width: 900px; margin: 2rem auto; justify-content: center;
     gap: 2rem;
     margin-top: 2rem;
 }
@@ -329,7 +329,7 @@ h3 { font-size: var(--fs-h3); }
 /* Quiz Dashboard */
 .quiz-dashboard { text-align: center; padding-top: 1.25rem; }
 .dashboard-header { margin-bottom: 3rem; }
-.quiz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); justify-content: center; gap: 2rem; }
+.quiz-grid { display: grid; grid-template-columns: repeat(2, 1fr); max-width: 900px; margin: 0 auto; justify-content: center; gap: 2rem; }
 
 /* Enhanced Quiz Cards */
 .quiz-card {
