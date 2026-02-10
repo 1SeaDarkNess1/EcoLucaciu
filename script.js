@@ -59,36 +59,16 @@ const questionsMacro = [
 ];
 
 const questionsAdmitere = [
-    { q: "Calculați costul total dacă CF=1000 și CV=20Q pentru Q=50.", o: ["2000", "1500", "3000", "1000"], c: 0, e: "CT = CF + CV = 1000 + 20*50 = 1000 + 1000 = 2000." },
-    { q: "Dacă masa monetară crește cu 10% și viteza de rotație scade cu 10%, PIB nominal:", o: ["Rămâne aproximativ constant", "Crește cu 20%", "Scade cu 20%", "Se dublează"], c: 0, e: "MxV = PxQ. 1.1 * 0.9 = 0.99 (aprox 1)." },
-    { q: "Coeficientul de elasticitate a cererii la preț este 2. O creștere a prețului cu 5% determină:", o: ["Scăderea cantității cu 10%", "Creșterea cantității cu 10%", "Scăderea cantității cu 2.5%", "Nicio modificare"], c: 0, e: "%ΔQ = -Kec * %ΔP = -2 * 5% = -10%." },
-    { q: "Un agent economic depune la bancă 1000 lei cu dobândă 10%. Peste 2 ani va avea:", o: ["1200", "1210", "1100", "1000"], c: 1, e: "Dobândă compusă: 1000 * (1.1)^2 = 1000 * 1.21 = 1210." },
-    { q: "Care nu este atribut al proprietății?", o: ["Posesia", "Folosința", "Uzufructul", "Insolvența"], c: 3, e: "Insolvența este o stare juridică, nu un atribut (usus, fructus, abusus)." },
-    { q: "În piața de monopol, firma:", o: ["Este `price taker`", "Este `price maker`", "Nu are putere de piață", "Vinde la prețul concurenței"], c: 1, e: "Monopolul stabilește prețul." },
-    { q: "Salariul real crește dacă:", o: ["Salariul nominal crește mai repede decât prețurile", "Prețurile cresc mai repede decât salariul nominal", "Salariul nominal scade", "Inflația este galopantă"], c: 0, e: "Sr = Sn / IPC." },
-    { q: "Amortizarea se include în:", o: ["Costul variabil", "Costul fix", "Profit", "Impozite"], c: 1, e: "Este o cheltuială care nu depinde direct de volumul producției pe termen scurt." },
-    { q: "Cererea este perfect elastică atunci când:", o: ["Curba este verticală", "Curba este orizontală", "Panta este 1", "Panta este -1"], c: 1, e: "La un anumit preț, cantitatea cerută este infinită (teoretic)." },
-    { q: "Bunurile publice sunt caracterizate prin:", o: ["Rivalitate și excluziune", "Non-rivalitate și non-excluziune", "Doar rivalitate", "Sunt produse doar de firme private"], c: 1, e: "Ex: iluminatul stradal, apărarea națională." },
-    { q: "Care flux face parte din fluxul real?", o: ["Plata salariilor", "Fluxul de bunuri și servicii", "Plata impozitelor", "Fluxul monetar"], c: 1, e: "Fluxul real vizează factorii de producție și bunurile." },
-    { q: "Dacă UmgA / PA > UmgB / PB, consumatorul rațional va:", o: ["Cumpăra mai mult A", "Cumpăra mai mult B", "Nu va face nimic", "Va renunța la A"], c: 0, e: "Pentru a egaliza utilitățile marginale pe unitatea monetară." },
-    { q: "Rata șomajului se calculează raportând numărul șomerilor la:", o: ["Populația totală", "Populația activă", "Populația ocupată", "Populația inactivă"], c: 1, e: "Rș = (Șomeri / Pop. Activă) * 100." },
-    { q: "Dacă rata rezervelor obligatorii crește, masa monetară:", o: ["Scade", "Crește", "Rămâne la fel", "Nu este influențată"], c: 0, e: "Băncile pot acorda mai puține credite (multiplicatorul monetar scade)." },
-    { q: "Protecționismul vamal favorizează:", o: ["Consumatorii interni", "Producătorii interni", "Importatorii", "Turiștii"], c: 1, e: "Reduce concurența externă." },
-    { q: "Costul de oportunitate este nul când:", o: ["Resursele sunt nelimitate", "Alegerea este dificilă", "Resursele sunt rare", "Există alternative"], c: 0, e: "Dacă resursele ar fi nelimitate, nu ar exista sacrificiu." },
-    { q: "Indicele Dezvoltării Umane (IDU) include:", o: ["Doar PIB", "PIB/loc, Speranța de viață, Educație", "Doar Șomaj", "Doar Inflație"], c: 1, e: "Este un indicator compozit al calității vieții." },
-    { q: "Cartelul este o formă de:", o: ["Concurență perfectă", "Monopol", "Oligopol cooperant", "Monopson"], c: 2, e: "O înțelegere între firme pentru a fixa prețurile sau cotele." },
-    { q: "Dacă V = 5000 și C = 4000, înclinația medie spre economisire este:", o: ["0.2", "0.8", "1", "0"], c: 0, e: "S = V - C = 1000. s = S/V = 1000/5000 = 0.2." },
-    { q: "Inflația prin cerere apare când:", o: ["Cererea agregată depășește oferta agregată", "Costurile cresc", "Salariile scad", "Exporturile scad"], c: 0, e: "Prea mulți bani pentru prea puține bunuri." },
-    { q: "Piața neagră apare de obicei când:", o: ["Statul impune un preț maxim sub cel de echilibru", "Piața este liberă", "Prețurile sunt mari", "Există surplus"], c: 0, e: "Excesul de cerere duce la tranzacții ilegale." },
-    { q: "Care este o barieră de intrare pe piață?", o: ["Profitul mic", "Licențele și brevetele", "Numărul mare de firme", "Cererea mică"], c: 1, e: "Împiedică intrarea noilor concurenți." },
-    { q: "Legea ofertei este încălcată:", o: ["Pe piața muncii (curba întoarsă)", "Pe piața bunurilor normale", "Niciodată", "În concurență perfectă"], c: 0, e: "La salarii foarte mari, oferta de muncă poate scădea (efectul de venit domină)." },
-    { q: "Coeficientul Gini măsoară:", o: ["Inflația", "Inegalitatea veniturilor", "Șomajul", "Creșterea economică"], c: 1, e: "0 = egalitate perfectă, 1 = inegalitate totală." },
-    { q: "Când exporturile > importurile, balanța comercială este:", o: ["Deficitară", "Excedentară", "Echilibrată", "Nulă"], c: 1, e: "Intrări nete de valută." },
-    { q: "Ce instituție emite monedă în România?", o: ["Guvernul", "BNR", "BCR", "Parlamentul"], c: 1, e: "Banca Națională a României." },
-    { q: "Dumping-ul reprezintă:", o: ["Vânzarea sub costul de producție pe piața externă", "Poluare", "Taxe mari", "Importuri ilegale"], c: 0, e: "Practică neloială." },
-    { q: "Dacă rata dobânzii scade, investițiile:", o: ["Cresc", "Scad", "Rămân constante", "Nu au legătură"], c: 0, e: "Costul creditului este mai mic." },
-    { q: "Funcția de consum este C = 100 + 0.8V. La V=1000, C este:", o: ["800", "900", "1000", "100"], c: 1, e: "C = 100 + 800 = 900." },
-    { q: "Paradoxul apei și diamantului se explică prin:", o: ["Utilitatea totală vs Utilitatea marginală", "Costuri de producție", "Raritate absolută", "Eroare de piață"], c: 0, e: "Apa are Ut mare dar Umg mică; diamantul invers." }
+    { q: "Costul de oportunitate al unei alegeri economice este egal cu:", o: ["Valoarea celei mai bune alternative sacrificate", "Suma tuturor alternativelor posibile", "Costul contabil al acțiunii", "Zero, dacă alegerea este rațională"], c: 0, e: "Este valoarea celei mai bune alternative la care se renunță." },
+    { q: "O creștere a prețului unui bun, ceteris paribus, determină:", o: ["Scăderea cererii", "Scăderea cantității cerute", "Creșterea ofertei", "Deplasarea curbei cererii la dreapta"], c: 1, e: "Modificarea prețului determină mișcarea de-a lungul curbei cererii (modificarea cantității cerute), nu deplasarea curbei." },
+    { q: "Dacă coeficientul de elasticitate a cererii la preț este 0.5, cererea este:", o: ["Elastică", "Inelastică", "Perfect elastică", "Unitară"], c: 1, e: "Kec < 1 indică o cerere inelastică." },
+    { q: "Produsul Intern Brut (PIB) real diferă de PIB nominal prin:", o: ["Ajustarea cu rata inflației", "Includerea exporturilor", "Excluderea serviciilor", "Moneda de calcul"], c: 0, e: "PIB real elimină efectul inflației (este calculat în prețuri constante)." },
+    { q: "În concurența perfectă, prețul pieței este:", o: ["Stabilit de cea mai mare firmă", "Un dat exogen pentru firmă (price taker)", "Negociat direct cu guvernul", "Mai mare decât costul marginal"], c: 1, e: "Firmele sunt 'primitoare de preț' (price takers) datorită atomicității." },
+    { q: "Utilitatea marginală reprezintă:", o: ["Utilitatea totală împărțită la cantitate", "Satisfacția adusă de ultima unitate consumată", "Prețul bunului", "Costul de producție"], c: 1, e: "Sporul de utilitate totală generat de consumul unei unități suplimentare." },
+    { q: "Salariul minim garantat în plată este o măsură de:", o: ["Politică monetară", "Protecție socială și reglare a pieței muncii", "Reducere a inflației", "Creștere a productivității"], c: 1, e: "Este stabilit de guvern pentru a asigura un nivel minim de trai." },
+    { q: "Banii scripturali sunt:", o: ["Monede metalice", "Bancnote", "Disponibilități în conturi bancare", "Aur"], c: 2, e: "Banii de cont, utilizați prin instrumente precum carduri sau ordine de plată." },
+    { q: "Dacă rata dobânzii crește, înclinația spre investiții a firmelor:", o: ["Crește", "Scade", "Rămâne constantă", "Nu este influențată"], c: 1, e: "Creditul devine mai scump, ceea ce descurajează investițiile." },
+    { q: "Amortizarea capitalului fix se reflectă în:", o: ["Profitul net", "Costul de producție", "Impozite", "Dividende"], c: 1, e: "Este recuperarea treptată a valorii capitalului fix prin includerea în cost." }
 ];
 
 const masterBank = [...questionsGeneral, ...questionsMicro, ...questionsMacro, ...questionsAdmitere];
@@ -346,10 +326,12 @@ const QuizManager = {
         const finalScore = this.score;
         const totalQuestions = this.questions.length;
         const maxScore = totalQuestions * 5;
-        // Grade calculation: scale 1 to 10
-        // If max score (e.g. 100) -> 10. If 0 -> 1.
-        // formula: 1 + (score / maxScore) * 9
-        const grade = totalQuestions > 0 ? 1 + (finalScore / maxScore) * 9 : 1;
+
+        let grade = 1;
+        if (maxScore > 0) {
+            grade = 1 + (finalScore / maxScore) * 9;
+        }
+        if (grade > 10) grade = 10;
         const gradeFixed = grade.toFixed(2);
 
         const scoreTextEl = document.getElementById('final-score-text');
@@ -363,26 +345,31 @@ const QuizManager = {
 
         const msgEl = document.getElementById('performance-msg');
         if(msgEl) {
+            msgEl.style.fontWeight = "bold";
             if (grade >= 9) {
                 msgEl.innerText = "Excelent! Ești pregătit pentru succes.";
                 msgEl.style.color = "var(--success)";
             } else if (grade >= 7) {
-                msgEl.innerText = "Bun! Mai ai nevoie de puțină recapitulare.";
-                msgEl.style.color = "var(--accent)";
+                msgEl.innerText = "Bun! Ești pe drumul cel bun.";
+                msgEl.style.color = "var(--success)";
             } else if (grade >= 5) {
-                 msgEl.innerText = "Satisfăcător. Recomandăm parcurgerea materiei din nou.";
+                 msgEl.innerText = "Satisfăcător. Mai ai nevoie de puțin studiu.";
                  msgEl.style.color = "#d97706";
             } else {
-                msgEl.innerText = "Insuficient. Te rugăm să reiei cursurile.";
+                msgEl.innerText = "Insuficient. Recomandăm reluarea materiei.";
                 msgEl.style.color = "var(--danger)";
             }
         }
 
         const circle = document.getElementById('result-circle');
         if(circle) {
-            const deg = (grade / 10) * 360;
+            // Reset animation
+            circle.style.transition = 'none';
             circle.style.background = `conic-gradient(var(--accent) 0deg, rgba(255,255,255,0.2) 0deg)`;
+
             setTimeout(() => {
+                const deg = (grade / 10) * 360;
+                circle.style.transition = 'background 1.5s ease-out';
                 circle.style.background = `conic-gradient(var(--accent) ${deg}deg, rgba(255,255,255,0.2) ${deg}deg)`;
             }, 100);
         }
@@ -801,6 +788,19 @@ window.addEventListener('load', async () => {
             sidebar.classList.remove('open');
         }
     });
+
+    // Mobile Nav Fix (Link Click)
+    const sidebarLinks = document.querySelectorAll('.menu-vertical a');
+    const sidebar = document.getElementById('sidebar');
+    if (sidebarLinks && sidebar) {
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+    }
     
     const initialHash = window.location.hash.substring(1);
     const validSections = ['home', 'materiale', 'admitere', 'biblioteca', 'grila'];
