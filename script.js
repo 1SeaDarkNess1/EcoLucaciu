@@ -1,3 +1,23 @@
+let mathJaxPromise = null;
+function loadMathJax() {
+    if (mathJaxPromise) return mathJaxPromise;
+    if (window.MathJax) return Promise.resolve();
+
+    mathJaxPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.id = 'MathJax-script';
+        script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () => {
+            mathJaxPromise = null;
+            reject(new Error('Failed to load MathJax'));
+        };
+        document.head.appendChild(script);
+    });
+    return mathJaxPromise;
+}
+
 // --- NAVIGARE CU BROWSER BACK FIX ---
 function showPage(id, saveHistory = true) {
     if (!id) return;
@@ -273,6 +293,7 @@ function toggleFullScreen() {
 }
 
 function openLesson(index) {
+    loadMathJax();
     const lectie = lectiiCompleta[index];
     if(!lectie) return;
 
@@ -353,7 +374,7 @@ function renderSlide() {
 
     updateActiveTOC('lesson-toc', currentSlideIndex);
 
-    if (window.MathJax) MathJax.typesetPromise();
+    loadMathJax().then(() => { if (window.MathJax) MathJax.typesetPromise(); });
 }
 
 function nextSlide() {
@@ -375,6 +396,7 @@ let currentLibrarySlideIndex = 0;
 let currentLibrarySlides = [];
 
 function openLibraryItem(index) {
+    loadMathJax();
     const item = bibliotecaCompleta[index];
     if(!item) return;
 
@@ -437,7 +459,7 @@ function renderLibrarySlide() {
 
     updateActiveTOC('library-toc', currentLibrarySlideIndex);
 
-    if (window.MathJax) MathJax.typesetPromise();
+    loadMathJax().then(() => { if (window.MathJax) MathJax.typesetPromise(); });
 }
 
 function nextLibrarySlide() {
