@@ -1,0 +1,247 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Lead UI Designer - High-End System (iOS 17 inspired) */
+    --accent: #2E7D32;
+    --accent-light: #43A047;
+    --accent-glow: rgba(46, 125, 50, 0.4);
+
+    --text-main: #1d1d1f;
+    --text-muted: #86868b;
+
+    /* Glass Recipe Variables */
+    --glass-surface: rgba(255, 255, 255, 0.65);
+    --glass-blur: blur(24px) saturate(180%);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+    --glass-inner-glow: inset 0 0 20px rgba(255, 255, 255, 0.5);
+
+    /* Depth & Physics */
+    --shadow-soft: 0 15px 35px rgba(97, 119, 90, 0.15);
+    --shadow-deep: 0 25px 50px rgba(97, 119, 90, 0.25);
+    --transition-main: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    /* Status Colors */
+    --success: #34c759;
+    --danger: #ff3b30;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-main);
+    color: var(--text-main);
+    background: radial-gradient(circle at 10% 20%, rgb(233, 245, 233) 0%, rgb(212, 224, 205) 90%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: -10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: #b8d8be;
+    filter: blur(100px);
+    z-index: -1;
+    opacity: 0.4;
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+/* TYPOGRAPHY */
+h1, h2, h3 {
+    letter-spacing: -0.03em;
+    font-weight: 700;
+}
+
+h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+h2 { font-size: 2rem; margin-bottom: 1.5rem; color: var(--accent); }
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* THE GLASS MATERIAL */
+.glass {
+    background: var(--glass-surface);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--glass-inner-glow), var(--shadow-soft);
+    border-radius: 20px;
+    transition: var(--transition-main);
+}
+
+.glass:hover {
+    transform: translateY(-6px) scale(1.01);
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--glass-inner-glow), var(--shadow-deep);
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    bottom: 20px;
+    width: 280px;
+    z-index: 1000;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Glass override for sidebar */
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(30px) saturate(180%);
+    border: var(--glass-border);
+    border-radius: 24px;
+    box-shadow: var(--shadow-soft);
+}
+
+.main-content {
+    margin-left: 320px;
+    padding: 40px;
+    min-height: 100vh;
+}
+
+/* BUTTONS */
+.btn-start, .btn-premium {
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--accent-glow);
+    transition: var(--transition-main);
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.btn-start:hover, .btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--accent-glow);
+    filter: brightness(1.1);
+}
+
+/* HOME CARDS */
+.nav-card {
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.home-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* QUIZ DASHBOARD */
+.quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 900px;
+}
+
+.quiz-card {
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* VIEWER AREA */
+.material-viewer {
+    background: var(--glass-surface);
+    backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 24px;
+    box-shadow: var(--shadow-soft);
+    padding: 2rem;
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+    min-height: 80vh;
+}
+
+/* MODALS */
+.modal-content {
+    background: var(--glass-surface);
+    backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 28px;
+    box-shadow: var(--glass-inner-glow), 0 30px 60px rgba(0,0,0,0.12);
+    padding: 3rem;
+}
+
+/* RESULTS */
+.results-main-card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 3rem;
+}
+
+.results-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-box {
+    padding: 1.25rem;
+    text-align: center;
+    border-radius: 16px;
+}
+
+.stat-label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.stat-value.success { color: var(--success); }
+.stat-value.danger { color: var(--danger); }
+
+/* CIRCULAR PROGRESS */
+.circular-progress {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: conic-gradient(var(--accent) 0deg, rgba(255,255,255,0.1) 0deg);
+}
+
+.inner-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
