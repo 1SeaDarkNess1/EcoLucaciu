@@ -1,26 +1,35 @@
 // --- NAVIGARE CU BROWSER BACK FIX ---
 function showPage(id, saveHistory = true) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    if (!id) return;
+
+    // Evităm adăugarea aceleiași pagini în istoric dacă suntem deja pe ea
+    if (saveHistory && history.state && history.state.pageId === id) {
+        return;
+    }
+
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
     const target = document.getElementById(id);
     if(target) {
-        target.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        target.classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
         
-        // Actualizăm URL-ul fără a reîncărca pagina
         if(saveHistory) {
             history.pushState({ pageId: id }, "", "#" + id);
         }
     }
 }
+window.addEventListener("popstate", (event) => {
 
-window.addEventListener('popstate', (event) => {
+    // Închidem orice modal deschis la navigarea înapoi
+    if (typeof closeModal === "function") closeModal();
+    if (typeof closeSlideViewer === "function") closeSlideViewer();
+
     if (event.state && event.state.pageId) {
         showPage(event.state.pageId, false);
     } else {
-        showPage('home', false);
+        showPage("home", false);
     }
 });
-
 // --- DATA: LECTII COMPLETE (EXTRASE DIN PPT-URILE TALE) ---
 const lectiiCompleta = [
     { id: 0, titlu: "Nevoile și Resursele", file: "Materiale/Lectia 1-Nevoi_si_resurse.ppt", type: "ppt",
@@ -267,7 +276,8 @@ function openLesson(index) {
     const lectie = lectiiCompleta[index];
     if(!lectie) return;
 
-    if (lectie.slides || lectie.type === 'ppt') {
+    // Folosim viewer-ul de slide-uri doar dacă avem slide-uri predefinite (cum e la Lecția 1)
+    if (lectie.slides) {
         openSlideViewer('lesson', index);
         return;
     }
@@ -275,18 +285,37 @@ function openLesson(index) {
     document.getElementById('lesson-title').innerText = lectie.titlu;
 
     if (lectie.file) {
-        currentLessonSlides = [{
-            t: lectie.titlu,
-            c: `
+        // Dacă e PPT, încercăm să-l "simulăm" cu un viewer embedded
+        const fileContent = (lectie.type === 'ppt')
+            ? `
+                <div class="file-view-container" style="text-align: center; padding: 20px;">
+                    <div class="file-icon" style="font-size: 3rem; margin-bottom: 15px;">📊</div>
+                    <h3 style="margin-bottom: 10px;">Simulare Prezentare PowerPoint</h3>
+                    <p style="margin-bottom: 20px;">Vizualizați materialul mai jos sau descărcați-l pentru acces complet.</p>
+
+                    <div style="width: 100%; height: 600px; margin-bottom: 20px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
+                        <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + '/' + lectie.file)}&embedded=true" width="100%" height="100%" frameborder="0"></iframe>
+                    </div>
+
+                    <a href="${lectie.file}" download target="_blank" class="btn-start" style="display: inline-block; text-decoration: none;">
+                        📥 Descarcă Materialul (.ppt)
+                    </a>
+                </div>
+            `
+            : `
                 <div class="file-view-container" style="text-align: center; padding: 40px;">
-                    <div class="file-icon" style="font-size: 5rem; margin-bottom: 20px;">📊</div>
-                    <h3 style="margin-bottom: 15px;">Prezentare PowerPoint</h3>
-                    <p>Acest capitol este disponibil sub formă de prezentare descărcabilă.</p>
+                    <div class="file-icon" style="font-size: 5rem; margin-bottom: 20px;">📄</div>
+                    <h3 style="margin-bottom: 15px;">Document Capitol</h3>
+                    <p>Acest capitol este disponibil sub formă de fișier descărcabil.</p>
                     <a href="${lectie.file}" download target="_blank" class="btn-start" style="display: inline-block; text-decoration: none; margin-top: 20px;">
                         📥 Descarcă Materialul
                     </a>
                 </div>
-            `
+            `;
+
+        currentLessonSlides = [{
+            t: lectie.titlu,
+            c: fileContent
         }];
     } else {
         currentLessonSlides = lectie.slides || [];
@@ -665,5 +694,15 @@ window.addEventListener('load', () => {
     });
     
     // Setăm starea inițială în istoric
-    history.replaceState({ pageId: 'home' }, "", "#home");
+    // Gestionare navigare inițială bazată pe hash
+    const initialHash = window.location.hash.substring(1);
+    const validSections = ['home', 'materiale', 'admitere', 'biblioteca', 'grila'];
+
+    if (initialHash && validSections.includes(initialHash)) {
+        showPage(initialHash, false);
+        history.replaceState({ pageId: initialHash }, "", "#" + initialHash);
+    } else {
+        // Dacă nu avem hash valid, mergem pe home
+        history.replaceState({ pageId: 'home' }, "", "#home");
+    }
 });
