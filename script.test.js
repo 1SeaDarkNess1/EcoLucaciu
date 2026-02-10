@@ -39,7 +39,14 @@ const createMockElement = (id = '', tagName = 'DIV') => {
         }),
         tabIndex: 0,
         role: '',
-        querySelectorAll: jest.fn(() => [])
+        querySelectorAll: jest.fn((selector) => {
+            if (selector === '.toc-item') {
+                return el.tocItems || [];
+            }
+            return [];
+        }),
+        requestFullscreen: jest.fn(() => Promise.resolve()),
+        click: jest.fn()
     };
     return el;
 };
@@ -52,7 +59,7 @@ const mockElements = {};
     'final-score', 'final-time', 'timer', 'final-grade', 'performance-msg', 'correct-count', 'wrong-count',
     'q-text', 'q-counter', 'progress-bar', 'options-box', 'quiz-feedback-overlay',
     'library-body', 'library-slide-counter', 'library-toc',
-    'slide-body', 'slide-counter', 'lesson-toc', 'mySwiper'
+    'slide-body', 'slide-counter', 'lesson-toc', 'mySwiper', 'lesson-title', 'library-title'
 ].forEach(id => {
     mockElements[id] = createMockElement(id);
 });
@@ -76,6 +83,7 @@ global.document = {
     querySelector: jest.fn((selector) => {
         if (mockElements[selector]) return mockElements[selector];
         if (selector === '.mySwiper') return mockElements['mySwiper'];
+        if (selector.includes('.reader-toolbar')) return createMockElement();
         return createMockElement();
     }),
     activeElement: { className: '', id: '', focus: jest.fn() },
@@ -89,7 +97,9 @@ global.document = {
             return child;
         }),
         childNodes: []
-    }))
+    })),
+    exitFullscreen: jest.fn(),
+    fullscreenElement: null
 };
 
 global.window = {
@@ -125,13 +135,22 @@ const scriptFunc = new Function('window', 'document', 'history', 'setInterval', 
     getCorrect: () => correct,
     getWrong: () => wrong,
     getCurrentQuestions: () => currentQuestions,
+    getQuizType: () => currentQuizType,
     nextLibrarySlide, prevLibrarySlide,
     getLibrarySlideIndex: () => currentLibrarySlideIndex,
     setLibrarySlides: (s) => currentLibrarySlides = s,
     setLibrarySlideIndex: (i) => currentLibrarySlideIndex = i,
     renderLibrarySlide,
     openLesson, openLibraryItem,
-    getOnLoad: () => window.onload
+    getOnLoad: () => window.onload,
+    toggleTOC, generateTOC, updateActiveTOC,
+    openSlideViewer, closeSlideViewer, toggleFullScreen,
+    nextSlide, prevSlide, renderSlide,
+    getSlideIndex: () => currentSlideIndex,
+    setSlideIndex: (i) => currentSlideIndex = i,
+    setLessonSlides: (s) => currentLessonSlides = s,
+    getLessonSlides: () => currentLessonSlides,
+    getOnPopState: () => window.onpopstate
  };`);
 
 const context = scriptFunc(global.window, global.document, global.history, global.setInterval, global.clearInterval, global.Swiper, global.window.MathJax);
@@ -173,14 +192,104 @@ describe('Core Functionality', () => {
         toggleSidebar();
         expect(mockElements['sidebar'].classes.has('open')).toBe(false);
     });
+
+    test('window.onpopstate should call showPage', () => {
+        const onPopState = getOnPopState();
+        onPopState({ state: { pageId: 'lectii' } });
+        expect(mockElements['lectii'].classes.has('active')).toBe(true);
+    });
+});
+
+describe('TOC & Navigation Logic', () => {
+    test('toggleTOC toggles collapsed class', () => {
+        const el = mockElements['lesson-toc'];
+        toggleTOC('lesson-toc');
+        expect(el.classes.has('collapsed')).toBe(true);
+        toggleTOC('lesson-toc');
+        expect(el.classes.has('collapsed')).toBe(false);
+    });
+
+    test('generateTOC creates toc items', () => {
+        const container = mockElements['lesson-toc'];
+        const slides = [{ t: 'Slide 1' }, { t: 'Slide 2' }];
+        const callback = jest.fn();
+        generateTOC('lesson-toc', slides, callback);
+        expect(container.innerHTML).toContain('toc-item');
+        expect(container.innerHTML).toContain('Slide 1');
+        expect(container.innerHTML).toContain('Slide 2');
+    });
+
+    test('updateActiveTOC manages active class', () => {
+        const container = mockElements['lesson-toc'];
+        const item0 = createMockElement('', 'DIV');
+        item0.classList.add('toc-item');
+        const item1 = createMockElement('', 'DIV');
+        item1.classList.add('toc-item');
+        container.tocItems = [item0, item1];
+
+        updateActiveTOC('lesson-toc', 1);
+        expect(item1.classes.has('active')).toBe(true);
+        expect(item0.classes.has('active')).toBe(false);
+    });
+});
+
+describe('Slide Viewer', () => {
+    test('openSlideViewer shows modal and populates wrapper', () => {
+        openSlideViewer('lesson', 0);
+        expect(mockElements['slide-viewer-modal'].classes.has('hidden')).toBe(false);
+        expect(mockElements['swiper-wrapper'].innerHTML).toContain('swiper-slide');
+    });
+
+    test('closeSlideViewer hides modal and destroys swiper', () => {
+        mockElements['slide-viewer-modal'].classList.remove('hidden');
+        closeSlideViewer();
+        expect(mockElements['slide-viewer-modal'].classes.has('hidden')).toBe(true);
+    });
+
+    test('toggleFullScreen requests fullscreen', () => {
+        document.fullscreenElement = null;
+        toggleFullScreen();
+        expect(mockElements['slide-viewer-modal'].requestFullscreen).toHaveBeenCalled();
+    });
+});
+
+describe('Lesson Logic', () => {
+    test('nextSlide increments index', () => {
+        setLessonSlides([{t:'S1',c:'C1'}, {t:'S2',c:'C2'}]);
+        setSlideIndex(0);
+        nextSlide();
+        expect(getSlideIndex()).toBe(1);
+    });
+
+    test('prevSlide decrements index', () => {
+        setLessonSlides([{t:'S1',c:'C1'}, {t:'S2',c:'C2'}]);
+        setSlideIndex(1);
+        prevSlide();
+        expect(getSlideIndex()).toBe(0);
+    });
+
+    test('openLesson opens slide viewer for ppt', () => {
+        openLesson(0);
+        expect(mockElements['slide-viewer-modal'].classes.has('hidden')).toBe(false);
+        expect(mockElements['swiper-wrapper'].innerHTML).toContain('Introducere');
+    });
 });
 
 describe('Quiz Logic', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     test('startQuiz resets state and starts timer', () => {
         startQuiz();
         expect(getCurrentIdx()).toBe(0);
         expect(global.setInterval).toHaveBeenCalled();
         expect(mockElements['quiz'].classes.has('active')).toBe(true);
+    });
+
+    test('startQuiz filters by type', () => {
+        startQuiz('micro');
+        expect(getQuizType()).toBe('micro');
     });
 
     test('renderQ updates options', () => {
@@ -197,7 +306,7 @@ describe('Quiz Logic', () => {
     });
 });
 
-describe('Library & Lessons', () => {
+describe('Library Logic', () => {
     test('nextLibrarySlide increments index', () => {
         setLibrarySlides([{t:'S1',c:'C1'}, {t:'S2',c:'C2'}]);
         setLibrarySlideIndex(0);
@@ -210,12 +319,6 @@ describe('Library & Lessons', () => {
         setLibrarySlideIndex(1);
         prevLibrarySlide();
         expect(getLibrarySlideIndex()).toBe(0);
-    });
-
-    test('openLesson opens slide viewer for ppt', () => {
-        openLesson(0);
-        expect(mockElements['slide-viewer-modal'].classes.has('hidden')).toBe(false);
-        expect(mockElements['swiper-wrapper'].innerHTML).toContain('Introducere');
     });
 
     test('openLibraryItem shows library detail with iframe for PDF', () => {
