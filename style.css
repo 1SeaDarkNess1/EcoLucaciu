@@ -96,18 +96,48 @@ h3 { font-size: var(--fs-h3); }
 .sidebar {
     position: fixed;
     top: 0;
+    bottom: 0;
     left: 0;
-    width: 320px;
-    height: calc(100vh - 20px);
-    margin: 10px;
-    padding: 1.5rem 1.25rem;
+    width: 280px;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     z-index: 1000;
-    overflow-y: auto;
-    /* Glass styles inherited from .sidebar selector above */
+    overflow-y: hidden; /* No scrollbar */
+    font-size: clamp(0.8rem, 1.5vh, 1rem); /* Scaling font */
+    /* Glass styles inherited via class */
 }
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.sidebar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Viewer Container */
+.viewer-container {
+    width: 100%;
+    flex: 1; min-height: 0; height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.viewer-container iframe,
+.viewer-container object,
+.viewer-container embed {
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+    border-radius: 16px;
+    background: white;
+}
+
 
 .sidebar-header { text-align: center; }
 .sidebar-header h1 { font-size: 1.2rem; line-height: 1.2; }
@@ -163,10 +193,10 @@ h3 { font-size: var(--fs-h3); }
 
 /* Main Content */
 .main-content {
-    margin-left: 340px; /* 320px width + 10px margin + 10px gap */
+    margin-left: 280px; /* Equal to sidebar width */
     min-height: 100vh;
     position: relative;
-    /* Reset glass style if applied via class, though .main-content usually doesn't need glass BG unless specified */
+    /* Reset glass style if applied via class */
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
@@ -189,6 +219,12 @@ h3 { font-size: var(--fs-h3); }
     max-width: 1100px;
     margin: 2rem auto;
 }
+
+/* Grid Override for Home and Quiz (2 columns) */
+.home-grid-compact, .quiz-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
 
 .home-grid-compact {
     min-height: calc(100vh - 140px);
@@ -522,3 +558,10 @@ h3 { font-size: var(--fs-h3); }
 .uni-detail-item h4 { margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; color: var(--accent); }
 .uni-detail-item p, .uni-detail-item li { font-size: 0.95rem; margin: 0; }
 .uni-modal-footer { margin-top: 2rem; text-align: center; }
+
+.lesson-content {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
