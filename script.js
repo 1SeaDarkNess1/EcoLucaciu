@@ -172,7 +172,7 @@ const QuizManager = {
                 case 'general': bank = [...questionsGeneral]; limit = 20; break;
                 case 'micro': bank = [...questionsMicro]; limit = 15; break;
                 case 'macro': bank = [...questionsMacro]; limit = 15; break;
-                case 'admitere': bank = [...questionsAdmitere]; limit = 30; break;
+                case 'admitere': bank = [...masterBank]; limit = 30; break;
                 default: bank = [...(typeof masterBank !== 'undefined' ? masterBank : [])]; limit = 20;
             }
         } else {
@@ -487,19 +487,19 @@ function openLesson(index) {
             const fullUrl = baseUrl + cleanFile;
             const embedUrl = `${OFFICE_EMBED_BASE_URL}${encodeURIComponent(fullUrl)}`;
 
-            contentHtml = `<div class="file-view-container">
-                    <iframe src="${embedUrl}" style="width: 100%; height: 600px; border: none; border-radius: 8px;"></iframe>
-                    <div style="margin-top: 15px; text-align: center;">
-                        <p style="margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Dacă previzualizarea nu încarcă (necesită URL public), folosește butonul:</p>
-                        <a href="${lesson.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">📥 Descarcă Materialul PPT</a>
-                    </div>
+            contentHtml = `<div class="viewer-container">
+                    <iframe src="${embedUrl}"></iframe>
+                </div>
+                <div style="margin-top: 15px; text-align: center;">
+                    <p style="margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted);">Dacă previzualizarea nu încarcă (necesită URL public), folosește butonul:</p>
+                    <a href="${lesson.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">📥 Descarcă Materialul PPT</a>
                 </div>`;
         } else {
-             contentHtml = `<div class="file-view-container">
-                    <iframe src="${lesson.file}" style="width: 100%; height: 600px; border: none; border-radius: 8px;"></iframe>
-                    <div style="margin-top: 15px; text-align: center;">
-                        <a href="${lesson.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">📥 Descarcă Materialul</a>
-                    </div>
+             contentHtml = `<div class="viewer-container">
+                    <iframe src="${lesson.file}"></iframe>
+                </div>
+                <div style="margin-top: 15px; text-align: center;">
+                    <a href="${lesson.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">📥 Descarcă Materialul</a>
                 </div>`;
         }
 
@@ -533,7 +533,9 @@ function openLibraryItem(index) {
     if (item.file) {
         let contentHtml = '';
         if (item.type === 'pdf') {
-            contentHtml = `<iframe src="${item.file}"></iframe>
+            contentHtml = `<div class="viewer-container">
+                    <iframe src="${item.file}"></iframe>
+                </div>
                 <p style="text-align: center; margin-top: 10px;"><a href="${item.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">Sau descarcă PDF</a></p>`;
         } else {
              contentHtml = `<div style="text-align: center; padding: 40px;">
