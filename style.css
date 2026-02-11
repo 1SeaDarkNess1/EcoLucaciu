@@ -97,10 +97,10 @@ h3 { font-size: var(--fs-h3); }
     position: fixed;
     top: 0;
     left: 0;
-    width: 280px;
+    width: 320px;
     height: calc(100vh - 20px);
     margin: 10px;
-    padding: 2.5rem 1.875rem;
+    padding: 1.5rem 1.25rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -110,10 +110,10 @@ h3 { font-size: var(--fs-h3); }
 }
 
 .sidebar-header { text-align: center; }
-.sidebar-header h1 { font-size: 1.3rem; line-height: 1.2; }
+.sidebar-header h1 { font-size: 1.2rem; line-height: 1.2; }
 
 .hero-logo {
-    height: 70px;
+    height: 60px;
     margin-bottom: 1rem;
     border-radius: 12px;
     box-shadow: var(--shadow-colored-sm);
@@ -153,17 +153,17 @@ h3 { font-size: var(--fs-h3); }
 
 .sidebar-footer {
     text-align: center;
-    font-size: var(--fs-small);
+    font-size: 0.85rem;
     color: var(--text-muted);
-    padding-top: 1.25rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--border);
     margin-top: auto;
-    padding-bottom: 1.25rem;
+    padding-bottom: 1rem;
 }
 
 /* Main Content */
 .main-content {
-    margin-left: 310px; /* 280px width + 10px margin + 20px gap */
+    margin-left: 340px; /* 320px width + 10px margin + 10px gap */
     min-height: 100vh;
     position: relative;
     /* Reset glass style if applied via class, though .main-content usually doesn't need glass BG unless specified */
@@ -176,7 +176,7 @@ h3 { font-size: var(--fs-h3); }
 }
 
 /* Views */
-.view { display: none; padding: 1rem 2rem 3rem 2rem; min-height: 100vh; }
+.view { display: none; padding: 1.5rem; min-height: 100vh; }
 .view.active { display: block; animation: fadeIn 0.4s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -205,7 +205,7 @@ h3 { font-size: var(--fs-h3); }
 
 /* Cards - Interactive */
 .nav-card, .quiz-card, .chapter-card {
-    padding: 2rem;
+    padding: 1.5rem;
     cursor: pointer;
     margin-bottom: 0;
     position: relative;
@@ -339,7 +339,7 @@ h3 { font-size: var(--fs-h3); }
 
 /* Modals */
 .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 1.25rem; animation: fadeIn 0.3s; }
-.modal-content { width: 100%; max-width: 800px; padding: 2.5rem; position: relative; max-height: 90vh; overflow-y: auto; }
+.modal-content { width: 100%; max-width: 800px; padding: 2rem; position: relative; max-height: 90vh; overflow-y: auto; }
 .close-btn { position: absolute; top: 1.25rem; right: 1.5rem; font-size: 1.75rem; cursor: pointer; color: var(--text-muted); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); background: transparent; border: none; }
 .close-btn:hover { color: var(--danger); transform: rotate(90deg); }
 .hidden { display: none !important; }
@@ -390,20 +390,22 @@ h3 { font-size: var(--fs-h3); }
 
 .reader-header .btn-back { position: absolute; left: 1.5rem; padding: 0.6rem 1.2rem; border-radius: 12px; font-weight: 600; }
 .reader-title { font-size: 1.2rem; font-weight: 700; margin: 0; color: var(--text); text-align: center; max-width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.reader-layout { flex: 1; display: flex; align-items: center; justify-content: center; overflow-y: auto; padding: 2rem; }
+.reader-layout { flex: 1; display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; overflow: hidden; padding: 1rem; height: calc(100vh - 70px); }
 
 .material-viewer {
-    width: 90%;
-    max-width: 1200px;
-    height: 80vh;
+    width: 100%;
+    flex: 1;
+    max-width: none;
+    height: auto;
     /* Glass styles inherited via class */
-    padding: 20px;
+    padding: 0;
     display: flex;
     flex-direction: column;
     transition: all 0.4s ease;
     overflow: hidden;
+    margin: 0;
 }
-.material-viewer iframe { flex: 1; border-radius: 16px; border: none; background: #ffffff; }
+.material-viewer iframe { flex: 1; width: 100%; height: 100%; border-radius: 16px; border: none; background: #ffffff; }
 
 /* Mobile */
 @media (max-width: 768px) {
@@ -424,7 +426,7 @@ h3 { font-size: var(--fs-h3); }
     }
     .sidebar.open { transform: translateX(0); }
     .main-content { margin-left: 0 !important; padding: 10px; }
-    .view { padding: 1.875rem 1.25rem; }
+    .view { padding: 1.5rem 1rem; }
     .home-grid-compact, .quiz-grid, .chapters-grid, .uni-cards-grid { grid-template-columns: 1fr; gap: 1.5rem; }
     .reader-layout { padding: 0; }
     .material-viewer { width: 100%; height: 100%; border-radius: 0; padding: 10px; border: none; margin: 0; }
@@ -495,7 +497,7 @@ h3 { font-size: var(--fs-h3); }
 .circular-progress { position: relative; height: 250px; width: 250px; border-radius: 50%; background: conic-gradient(var(--accent) 0deg, rgba(255,255,255,0.2) 0deg); display: flex; align-items: center; justify-content: center; transition: background 1s ease-out; box-shadow: var(--shadow-main); }
 .inner-circle { position: absolute; height: 210px; width: 210px; border-radius: 50%; background: rgba(255, 255, 255, 0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 5px 15px rgba(0,0,0,0.1); z-index: 2; }
 .inner-circle span { font-size: 3.5rem; font-weight: 800; color: var(--accent-color); line-height: 1; }
-.results-main-card { padding: 3rem; }
+.results-main-card { padding: 2rem; }
 
 /* Review Mode */
 .review-mode-container { max-width: 800px; margin: 0 auto; padding: 2rem; }
