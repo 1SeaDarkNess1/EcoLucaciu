@@ -3,16 +3,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
-    /* Premium Apple Glassmorphism Palette (Muted Lime / Sage Green) */
-    --bg-color: #f0f4f0;
+    /* Premium macOS Big Sur Glassmorphism Palette (Muted Lime / Sage Green) */
+    --bg-color: #f2f7f2;
     --surface-color: rgba(255, 255, 255, 0.65);
-    --accent-color: #66bb6a;
-    --accent-hover: #43a047;
-    --text-main: #1d1d1f;
+    --accent-color: #6c9e70; /* Sage Green */
+    --accent-hover: #558b59;
+    --text-main: #1d1d1f; /* Charcoal Grey */
     --text-muted: #666666;
-    --shadow-main: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.6);
-    --glass-blur: blur(20px) saturate(180%);
+
+    /* Glass Effect Variables */
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-blur: blur(25px) saturate(180%);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+    --glass-radius: 24px;
 
     /* Mappings */
     --bg: var(--bg-color);
@@ -22,12 +26,9 @@
     --success: #4A7C59;
     --danger: #C25B5B;
     --border: rgba(46, 125, 50, 0.1);
-    --shadow: var(--shadow-main);
-    --glass: var(--glass-blur);
 
     --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --shadow-colored: var(--shadow-main);
-    --shadow-colored-sm: 0 4px 12px rgba(46, 125, 50, 0.08);
+    --shadow-colored-sm: 0 4px 12px rgba(108, 158, 112, 0.15);
 
     /* Fluid Typography */
     --fs-base: clamp(1rem, 1vw + 0.8rem, 1.1rem);
@@ -46,12 +47,12 @@ body {
     width: 100%;
     line-height: 1.6;
     font-size: var(--fs-base);
-    background-color: #f0f4f0;
+    background-color: #f2f7f2;
     /* Mesh Background */
     background-image:
-        radial-gradient(at 0% 0%, rgba(188, 206, 176, 0.6) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(212, 224, 205, 0.6) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(156, 175, 136, 0.4) 0px, transparent 50%);
+        radial-gradient(at 10% 10%, rgba(188, 206, 176, 0.5) 0px, transparent 50%),
+        radial-gradient(at 90% 10%, rgba(212, 224, 205, 0.5) 0px, transparent 50%),
+        radial-gradient(at 50% 90%, rgba(165, 189, 149, 0.3) 0px, transparent 50%);
     background-attachment: fixed;
     min-height: 100vh;
     transition: background-color 0.4s ease, color 0.3s ease;
@@ -81,32 +82,31 @@ h3 { font-size: var(--fs-h3); }
 
 .bg-visuals { display: none !important; }
 
-/* --- ULTIMATE GLASS CLASS --- */
-.glass, .sidebar, .modal-content, .header, .main-content, .nav-card, .quiz-card, .chapter-card, .stat-card {
+/* --- ULTIMATE GLASS CLASS (macOS Big Sur Style) --- */
+.glass, .sidebar, .modal-content, .header, .main-content, .nav-card, .quiz-card, .chapter-card, .stat-card, .viewer-container {
     background: rgba(255, 255, 255, 0.65) !important;
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
     border-radius: 24px;
 }
 
-/* Sidebar */
+/* Sidebar - Floating Style */
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     width: 280px;
-    height: 100vh;
+    height: calc(100vh - 20px);
+    margin: 10px;
     padding: 2.5rem 1.875rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     z-index: 1000;
-    border-radius: 0 !important;
-    border: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.6);
     overflow-y: auto;
+    /* Glass styles inherited from .sidebar selector above */
 }
 
 .sidebar-header { text-align: center; }
@@ -144,11 +144,11 @@ h3 { font-size: var(--fs-h3); }
 }
 
 .menu-vertical a:hover, .menu-vertical a.active-link {
-    background: linear-gradient(135deg, rgba(102, 187, 106, 0.1), rgba(67, 160, 71, 0.1));
+    background: linear-gradient(135deg, rgba(108, 158, 112, 0.1), rgba(85, 139, 89, 0.1));
     color: var(--accent-hover);
-    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.1);
+    box-shadow: 0 4px 12px rgba(108, 158, 112, 0.1);
     transform: translateX(5px);
-    border: 1px solid rgba(102, 187, 106, 0.2);
+    border: 1px solid rgba(108, 158, 112, 0.2);
 }
 
 .sidebar-footer {
@@ -163,22 +163,24 @@ h3 { font-size: var(--fs-h3); }
 
 /* Main Content */
 .main-content {
-    margin-left: 280px;
+    margin-left: 310px; /* 280px width + 10px margin + 20px gap */
     min-height: 100vh;
     position: relative;
+    /* Reset glass style if applied via class, though .main-content usually doesn't need glass BG unless specified */
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+    padding: 20px;
 }
 
 /* Views */
-.view { display: none; padding: 3rem 4rem; min-height: 100vh; }
+.view { display: none; padding: 1rem 2rem 3rem 2rem; min-height: 100vh; }
 .view.active { display: block; animation: fadeIn 0.4s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Grids - Layout Corrections */
+/* Grids */
 .home-grid-compact, .categories-grid, .quiz-grid, .uni-cards-grid, .chapters-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -201,7 +203,7 @@ h3 { font-size: var(--fs-h3); }
     font-weight: 700;
 }
 
-/* Cards */
+/* Cards - Interactive */
 .nav-card, .quiz-card, .chapter-card {
     padding: 2rem;
     cursor: pointer;
@@ -214,14 +216,14 @@ h3 { font-size: var(--fs-h3); }
     align-items: center;
     text-align: center;
     min-height: 220px;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
 }
 
 .nav-card:hover, .quiz-card:hover, .chapter-card:hover {
-    background: rgba(255, 255, 255, 0.85) !important;
     transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 0 15px 45px rgba(100, 120, 90, 0.15); /* Green diffuse shadow */
     border-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
 }
 
 .chapter-card h3 { margin: 0 0 0.625rem 0; color: var(--accent); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -229,9 +231,9 @@ h3 { font-size: var(--fs-h3); }
 .card-icon { font-size: 3rem; display: block; margin-bottom: 1.25rem; }
 .quiz-icon { font-size: 3rem; margin-bottom: 1rem; display: inline-block; }
 
-/* Buttons Premium */
+/* Buttons Premium - Sage Green Gradient */
 .btn-premium, .btn-start, .btn-back, .btn-nav {
-    background: linear-gradient(135deg, #66bb6a, #43a047);
+    background: linear-gradient(135deg, #6c9e70, #558b59);
     color: white;
     border: none;
     border-radius: 30px;
@@ -239,7 +241,7 @@ h3 { font-size: var(--fs-h3); }
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     font-family: inherit;
-    box-shadow: 0 4px 15px rgba(67, 160, 71, 0.3);
+    box-shadow: 0 4px 15px rgba(108, 158, 112, 0.3);
     padding: 0.8rem 1.5rem;
     text-decoration: none;
     display: inline-flex;
@@ -251,7 +253,7 @@ h3 { font-size: var(--fs-h3); }
 .btn-start:hover, .btn-premium:hover, .btn-back:hover, .btn-nav:hover {
     background: linear-gradient(135deg, #81c784, #4caf50);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(67, 160, 71, 0.4);
+    box-shadow: 0 8px 25px rgba(108, 158, 112, 0.4);
 }
 
 .btn-premium.btn-outline {
@@ -285,12 +287,8 @@ h3 { font-size: var(--fs-h3); }
 .danger-glass span { color: var(--danger); }
 
 .q-container {
-    background: rgba(255, 255, 255, 0.75) !important;
-    backdrop-filter: blur(20px) saturate(180%);
-    border-radius: 24px;
-    box-shadow: var(--shadow-main);
+    /* Glass styles inherited via class, ensuring specific overrides */
     padding: 2.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .opt-btn {
@@ -312,13 +310,13 @@ h3 { font-size: var(--fs-h3); }
 
 .opt-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(46, 125, 50, 0.15);
+    box-shadow: 0 5px 15px rgba(108, 158, 112, 0.15);
     border-color: var(--accent);
     background: rgba(255, 255, 255, 0.9);
 }
 
 .progress-bg { height: 8px; background: rgba(0,0,0,0.05); border-radius: 20px; margin: 1.5rem 0; overflow: hidden; }
-#progress-bar { height: 100%; background: linear-gradient(90deg, #66bb6a, #43a047); border-radius: 20px; transition: 0.4s; width: 0%; }
+#progress-bar { height: 100%; background: linear-gradient(90deg, #6c9e70, #558b59); border-radius: 20px; transition: 0.4s; width: 0%; }
 
 .feedback-overlay {
     position: absolute;
@@ -334,7 +332,7 @@ h3 { font-size: var(--fs-h3); }
     animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     backdrop-filter: blur(10px);
 }
-.correct-overlay { background: rgba(102, 187, 106, 0.9); }
+.correct-overlay { background: rgba(108, 158, 112, 0.9); }
 .wrong-overlay { background: rgba(239, 83, 80, 0.9); }
 .quiz-dashboard { text-align: center; padding-top: 1.25rem; }
 .dashboard-header { margin-bottom: 3rem; }
@@ -386,7 +384,7 @@ h3 { font-size: var(--fs-h3); }
     padding: 0 1.5rem;
     z-index: 100;
     background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(25px) saturate(180%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.6);
 }
 
@@ -398,11 +396,7 @@ h3 { font-size: var(--fs-h3); }
     width: 90%;
     max-width: 1200px;
     height: 80vh;
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 24px;
-    box-shadow: var(--shadow-main);
+    /* Glass styles inherited via class */
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -416,22 +410,31 @@ h3 { font-size: var(--fs-h3); }
     .sidebar {
         transform: translateX(-100%);
         transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        box-shadow: 0 0 20px rgba(46, 125, 50, 0.1);
+        box-shadow: 0 0 20px rgba(108, 158, 112, 0.1);
         border-right: none;
         position: fixed;
         z-index: 1000;
-        height: 100%;
         top: 0;
         left: 0;
+        /* Reset Floating Style for Mobile */
+        margin: 0;
+        height: 100vh;
+        width: 280px;
+        border-radius: 0;
     }
     .sidebar.open { transform: translateX(0); }
-    .main-content { margin-left: 0 !important; }
+    .main-content { margin-left: 0 !important; padding: 10px; }
     .view { padding: 1.875rem 1.25rem; }
     .home-grid-compact, .quiz-grid, .chapters-grid, .uni-cards-grid { grid-template-columns: 1fr; gap: 1.5rem; }
     .reader-layout { padding: 0; }
-    .material-viewer { width: 100%; height: 100%; border-radius: 0; padding: 10px; border: none; }
+    .material-viewer { width: 100%; height: 100%; border-radius: 0; padding: 10px; border: none; margin: 0; }
     .reader-title { font-size: 1rem; max-width: 50%; }
     .reader-header .btn-back { padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+
+    .glass, .modal-content, .nav-card, .quiz-card, .chapter-card, .stat-card {
+        /* Slightly less blur for performance on mobile if needed, keeping 25px for consistency */
+        backdrop-filter: blur(25px) saturate(180%);
+    }
 }
 
 @media (max-width: 1024px) {
@@ -510,7 +513,7 @@ h3 { font-size: var(--fs-h3); }
 .uni-modal-logo { width: 80px; height: 80px; object-fit: contain; border-radius: 12px; background: white; padding: 5px; box-shadow: var(--shadow-colored-sm); }
 .uni-modal-title h2 { margin: 0; font-size: 1.5rem; }
 .uni-details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
-.uni-detail-item { padding: 1rem; background: rgba(102, 187, 106, 0.1); border-radius: 12px; }
+.uni-detail-item { padding: 1rem; background: rgba(108, 158, 112, 0.1); border-radius: 12px; }
 .uni-detail-item h4 { margin-bottom: 0.5rem; font-size: 0.9rem; text-transform: uppercase; color: var(--accent); }
 .uni-detail-item p, .uni-detail-item li { font-size: 0.95rem; margin: 0; }
 .uni-modal-footer { margin-top: 2rem; text-align: center; }
