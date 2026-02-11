@@ -1,4 +1,5 @@
 const lectiiCompleta = []; const bibliotecaCompleta = []; const testeAntrenament = []; const unis = [];
+const OFFICE_EMBED_BASE_URL = "https://view.officeapps.live.com/op/embed.aspx?src=";
 const questionsGeneral = [
     { q: "Care dintre următoarele reprezintă trăsătura fundamentală a resurselor economice?", o: ["Sunt nelimitate", "Sunt rare și limitate", "Sunt gratuite", "Se regenerează complet"], c: 1, e: "Raritatea este caracteristica fundamentală a resurselor în raport cu nevoile nelimitate." },
     { q: "Costul de oportunitate reprezintă:", o: ["Cheltuielile totale de producție", "Valoarea celei mai bune alternative la care se renunță", "Profitul obținut", "Prețul de vânzare"], c: 1, e: "Este costul alegerii, măsurat prin valoarea alternativei sacrificate." },
@@ -460,42 +461,6 @@ async function initData() {
 function openLesson(index) {
     loadMathJax();
     const lesson = lectiiCompleta[index];
-    if(!lesson) return;
-
-    if (lesson.slides) {
-        openSlideViewer('lesson', index);
-        return;
-    }
-
-    const titleEl = document.getElementById('lesson-title');
-    if (titleEl) titleEl.innerText = lesson.titlu;
-
-    if (lesson.file) {
-        let contentHtml = '';
-        if (lesson.type === 'ppt') {
-             const encodedUrl = encodeURIComponent(`https://ecolucaciu.vercel.app/${lesson.file}`);
-             contentHtml = `<iframe src="https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}"></iframe>
-                    <div style="margin-top: 15px; text-align: center;">
-                        <a href="${lesson.file}" download class="uni-link" style="color: var(--accent); font-weight: bold;">📥 Descarcă Materialul PPT</a>
-                    </div>`;
-        } else {
-             contentHtml = `<iframe src="${lesson.file}"></iframe>
-                    <div style="margin-top: 15px; text-align: center;">
-                        <a href="${lesson.file}" download target="_blank" class="uni-link" style="color: var(--accent); font-weight: bold;">📥 Descarcă Materialul</a>
-                    </div>`;
-        }
-        LessonManager.slides = [{ t: lesson.titlu, c: contentHtml }];
-    } else {
-        LessonManager.slides = lesson.slides || [];
-    }
-
-    showPage('lectie-detaliu');
-    LessonManager.render();
-}
-
-function openLesson(index) {
-    loadMathJax();
-    const lesson = lectiiCompleta[index];
     if (!lesson) return;
 
     if (lesson.slides && lesson.slides.length > 0) {
@@ -520,7 +485,7 @@ function openLesson(index) {
             if (cleanFile.startsWith('/')) cleanFile = cleanFile.substring(1);
 
             const fullUrl = baseUrl + cleanFile;
-            const embedUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fullUrl)}`;
+            const embedUrl = `${OFFICE_EMBED_BASE_URL}${encodeURIComponent(fullUrl)}`;
 
             contentHtml = `<div class="file-view-container">
                     <iframe src="${embedUrl}" style="width: 100%; height: 600px; border: none; border-radius: 8px;"></iframe>
